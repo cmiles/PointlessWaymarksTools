@@ -2,7 +2,7 @@ using Windows.Security.Credentials;
 using Polly;
 using Serilog;
 
-namespace PointlessWaymarks.CommonTools;
+namespace PointlessWaymarks.WindowsTools;
 
 public static class PasswordVaultTools
 {

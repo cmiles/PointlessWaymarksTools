@@ -1,4 +1,4 @@
-﻿namespace PointlessWaymarks.AvaloniaToolkit;
+﻿namespace PointlessWaymarks.CommonTools;
 
 public static class TaskTools
 {

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using PointlessWaymarks.AvaloniaToolkit.AppToast;
 using PointlessWaymarks.LlamaAspects;
 using Serilog;
+using TaskTools = PointlessWaymarks.CommonTools.TaskTools;
 
 namespace PointlessWaymarks.AvaloniaToolkit.StatusLayer;
 
@@ -421,7 +422,7 @@ public partial class StatusLayerContext
 
         try
         {
-            await CurrentFullScreenCancellationSource.Token.WhenCancelled();
+            await TaskTools.WhenCancelled(CurrentFullScreenCancellationSource.Token);
         }
         catch (Exception e)
         {
@@ -475,7 +476,7 @@ public partial class StatusLayerContext
 
         try
         {
-            await CurrentFullScreenCancellationSource.Token.WhenCancelled();
+            await TaskTools.WhenCancelled(CurrentFullScreenCancellationSource.Token);
         }
         catch (Exception e)
         {

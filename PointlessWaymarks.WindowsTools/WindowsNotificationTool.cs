@@ -4,9 +4,10 @@ using System.Text.Encodings.Web;
 using Markdig;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Toolkit.Uwp.Notifications;
+using PointlessWaymarks.CommonTools;
 using Serilog;
 
-namespace PointlessWaymarks.CommonTools;
+namespace PointlessWaymarks.WindowsTools;
 
 /// <summary>
 ///     Helper Class for Windows Notifications. The idea is that this - probably built with the

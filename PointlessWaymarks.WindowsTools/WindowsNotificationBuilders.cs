@@ -1,7 +1,8 @@
 ﻿using System.Globalization;
+using PointlessWaymarks.CommonTools;
 using Serilog;
 
-namespace PointlessWaymarks.CommonTools;
+namespace PointlessWaymarks.WindowsTools;
 
 /// <summary>
 ///     Static methods to more easily build a WindowsNotificationTool

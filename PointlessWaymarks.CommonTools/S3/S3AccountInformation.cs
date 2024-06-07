@@ -1,7 +1,6 @@
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
-using static Amazon.Internal.RegionEndpointProviderV2;
 using RegionEndpoint = Amazon.RegionEndpoint;
 
 namespace PointlessWaymarks.CommonTools.S3;
