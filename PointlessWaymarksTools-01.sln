@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.AvaloniaToolkit", "PointlessWaymarks.AvaloniaToolkit\PointlessWaymarks.AvaloniaToolkit.csproj", "{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.CommonTools", "PointlessWaymarks.CommonTools\PointlessWaymarks.CommonTools.csproj", "{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.LlamaAspects", "PointlessWaymarks.LlamaAspects\PointlessWaymarks.LlamaAspects.csproj", "{4D7652A6-6B4C-4A1D-899E-7BF26294E985}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.SpatialTools", "PointlessWaymarks.SpatialTools\PointlessWaymarks.SpatialTools.csproj", "{34C6ADF6-1CFF-4234-9220-F40880663930}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.VaultfuscationTools", "PointlessWaymarks.VaultfuscationTools\PointlessWaymarks.VaultfuscationTools.csproj", "{2BF61661-E62B-42FF-9F70-10A544D362EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.WpfCommon", "PointlessWaymarks.WpfCommon\PointlessWaymarks.WpfCommon.csproj", "{185E5035-EFDD-40EE-8F52-519BB8C37326}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		LamaDebug|x64 = LamaDebug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.Debug|x64.ActiveCfg = Debug|x64
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.Debug|x64.Build.0 = Debug|x64
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.LamaDebug|x64.ActiveCfg = LamaDebug|x64
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.LamaDebug|x64.Build.0 = LamaDebug|x64
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.Release|x64.ActiveCfg = Release|x64
+		{4A5E3DCD-513E-4A32-A079-5CFFE3DAD810}.Release|x64.Build.0 = Release|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.Debug|x64.ActiveCfg = Debug|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.Debug|x64.Build.0 = Debug|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.LamaDebug|x64.ActiveCfg = Debug|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.LamaDebug|x64.Build.0 = Debug|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.Release|x64.ActiveCfg = Release|x64
+		{1D2CD4FC-E677-42DE-92CB-AB998ED78C69}.Release|x64.Build.0 = Release|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.Debug|x64.ActiveCfg = Debug|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.Debug|x64.Build.0 = Debug|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.LamaDebug|x64.ActiveCfg = LamaDebug|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.LamaDebug|x64.Build.0 = LamaDebug|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.Release|x64.ActiveCfg = Release|x64
+		{4D7652A6-6B4C-4A1D-899E-7BF26294E985}.Release|x64.Build.0 = Release|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.Debug|x64.ActiveCfg = Debug|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.Debug|x64.Build.0 = Debug|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.LamaDebug|x64.ActiveCfg = Debug|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.LamaDebug|x64.Build.0 = Debug|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.Release|x64.ActiveCfg = Release|x64
+		{34C6ADF6-1CFF-4234-9220-F40880663930}.Release|x64.Build.0 = Release|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.Debug|x64.ActiveCfg = Debug|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.Debug|x64.Build.0 = Debug|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.LamaDebug|x64.ActiveCfg = Debug|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.LamaDebug|x64.Build.0 = Debug|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.Release|x64.ActiveCfg = Release|x64
+		{2BF61661-E62B-42FF-9F70-10A544D362EA}.Release|x64.Build.0 = Release|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Debug|x64.ActiveCfg = Debug|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Debug|x64.Build.0 = Debug|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.LamaDebug|x64.ActiveCfg = LamaDebug|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.LamaDebug|x64.Build.0 = LamaDebug|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Release|x64.ActiveCfg = Release|x64
+		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64872490-7E6A-458C-B889-157CF060B568}
+	EndGlobalSection
+EndGlobal
