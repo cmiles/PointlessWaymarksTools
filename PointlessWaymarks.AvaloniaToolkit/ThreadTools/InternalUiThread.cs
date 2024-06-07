@@ -2,7 +2,7 @@
 
 namespace PointlessWaymarks.AvaloniaToolkit.ThreadTools;
 
-internal static partial class InternalUiThread
+internal static class InternalUiThread
 {
     private static readonly ThreadLocal<bool?> Ids = new();
 

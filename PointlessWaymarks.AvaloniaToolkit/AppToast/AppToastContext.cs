@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using PointlessWaymarks.AvaloniaToolkit.Aspects;
+using PointlessWaymarks.LlamaAspects;
 using Timer = System.Timers.Timer;
 
 namespace PointlessWaymarks.AvaloniaToolkit.AppToast;

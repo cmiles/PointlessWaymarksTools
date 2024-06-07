@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Avalonia.Threading;
+using CommunityToolkit.Mvvm.Input;
 using PointlessWaymarks.AvaloniaToolkit.AppToast;
-using PointlessWaymarks.AvaloniaToolkit.Aspects;
-using PointlessWaymarks.AvaloniaToolkit.Utility;
+using PointlessWaymarks.LlamaAspects;
 using Serilog;
 
 namespace PointlessWaymarks.AvaloniaToolkit.StatusLayer;
@@ -411,7 +411,8 @@ public partial class StatusLayerContext
         MessageBoxVisible = true;
 
         Log.ForContext(nameof(MessageBoxTitle), title).ForContext(nameof(MessageBoxMessage), body)
-            .ForContext(nameof(MessageBoxButtonList), buttons).ForContext(nameof(StatusControlContextId), StatusControlContextId)
+            .ForContext(nameof(MessageBoxButtonList), buttons)
+            .ForContext(nameof(StatusControlContextId), StatusControlContextId)
             .Information("StatusControlContext Showing Message Box");
 
         await UiThreadSwitcher.ResumeBackgroundAsync();

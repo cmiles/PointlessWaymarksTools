@@ -1,4 +1,4 @@
-﻿using PointlessWaymarks.AvaloniaToolkit.Aspects;
+﻿using PointlessWaymarks.LlamaAspects;
 
 namespace PointlessWaymarks.AvaloniaToolkit.StatusLayer;
 

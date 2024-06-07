@@ -1,21 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace PointlessWaymarks.AvaloniaToolkit.Utility;
-
-/// <summary>
-///     An interface expanding <see cref="ICommand" /> with the ability to raise
-///     the <see cref="ICommand.CanExecuteChanged" /> event externally.
-///     Not the original source of the 'RelayCommand' but this code has been
-///     modified from: the CommunityToolkit.Mvvm.Input -
-///     https://github.com/CommunityToolkit/dotnet - MIT License
-/// </summary>
-public interface IRelayCommand : ICommand
-{
-    /// <summary>
-    ///     Notifies that the <see cref="ICommand.CanExecute" /> property has changed.
-    /// </summary>
-    void NotifyCanExecuteChanged();
-}
+namespace PointlessWaymarks.CommonTools;
 
 /// <summary>
 ///     A generic interface representing a more specific version of <see cref="IRelayCommand" />.
@@ -40,4 +25,19 @@ public interface IRelayCommand<in T> : IRelayCommand
     /// <param name="parameter">The input parameter.</param>
     /// <remarks>Use this overload to avoid boxing, if <typeparamref name="T" /> is a value type.</remarks>
     void Execute(T? parameter);
+}
+
+/// <summary>
+///     An interface expanding <see cref="ICommand" /> with the ability to raise
+///     the <see cref="ICommand.CanExecuteChanged" /> event externally.
+///     Not the original source of the 'RelayCommand' but this code has been
+///     modified from: the CommunityToolkit.Mvvm.Input -
+///     https://github.com/CommunityToolkit/dotnet - MIT License
+/// </summary>
+public interface IRelayCommand : ICommand
+{
+    /// <summary>
+    ///     Notifies that the <see cref="ICommand.CanExecute" /> property has changed.
+    /// </summary>
+    void NotifyCanExecuteChanged();
 }
