@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.Vaultfusc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.WpfCommon", "PointlessWaymarks.WpfCommon\PointlessWaymarks.WpfCommon.csproj", "{185E5035-EFDD-40EE-8F52-519BB8C37326}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointlessWaymarks.WindowsTools", "PointlessWaymarks.WindowsTools\PointlessWaymarks.WindowsTools.csproj", "{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -58,6 +60,12 @@ Global
 		{185E5035-EFDD-40EE-8F52-519BB8C37326}.LamaDebug|x64.Build.0 = LamaDebug|x64
 		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Release|x64.ActiveCfg = Release|x64
 		{185E5035-EFDD-40EE-8F52-519BB8C37326}.Release|x64.Build.0 = Release|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.Debug|x64.ActiveCfg = Debug|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.Debug|x64.Build.0 = Debug|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.LamaDebug|x64.ActiveCfg = Debug|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.LamaDebug|x64.Build.0 = Debug|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.Release|x64.ActiveCfg = Release|x64
+		{6AC8B88D-2804-49BA-AB7A-4BBD9F84CD47}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
