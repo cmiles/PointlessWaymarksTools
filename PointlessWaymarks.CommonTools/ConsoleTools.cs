@@ -65,17 +65,34 @@ public static class ConsoleTools
         return keyHandler.Text;
     }
 
-    public static void WriteRedWrappedTextBlock(string text, int width = 80)
+    public static void WriteLineRedWrappedTextBlock(string text, int width = 80, int indent = 0)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        WriteWrappedTextBlock(text, width);
+        WriteLineWrappedTextBlock(text, width, indent);
         Console.ResetColor();
     }
 
-    public static void WriteWrappedTextBlock(string text, int width = 80)
+    public static void WriteLineYellowWrappedTextBlock(string text, int width = 80, int indent = 0)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        WriteLineWrappedTextBlock(text, width, indent);
+        Console.ResetColor();
+    }
+
+    public static void WriteLineWrappedTextBlock(string text, int width = 80, int indent = 0)
     {
         if (string.IsNullOrWhiteSpace(text)) return;
-        Console.WriteLine(text.SplitToLines(width));
+        var splitToWidth = width - indent;
+        var lines = text.SplitToMaxWidthLinesList(splitToWidth).Select(x => $"{new string(' ', indent)}{x}");
+        Console.WriteLine(string.Join(Environment.NewLine, lines));
+    }
+
+    public static void WriteWrappedTextBlock(string text, int width = 80, int indent = 0)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return;
+        var splitToWidth = width - indent;
+        var lines = text.SplitToMaxWidthLinesList(splitToWidth).Select(x => $"{new string(' ', indent)}{x}");
+        Console.Write(string.Join(Environment.NewLine, lines));
     }
 
     /// <summary>

@@ -21,6 +21,11 @@ public class SettingsFileProperty<T>
     /// </summary>
     public string PropertyEntryHelp { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Determines whether the current setting value is input for the user as a default value. This
+    /// does NOT apply if HideEnteredValue is true (if a value is worth hiding there is no reason
+    /// to allow the user to enter it by default!). This defaults to true.
+    /// </summary>
     public bool ShowCurrentSettingAsDefault { get; set; } = true;
 
     /// <summary>

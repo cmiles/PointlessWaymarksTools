@@ -159,7 +159,7 @@ public static class StringTools
     /// <param name="stringToSplit"></param>
     /// <param name="maximumLineLength"></param>
     /// <returns></returns>
-    public static string SplitToLines(this string stringToSplit, int maximumLineLength)
+    public static string SplitToMaxWidthLines(this string stringToSplit, int maximumLineLength)
     {
         return string.IsNullOrWhiteSpace(stringToSplit)
             ? string.Empty
@@ -175,13 +175,12 @@ public static class StringTools
     /// <param name="stringToSplit"></param>
     /// <param name="maximumLineLength"></param>
     /// <returns></returns>
-    public static List<string> SplitToLinesList(this string stringToSplit, int maximumLineLength)
+    public static List<string> SplitToMaxWidthLinesList(this string stringToSplit, int maximumLineLength)
     {
-        if (string.IsNullOrWhiteSpace(stringToSplit)) return new List<string>();
+        if (string.IsNullOrWhiteSpace(stringToSplit)) return [];
 
-        //https://stackoverflow.com/questions/22368434/best-way-to-split-string-into-lines-with-maximum-length-without-breaking-words
-        var matches = Regex.Matches(stringToSplit, "(.{1," + maximumLineLength + @"})(?:\s|$)");
-        return matches.Select(match => match.Value).ToList();
+        return SplitToMaxWidthLines(stringToSplit, maximumLineLength)
+            .Split(["\r\n", "\r", "\n"], StringSplitOptions.None).ToList();
     }
 
     public static Stream ToMemoryStream(this string str)

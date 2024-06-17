@@ -70,7 +70,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
 
             Console.WriteLine();
             var userSettingsFileKey =
-                ConsoleTools.GetObscuredStringFromConsole("Please enter the settings file ObfuscationTools Key: ");
+                ConsoleTools.GetObscuredStringFromConsole("Please enter the Obfuscation Key (password) to be used for these settings: ");
             Console.WriteLine();
 
             if (string.IsNullOrWhiteSpace(userSettingsFileKey))
@@ -167,7 +167,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
                 if (!userEnteredValueIsValid.isValid)
                 {
                     if (!string.IsNullOrWhiteSpace(userEnteredValueIsValid.message))
-                        Console.WriteLine(userEnteredValueIsValid.message);
+                        ConsoleTools.WriteLineYellowWrappedTextBlock(userEnteredValueIsValid.message, indent: 4);
                     continue;
                 }
 
@@ -177,7 +177,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
 
                 if (!propertyIsValid.isValid)
                 {
-                    if (!string.IsNullOrWhiteSpace(propertyIsValid.message)) Console.WriteLine(propertyIsValid.message);
+                    if (!string.IsNullOrWhiteSpace(propertyIsValid.message)) ConsoleTools.WriteLineYellowWrappedTextBlock(propertyIsValid.message, indent: 4);
                     continue;
                 }
 

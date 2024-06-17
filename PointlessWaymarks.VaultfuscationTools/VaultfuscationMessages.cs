@@ -6,10 +6,10 @@ public static class VaultfuscationMessages
 {
     public static void VaultfuscationWarning()
     {
-        ConsoleTools.WriteRedWrappedTextBlock("""
+        ConsoleTools.WriteLineRedWrappedTextBlock("""
                                               This program stores your Garmin Connect login information in an Obfuscated Settings File. THIS FILE CAN BE ACCESSED AND READ BY ANYONE WITH ACCESS TO THIS USER ACCOUNT! In some cases this is an appropriate amount of security - but it is up to you to understand and accept the risks associated with this strategy.
 
-                                              """);
+                                              """, 60, 4);
     }
 
     public static void VaultfuscationWarningAndUserAcknowledgement()
