@@ -145,16 +145,16 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
         {
             var shouldHaveUserEnterValue = !loopSettings.PropertyIsValid(settings).isValid;
 
-            var defaultValue = loopSettings.GetCurrentStringValue(settings);
+            var defaultValue = loopSettings.ShowCurrentSettingAsDefault ? loopSettings.GetCurrentStringValue(settings) : string.Empty;
 
             while (shouldHaveUserEnterValue)
             {
                 Console.WriteLine();
 
                 if (!string.IsNullOrWhiteSpace(loopSettings.PropertyEntryHelp))
-                    Console.WriteLine(loopSettings.PropertyEntryHelp);
+                    Console.WriteLine($"{loopSettings.PropertyDisplayName}: {loopSettings.PropertyEntryHelp}");
 
-                Console.Write($"{loopSettings.PropertyDisplayName}: ");
+                Console.Write($"Value for {loopSettings.PropertyDisplayName}: ");
 
                 var userEnteredValue = loopSettings.HideEnteredValue
                     ? ConsoleTools.GetObscuredStringFromConsole(string.Empty)
