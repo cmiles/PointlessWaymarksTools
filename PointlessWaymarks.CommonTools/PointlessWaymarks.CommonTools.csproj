@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="AnyClone" Version="1.1.6" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.309" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.309.4" />
     <PackageReference Include="ClosedXML" Version="0.102.2" />
     <PackageReference Include="Devlooped.CredentialManager" Version="2.5.0.1" />
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
@@ -38,13 +38,13 @@
     <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
     <PackageReference Include="Polly" Version="8.4.0" />
     <PackageReference Include="Serilog" Version="4.0.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.0" />
     <PackageReference Include="Serilog.Enrichers.GlobalLogContext" Version="3.0.0" />
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SimMetricsCore" Version="2.1.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
