@@ -15,10 +15,10 @@ public static class StringTools
     public static bool AreEqual(string? a, string? b)
     {
         if (string.IsNullOrEmpty(a)) return string.IsNullOrEmpty(b);
-        
+
         return string.Equals(a, b);
     }
-    
+
     /// <summary>
     ///     Returns the result of a case-sensitive compare where null and empty are equivalent and
     ///     strings are trimmed before comparison
@@ -30,10 +30,10 @@ public static class StringTools
     {
         a = a.TrimNullToEmpty();
         b = b.TrimNullToEmpty();
-        
+
         return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
     }
-    
+
     /// <summary>
     ///     Simple expansion of Camel Case into a 'normal' string
     /// </summary>
@@ -42,11 +42,11 @@ public static class StringTools
     public static string CamelCaseToSpacedString(this string str)
     {
         if (string.IsNullOrWhiteSpace(str)) return string.Empty;
-        
+
         var stringItems = new List<string>();
-        
+
         var splitString = str.Split(' ');
-        
+
         foreach (var loopParts in splitString)
         {
             if (string.IsNullOrWhiteSpace(loopParts))
@@ -54,20 +54,20 @@ public static class StringTools
                 stringItems.Add(loopParts);
                 continue;
             }
-            
+
             //https://stackoverflow.com/questions/5796383/insert-spaces-between-words-on-a-camel-cased-token
             stringItems.Add(Regex.Replace(
                 Regex.Replace(loopParts, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2"));
         }
-        
+
         return string.Join(' ', stringItems);
     }
-    
+
     public static string GetMethodName(this object type, [CallerMemberName] string? caller = null)
     {
         return type.GetType().FullName + "." + caller.TrimNullToEmpty();
     }
-    
+
     /// <summary>
     ///     Html Encode that transforms null or whitespace only strings into string.Empty
     /// </summary>
@@ -77,7 +77,7 @@ public static class StringTools
     {
         return string.IsNullOrWhiteSpace(toEncode) ? string.Empty : HttpUtility.HtmlEncode(toEncode);
     }
-    
+
     /// <summary>
     ///     Given a List of String "Joe", "Jorge" and "Jeff" joins to "Joe, Jorge and Jeff" - performs as expected with single
     ///     items lists remaining single items.
@@ -87,13 +87,13 @@ public static class StringTools
     public static string JoinListOfNullableStringsToListWithAnd(this List<string?> toJoin)
     {
         //https://stackoverflow.com/questions/17560201/join-liststring-together-with-commas-plus-and-for-last-element
-        
+
         var cleanedList = toJoin.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.TrimNullToEmpty())
             .ToList();
-        
+
         return JoinListOfStringsToListWithAnd(cleanedList);
     }
-    
+
     /// <summary>
     ///     Given a List of String "Joe", "Jorge" and "Jeff" joins to "Joe, Jorge and Jeff" - performs as expected with single
     ///     items lists remaining single items.
@@ -103,17 +103,17 @@ public static class StringTools
     public static string JoinListOfStringsToListWithAnd(this List<string> toJoin)
     {
         //https://stackoverflow.com/questions/17560201/join-liststring-together-with-commas-plus-and-for-last-element
-        
+
         var cleanedList = toJoin.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.TrimNullToEmpty())
             .ToList();
-        
+
         if (!cleanedList.Any()) return string.Empty;
-        
+
         if (cleanedList.Count == 1) return cleanedList.First();
-        
+
         return string.Join(", ", toJoin.Take(toJoin.Count - 1)) + " and " + toJoin.Last();
     }
-    
+
     /// <summary>
     ///     If the string is null an empty string is returned - if the string has value it is trimmed
     /// </summary>
@@ -123,7 +123,7 @@ public static class StringTools
     {
         return string.IsNullOrWhiteSpace(toTrim) ? string.Empty : toTrim.Trim();
     }
-    
+
     /// <summary>
     ///     Removes all \n and \r to remove all common newline types.
     /// </summary>
@@ -133,25 +133,57 @@ public static class StringTools
     {
         return toProcess.Replace("\n", "").Replace("\r", "");
     }
-    
+
     public static string ReplaceEach(this string text, string search, Func<string> replacementGenerator)
     {
         var returnString = text;
         while (returnString.Contains(search))
             returnString = ReplaceFirst(returnString, search, replacementGenerator()) ?? string.Empty;
-        
+
         return returnString;
     }
-    
+
     public static string? ReplaceFirst(this string? text, string search, string replace)
     {
         if (text == null) return null;
-        
+
         var length = text.IndexOf(search, StringComparison.Ordinal);
-        
+
         return length < 0 ? text : text[..length] + replace + text[(length + search.Length)..];
     }
-    
+
+    /// <summary>
+    ///     Returns a block of text from a string that is split based on a maximum line length. This will
+    ///     not remove any newlines in the original text.
+    /// </summary>
+    /// <param name="stringToSplit"></param>
+    /// <param name="maximumLineLength"></param>
+    /// <returns></returns>
+    public static string SplitToLines(this string stringToSplit, int maximumLineLength)
+    {
+        return string.IsNullOrWhiteSpace(stringToSplit)
+            ? string.Empty
+            :
+            //https://stackoverflow.com/questions/22368434/best-way-to-split-string-into-lines-with-maximum-length-without-breaking-words
+            Regex.Replace(stringToSplit, "(.{1," + maximumLineLength + @"})(?:\s|$)", "$1\n");
+    }
+
+    /// <summary>
+    ///     Returns a block of text from a string that is split based on a maximum line length. This will
+    ///     not remove any newlines in the original text.
+    /// </summary>
+    /// <param name="stringToSplit"></param>
+    /// <param name="maximumLineLength"></param>
+    /// <returns></returns>
+    public static List<string> SplitToLinesList(this string stringToSplit, int maximumLineLength)
+    {
+        if (string.IsNullOrWhiteSpace(stringToSplit)) return new List<string>();
+
+        //https://stackoverflow.com/questions/22368434/best-way-to-split-string-into-lines-with-maximum-length-without-breaking-words
+        var matches = Regex.Matches(stringToSplit, "(.{1," + maximumLineLength + @"})(?:\s|$)");
+        return matches.Select(match => match.Value).ToList();
+    }
+
     public static Stream ToMemoryStream(this string str)
     {
         var stream = new MemoryStream();
@@ -161,8 +193,8 @@ public static class StringTools
         stream.Position = 0;
         return stream;
     }
-    
-    
+
+
     /// <summary>
     ///     If the string is null an empty string is returned - if the string has value it is trimmed
     /// </summary>
@@ -172,7 +204,7 @@ public static class StringTools
     {
         return string.IsNullOrWhiteSpace(toTrim) ? string.Empty : toTrim.Trim();
     }
-    
+
     /// <summary>
     ///     Uses reflection to call TrimNullToEmpty on all string properties.
     /// </summary>
@@ -183,13 +215,13 @@ public static class StringTools
     {
         var properties = typeof(T).GetProperties()
             .Where(x => x.PropertyType == typeof(string) && x.GetSetMethod() != null).ToList();
-        
+
         foreach (var loopProperties in properties)
             loopProperties.SetValue(toProcess, ((string?)loopProperties.GetValue(toProcess)).TrimNullToEmpty());
-        
+
         return toProcess;
     }
-    
+
     /// <summary>
     ///     Truncates a string if it exceeds a maximum length - null inputs and maxLengths less than
     ///     1 return empty strings.
@@ -202,7 +234,7 @@ public static class StringTools
         if (string.IsNullOrEmpty(value) || maxLength < 1) return string.Empty;
         return value.Length <= maxLength ? value : value[..maxLength];
     }
-    
+
     /// <summary>
     ///     Truncates a string if it exceeds a maximum length - null inputs and maxLengths less than
     ///     1 return empty strings.
@@ -216,9 +248,9 @@ public static class StringTools
         if (value.Length <= maxLength) return value;
         return maxLength <= 2 ? value[..maxLength] : $"{value[..(maxLength - 3)]}...";
     }
-    
+
     /// <summary>
-    ///     A simple method to combine pieces of a Url in the spirit of Path.Combine - note this
+    ///     A simple method to combine pieces of an Url in the spirit of Path.Combine - note this
     ///     only handles simple cases and mostly is a convenience to deal with leading a trailing
     ///     '/' characters.
     /// </summary>
@@ -229,16 +261,16 @@ public static class StringTools
     {
         //https://stackoverflow.com/questions/372865/path-combine-for-urls
         if (url1.Length == 0) return url2;
-        
+
         if (url2.Length == 0) return url1;
-        
+
         url1 = url1.TrimEnd('/', '\\');
         url2 = url2.TrimStart('/', '\\');
-        
+
         return $"{url1}/{url2}";
     }
-    
-    
+
+
     /// <summary>
     ///     Extracts Urls from Text - of course you can probably fool this method with all kinds of interesting
     ///     edge cases but preventing that is not the goal here...
@@ -248,9 +280,9 @@ public static class StringTools
     public static List<string> UrlsFromText(string text)
     {
         if (string.IsNullOrWhiteSpace(text)) return [];
-        
+
         var matchList = new List<string>();
-        
+
         var regexObj = new Regex(@"\b(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]",
             RegexOptions.IgnoreCase);
         var matchResult = regexObj.Match(text);
@@ -259,7 +291,7 @@ public static class StringTools
             matchList.Add(matchResult.Value);
             matchResult = matchResult.NextMatch();
         }
-        
+
         return matchList;
     }
 }

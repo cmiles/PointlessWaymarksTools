@@ -20,7 +20,9 @@ public class SettingsFileProperty<T>
     ///     to enter a value for this property.
     /// </summary>
     public string PropertyEntryHelp { get; set; } = string.Empty;
-    
+
+    public bool ShowCurrentSettingAsDefault { get; set; } = true;
+
     /// <summary>
     ///     Used to check if a settings property value is valid - this is called for both properties
     ///     read from an existing file and after the property is set with 'SetValue'. For user entry
@@ -33,6 +35,8 @@ public class SettingsFileProperty<T>
     ///     will set the value of the property and then 'PropertyIsValid' will be called.
     /// </summary>
     public Action<T, string> SetValue { get; set; } = (_, _) => { };
+
+    public Func<T, string> GetCurrentStringValue { get; set; } = _ => string.Empty;
     
     /// <summary>
     ///     Called after a user enters a value for a property - this should check if the
