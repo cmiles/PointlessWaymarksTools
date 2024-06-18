@@ -143,6 +143,8 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
 
         foreach (var loopSettings in SettingsFileProperties)
         {
+            if (!loopSettings.ShowForUserEntry(settings)) continue;
+
             var shouldHaveUserEnterValue = !loopSettings.PropertyIsValid(settings).isValid;
 
             var defaultValue = loopSettings.ShowCurrentSettingAsDefault ? loopSettings.GetCurrentStringValue(settings) : string.Empty;
