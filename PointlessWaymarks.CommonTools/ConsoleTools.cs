@@ -164,8 +164,8 @@ public static class ConsoleTools
             var index = _cursorPos;
             _text.Remove(index, 1);
             var replacement = _text.ToString()[index..];
-            var left = _console.CursorLeft;
-            var top = _console.CursorTop;
+            var left = ConsoleWrapper.CursorLeft;
+            var top = ConsoleWrapper.CursorTop;
             _console.Write($"{replacement} ");
             _console.SetCursorPosition(left, top);
             _cursorLimit--;
@@ -193,8 +193,8 @@ public static class ConsoleTools
             var index = _cursorPos;
             _text.Remove(index, 1);
             var replacement = _text.ToString()[index..];
-            var left = _console.CursorLeft;
-            var top = _console.CursorTop;
+            var left = ConsoleWrapper.CursorLeft;
+            var top = ConsoleWrapper.CursorTop;
             _console.Write($"{replacement} ");
             _console.SetCursorPosition(left, top);
             _cursorLimit--;
@@ -211,7 +211,7 @@ public static class ConsoleTools
 
         private bool IsEndOfBuffer()
         {
-            return _console.CursorLeft == _console.BufferWidth - 1;
+            return ConsoleWrapper.CursorLeft == ConsoleWrapper.BufferWidth - 1;
         }
 
         private bool IsEndOfLine()
@@ -221,7 +221,7 @@ public static class ConsoleTools
 
         private bool IsStartOfBuffer()
         {
-            return _console.CursorLeft == 0;
+            return ConsoleWrapper.CursorLeft == 0;
         }
 
         private bool IsStartOfLine()
@@ -247,9 +247,9 @@ public static class ConsoleTools
                 return;
 
             if (IsStartOfBuffer())
-                _console.SetCursorPosition(_console.BufferWidth - 1, _console.CursorTop - 1);
+                _console.SetCursorPosition(ConsoleWrapper.BufferWidth - 1, ConsoleWrapper.CursorTop - 1);
             else
-                _console.SetCursorPosition(_console.CursorLeft - 1, _console.CursorTop);
+                _console.SetCursorPosition(ConsoleWrapper.CursorLeft - 1, ConsoleWrapper.CursorTop);
 
             _cursorPos--;
         }
@@ -260,9 +260,9 @@ public static class ConsoleTools
                 return;
 
             if (IsEndOfBuffer())
-                _console.SetCursorPosition(0, _console.CursorTop + 1);
+                _console.SetCursorPosition(0, ConsoleWrapper.CursorTop + 1);
             else
-                _console.SetCursorPosition(_console.CursorLeft + 1, _console.CursorTop);
+                _console.SetCursorPosition(ConsoleWrapper.CursorLeft + 1, ConsoleWrapper.CursorTop);
 
             _cursorPos++;
         }
@@ -276,12 +276,12 @@ public static class ConsoleTools
 
             (_text[secondIdx], _text[firstIdx]) = (_text[firstIdx], _text[secondIdx]);
 
-            var left = IncrementIf(AlmostEndOfLine, _console.CursorLeft);
+            var left = IncrementIf(AlmostEndOfLine, ConsoleWrapper.CursorLeft);
             var cursorPosition = IncrementIf(AlmostEndOfLine, _cursorPos);
 
             WriteNewString(_text.ToString());
 
-            _console.SetCursorPosition(left, _console.CursorTop);
+            _console.SetCursorPosition(left, ConsoleWrapper.CursorTop);
             _cursorPos = cursorPosition;
 
             MoveCursorRight();
@@ -319,8 +319,8 @@ public static class ConsoleTools
             }
             else
             {
-                var left = _console.CursorLeft;
-                var top = _console.CursorTop;
+                var left = ConsoleWrapper.CursorLeft;
+                var top = ConsoleWrapper.CursorTop;
                 var str = _text.ToString()[_cursorPos..];
                 _text.Insert(_cursorPos, c);
                 _console.Write(c + str);
@@ -346,9 +346,9 @@ public static class ConsoleTools
 
         private class ConsoleWrapper
         {
-            public int BufferWidth => Console.BufferWidth;
-            public int CursorLeft => Console.CursorLeft;
-            public int CursorTop => Console.CursorTop;
+            public static int BufferWidth => Console.BufferWidth;
+            public static int CursorLeft => Console.CursorLeft;
+            public static int CursorTop => Console.CursorTop;
             public bool PasswordMode { get; set; }
 
             public void SetCursorPosition(int left, int top)

@@ -27,9 +27,7 @@ public static class ObfuscationTools
         var aesKey = new byte[24];
         Buffer.BlockCopy(SHA512.HashData(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
 
-        using var aes = Aes.Create();
-        if (aes == null) throw new NullReferenceException("AES Object Creation Returned Null?");
-
+        using var aes = Aes.Create() ?? throw new NullReferenceException("AES Object Creation Returned Null?");
         aes.Key = aesKey;
         
         var iv = new byte[aes.IV.Length];
@@ -72,8 +70,7 @@ public static class ObfuscationTools
         var aesKey = new byte[24];
         Buffer.BlockCopy(SHA512.HashData(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
 
-        using var aes = Aes.Create();
-        if (aes == null) throw new NullReferenceException("AES Object Creation Returned Null?");
+        using var aes = Aes.Create() ?? throw new NullReferenceException("AES Object Creation Returned Null?");
 
         aes.Key = aesKey;
         
