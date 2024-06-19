@@ -12,11 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CommonToolsResources\favicon.ico" />
     <None Remove="pure-min.css" />
     <None Remove="CommonToolsResources\sakura.css" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="CommonToolsResources\favicon.ico" />
     <EmbeddedResource Include="CommonToolsResources\pure-min.css" />
     <EmbeddedResource Include="CommonToolsResources\sakura.css" />
   </ItemGroup>
@@ -43,8 +45,10 @@
     <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.DelegatingText" Version="1.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SimMetricsCore" Version="2.1.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
