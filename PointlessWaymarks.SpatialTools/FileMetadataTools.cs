@@ -1,4 +1,4 @@
-﻿using MetadataExtractor;
+using MetadataExtractor;
 using XmpCore;
 
 namespace PointlessWaymarks.SpatialTools;
@@ -83,6 +83,7 @@ public static class FileMetadataTools
         ".SRW",
         ".THM",
         ".TIFF",
+        ".TIF",
         ".VRD",
         ".WDP",
         ".WEBP",
