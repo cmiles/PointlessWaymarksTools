@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using System.Text;
+using CliWrap;
 
 namespace PointlessWaymarks.CommonTools;
 
 public static class ProcessTools
 {
-    public static (bool success, string standardOutput, string errorOutput) Execute(string programToExecute,
+    public static async Task<(bool success, string standardOutput, string errorOutput)> Execute(string programToExecute,
         string executionParameters, IProgress<string>? progress)
     {
         if (string.IsNullOrWhiteSpace(programToExecute)) return (false, string.Empty, "Blank program to Execute?");
@@ -20,57 +21,31 @@ public static class ProcessTools
 
         progress?.Report($"Setting up execution of {programToExecute} {executionParameters}");
 
-        using var process = new Process
-        {
-            StartInfo =
-            {
-                FileName = programToExecute,
-                Arguments = executionParameters,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                StandardOutputEncoding = new UTF8Encoding(false),
-                StandardInputEncoding = new UTF8Encoding(false)
-            }
-        };
-
-        void OnStandardOutput(object o, DataReceivedEventArgs e)
-        {
-            standardOutput.AppendLine(e.Data);
-            progress?.Report(e.Data ?? string.Empty);
-        }
-
-        void OnErrorOutput(object o, DataReceivedEventArgs e)
-        {
-            errorOutput.AppendLine(e.Data);
-            progress?.Report(e.Data ?? string.Empty);
-        }
-
-        process.OutputDataReceived += OnStandardOutput;
-        process.ErrorDataReceived += OnErrorOutput;
-
-        bool result;
+        using var forcefulCts = new CancellationTokenSource();
+        using var gracefulCts = new CancellationTokenSource();
+        gracefulCts.CancelAfter(TimeSpan.FromSeconds(180));
+        forcefulCts.CancelAfter(TimeSpan.FromSeconds(190));
 
         try
         {
             progress?.Report("Starting Process");
-            process.Start();
 
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            var commandResult = await Cli.Wrap(programToExecuteFile.FullName)
+                .WithArguments(executionParameters)
+                .WithStandardOutputPipe(PipeTarget.ToDelegate(x =>
+                {
+                    standardOutput.AppendLine(x);
+                    progress?.Report(x);
+                })).ExecuteAsync(forcefulCts.Token, gracefulCts.Token);
 
-            result = process.WaitForExit(180000);
+            return (commandResult.IsSuccess, standardOutput.ToString(), errorOutput.ToString());
         }
-        finally
+        catch (Exception e)
         {
-            process.OutputDataReceived -= OnStandardOutput;
-            process.ErrorDataReceived -= OnErrorOutput;
+            progress?.Report($"Error Running Process: {e.Message}");
         }
 
-        return (result, standardOutput.ToString(), errorOutput.ToString());
+        return (false, standardOutput.ToString(), errorOutput.ToString());
     }
 
     public static void Open(string fileName)

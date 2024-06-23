@@ -396,3 +396,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+/.idea
+*.args.json
+launchSettings.json
+README_*.md
+*.TaskCanvasSL
+nuget.exe
