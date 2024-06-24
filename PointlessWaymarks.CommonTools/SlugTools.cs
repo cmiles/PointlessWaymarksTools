@@ -1,4 +1,5 @@
-﻿using System.Text;
+using System.Text;
+using Amazon.S3.Model;
 
 namespace PointlessWaymarks.CommonTools;
 
@@ -33,7 +34,7 @@ public static class SlugTools
     public static string CreateRelaxedInputSpacedString(bool toLower, string? value,
         List<char>? allowedBeyondAtoZ1To9 = null)
     {
-        if (value == null)
+        if (string.IsNullOrWhiteSpace(value))
             return "";
 
         allowedBeyondAtoZ1To9 ??= [];
@@ -77,6 +78,8 @@ public static class SlugTools
     /// <returns></returns>
     public static string CreateSlug(bool toLower, params string[] values)
     {
+        if(values.Length == 0)
+            return "";
         return CreateSlug(toLower, string.Join("-", values));
     }
 
@@ -95,7 +98,7 @@ public static class SlugTools
     //     https://stackoverflow.com/questions/3769457/how-can-i-remove-accents-on-a-string
     public static string CreateSlug(bool toLower, string? value, int maxLength = 100)
     {
-        if (value == null)
+        if (string.IsNullOrWhiteSpace(value))
             return "";
 
         var normalized = value.Normalize(NormalizationForm.FormKD);
@@ -161,7 +164,7 @@ public static class SlugTools
     /// <summary>
     ///     This method mimics the Create method but is focused on creating a spaced string with the intent that in some cases
     ///     this may create a format that communicates the same information and intent as the Create Slug method but is easier
-    ///     to read and more user friendly.
+    ///     to read and more user-friendly.
     /// </summary>
     /// <param name="toLower"></param>
     /// <param name="value"></param>
@@ -169,6 +172,9 @@ public static class SlugTools
     /// <returns></returns>
     public static string CreateSpacedString(bool toLower, string value, int? maxLength = 100)
     {
+        if (string.IsNullOrWhiteSpace(value))
+            return "";
+
         var normalized = value.Normalize(NormalizationForm.FormKD);
 
         var len = normalized.Length;
