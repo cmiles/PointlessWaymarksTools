@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Media;
 
 namespace PointlessWaymarks.WpfCommon.Utility;
@@ -46,5 +46,21 @@ public static class XamlHelpers
                     break;
             }
         }
+    }
+
+    public static Visual? GetDescendantByType(Visual? element, Type type)
+    {
+        if (element == null) return null;
+        if (element.GetType() == type) return element;
+        Visual? foundElement = null;
+        if (element is FrameworkElement frameworkElement) frameworkElement.ApplyTemplate();
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+        {
+            var visual = VisualTreeHelper.GetChild(element, i) as Visual;
+            foundElement = GetDescendantByType(visual, type);
+            if (foundElement != null) break;
+        }
+
+        return foundElement;
     }
 }
