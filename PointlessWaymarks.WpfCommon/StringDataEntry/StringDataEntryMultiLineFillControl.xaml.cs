@@ -1,23 +1,25 @@
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PointlessWaymarks.WpfCommon.StringDataEntry;
 
 /// <summary>
-///     Interaction logic for StringDataEntryMultiLineControl.xaml
+///     Interaction logic for StringDataEntryMultiLineFillControl.xaml
 /// </summary>
-public partial class StringDataEntryMultiLineControl
+public partial class StringDataEntryMultiLineFillControl
 {
     public static readonly DependencyProperty TextBoxHeightProperty = DependencyProperty.Register(nameof(TextBoxHeight),
         typeof(double), typeof(StringDataEntryControl), new PropertyMetadata(default(double)));
 
-    public StringDataEntryMultiLineControl()
+    public StringDataEntryMultiLineFillControl()
     {
         InitializeComponent();
     }
 
+
     public double TextBoxHeight
     {
-        get => (double) GetValue(TextBoxHeightProperty);
+        get => (double)GetValue(TextBoxHeightProperty);
         set
         {
             {
