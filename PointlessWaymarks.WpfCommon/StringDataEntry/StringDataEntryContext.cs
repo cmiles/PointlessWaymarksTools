@@ -14,14 +14,14 @@ public partial class StringDataEntryContext : IHasChanges, IHasValidationIssues
     }
 
     public int BindingDelay { get; set; } = 10;
-    public bool HasChanges { get; set; }
-    public bool HasValidationIssues { get; set; }
     public string HelpText { get; set; } = string.Empty;
     public string ReferenceValue { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string UserValue { get; set; } = string.Empty;
     public List<Func<string?, Task<IsValid>>> ValidationFunctions { get; set; } = [];
     public string ValidationMessage { get; set; } = string.Empty;
+    public bool HasChanges { get; set; }
+    public bool HasValidationIssues { get; set; }
 
     public async Task CheckForChangesAndValidationIssues()
     {
