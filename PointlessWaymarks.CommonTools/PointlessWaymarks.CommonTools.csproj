@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="AnyClone" Version="1.1.6" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.309.11" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.309.12" />
     <PackageReference Include="CliWrap" Version="3.6.6" />
     <PackageReference Include="ClosedXML" Version="0.102.2" />
     <PackageReference Include="Devlooped.CredentialManager" Version="2.5.0.1" />
@@ -53,7 +53,7 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="SimMetricsCore" Version="2.1.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.2" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.3" />
     <PackageReference Include="TinyIpc" Version="4.3.1" />
   </ItemGroup>
 
