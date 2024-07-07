@@ -15,6 +15,8 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
     /// </summary>
     public bool Interactive { get; set; } = true;
 
+    public bool PromptAsIfNewFile { get; set; }
+
     private ILogger<ObfuscatedSettingsConsoleSetup<T>> Log { get; } = logger;
 
     /// <summary>
@@ -85,6 +87,8 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
 
         var settingsFile = new FileInfo(SettingsFile);
 
+        var isNewSettingsFile = false;
+
         if (!settingsFile.Exists)
         {
             if (!Interactive)
@@ -94,6 +98,8 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
                     settingsFile.FullName);
                 return (false, new T());
             }
+
+            isNewSettingsFile = true;
 
             Log.LogInformation($"Settings File {settingsFile.FullName} does not exist - creating it now.");
             var newSettings = JsonSerializer.Serialize(new T());
@@ -145,7 +151,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
         {
             if (!loopSettings.ShowForUserEntry(settings)) continue;
 
-            var shouldHaveUserEnterValue = !loopSettings.PropertyIsValid(settings).isValid;
+            var shouldHaveUserEnterValue = !loopSettings.PropertyIsValid(settings).isValid || isNewSettingsFile || PromptAsIfNewFile;
 
             var defaultValue = loopSettings.ShowCurrentSettingAsDefault ? loopSettings.GetCurrentStringValue(settings) : string.Empty;
 
@@ -154,7 +160,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
                 Console.WriteLine();
 
                 if (!string.IsNullOrWhiteSpace(loopSettings.PropertyEntryHelp))
-                    Console.WriteLine($"{loopSettings.PropertyDisplayName}: {loopSettings.PropertyEntryHelp}");
+                    ConsoleTools.WriteWrappedTextBlock($"{loopSettings.PropertyDisplayName}: {loopSettings.PropertyEntryHelp}");
 
                 Console.Write($"Value for {loopSettings.PropertyDisplayName}: ");
 
