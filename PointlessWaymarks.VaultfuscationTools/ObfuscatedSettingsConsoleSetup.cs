@@ -43,7 +43,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
     /// <summary>
     ///     The Vault Service Identifier is used to store the obfuscation key in the Windows Credential Manager.
     ///     This will be used along with the 'Vault Account' to retrieve the obfuscation key.
-    ///     One strategy is to use a URL like 'http://myprogramname.test'.
+    ///     One strategy is to use a URL like 'http://myprogramname.private'.
     /// </summary>
     public string VaultServiceIdentifier { get; set; } = string.Empty;
 
