@@ -1,7 +1,5 @@
 using System.ComponentModel;
 using System.Windows.Data;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using TypeSupport.Extensions;
 
 namespace PointlessWaymarks.WpfCommon.ColumnSort;
 
@@ -14,9 +12,7 @@ public static class ListContextSortHelpers
         await ThreadSwitcher.ResumeForegroundAsync();
 
         if (CollectionViewSource.GetDefaultView(items) is ListCollectionView listCollectionView)
-        {
             listCollectionView.IsLiveSorting = true;
-        }
 
         var collectionView = CollectionViewSource.GetDefaultView(items) as CollectionView;
 

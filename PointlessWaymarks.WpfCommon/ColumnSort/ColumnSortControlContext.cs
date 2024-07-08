@@ -27,7 +27,6 @@ public partial class ColumnSortControlContext
     public RelayCommand<ColumnSortControlSortItem> ColumnSortAddCommand { get; set; }
     public RelayCommand<ColumnSortControlSortItem> ColumnSortToggleCommand { get; set; }
     public List<ColumnSortControlSortItem> Items { get; set; } = [];
-
     public EventHandler<List<SortDescription>>? SortUpdated { get; set; }
 
     private void AddItem(ColumnSortControlSortItem sortItem)
