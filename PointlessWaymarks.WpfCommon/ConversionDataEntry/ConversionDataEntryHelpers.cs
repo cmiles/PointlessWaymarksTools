@@ -1,4 +1,4 @@
-﻿using PointlessWaymarks.CommonTools;
+using PointlessWaymarks.CommonTools;
 
 namespace PointlessWaymarks.WpfCommon.ConversionDataEntry;
 
@@ -59,6 +59,20 @@ public static class ConversionDataEntryHelpers
         return int.TryParse(userText, out var parsedValue)
             ? (true, $"Converted {userText} to {parsedValue}", parsedValue)
             : (false, $"Could not convert {userText} into an Integer?", 0);
+    }
+
+    public static (bool passed, string conversionMessage, int value) IntGreaterThanZeroConversion(string userText)
+    {
+        var cleanedUserText = userText.TrimNullToEmpty();
+
+        if (string.IsNullOrWhiteSpace(cleanedUserText)) return (false, "Please enter a valid number", 0);
+
+        if (!int.TryParse(userText, out var parsedValue))
+            return (false, $"Could not convert {userText} into an Integer?", 0);
+
+        return parsedValue <= 0
+            ? (false, $"Please enter a number greater than 0", 0)
+            : (true, $"Converted {userText} to {parsedValue}", parsedValue);
     }
 
     public static (bool passed, string conversionMessage, int? value) IntNullableConversion(string userText)
