@@ -123,7 +123,7 @@ public partial class StatusControlContext
             await ShowMessageWithOkButton("Error", FirstNonSeeInnerMessage(obj.Exception));
 
 #pragma warning disable 4014
-            // Intended intended as Fire and Forget
+            // Intended as Fire and Forget
             Task.Run(() => Log.Error(obj.Exception,
 #pragma warning restore 4014
                 "FireAndForgetBlockingTaskCompleted Exception - Status Context Id: {ContextId}",
