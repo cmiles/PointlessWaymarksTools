@@ -202,7 +202,6 @@ public partial class StatusControlContext
     private void NonBlockTaskCompleted(Task obj)
     {
         DecrementNonBlockingTasks();
-        DecrementNonBlockingTasks();
 
         if (obj.IsCanceled)
         {
