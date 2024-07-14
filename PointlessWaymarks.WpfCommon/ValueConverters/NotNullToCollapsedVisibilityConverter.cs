@@ -1,17 +1,17 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
 namespace PointlessWaymarks.WpfCommon.ValueConverters;
 
-public sealed class NullToCollapsedVisibilityConverter : IValueConverter
+public sealed class NotNullToCollapsedVisibilityConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value switch
         {
-            null => Visibility.Collapsed,
-            _ => Visibility.Visible
+            null => Visibility.Visible,
+            _ => Visibility.Collapsed
         };
     }
 

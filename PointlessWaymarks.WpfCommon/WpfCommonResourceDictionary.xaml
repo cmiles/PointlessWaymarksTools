@@ -11,6 +11,7 @@
     <valueConverters:NullOrWhiteSpaceStringToDefaultConverter x:Key="NullOrWhiteSpaceStringToDefault" />
     <valueConverters:BooleanNotToVisibilityConverter x:Key="BooleanNotToHidden" />
     <valueConverters:NullToCollapsedVisibilityConverter x:Key="NullToCollapsedVisibility" />
+    <valueConverters:NotNullToCollapsedVisibilityConverter x:Key="NotNullToCollapsedVisibility" />
     <valueConverters:VisibleWhenAllTrueOtherwiseCollapsedMultiConverter x:Key="VisibleWhenAllTrue" />
     <Style x:Key="DataEntryLabelStyle" TargetType="Label">
         <Setter Property="FontWeight" Value="DemiBold" />
