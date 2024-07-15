@@ -26,6 +26,7 @@ public class ListBoxAutoScrollToEndBehaviour : Behavior<ListBox>
             if (_scrollViewer is not null)
                 _scrollViewer.ScrollChanged += (o, args) =>
                 {
+                    if (!ReferenceEquals(args.Source, _scrollViewer)) return;
                     if (args.ExtentHeightChange != 0)
                     {
                         if (Thread.CurrentThread == Application.Current.Dispatcher.Thread)
