@@ -93,4 +93,25 @@ public static class ObfuscationTools
 
         return Convert.ToBase64String(combined);
     }
+
+    /// <summary>
+    ///     Tries to Decrypt with the Decrypt method and in the case of an exception returns the failure message.
+    ///     This ONLY catches exceptions - it does not attempt to validate any returned content from Decrypt!
+    /// </summary>
+    /// <param name="textToDecrypt"></param>
+    /// <param name="key"></param>
+    /// <param name="failureMessage"></param>
+    /// <returns></returns>
+    public static string TryDecrypt(this string textToDecrypt, string key,
+        string failureMessage = "Error Decrypting Content?!?")
+    {
+        try
+        {
+            return textToDecrypt.Decrypt(key);
+        }
+        catch
+        {
+            return failureMessage;
+        }
+    }
 }
