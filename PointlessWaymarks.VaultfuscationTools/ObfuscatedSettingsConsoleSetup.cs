@@ -2,6 +2,7 @@ using System.Text.Json;
 using GitCredentialManager;
 using Microsoft.Extensions.Logging;
 using PointlessWaymarks.CommonTools;
+using PointlessWaymarks.CommonTools.S3;
 
 namespace PointlessWaymarks.VaultfuscationTools;
 
@@ -193,7 +194,7 @@ public class ObfuscatedSettingsConsoleSetup<T>(ILogger<ObfuscatedSettingsConsole
             }
         }
 
-        var currentSettingsJson = JsonSerializer.Serialize(settings);
+        var currentSettingsJson = JsonSerializer.Serialize(settings, JsonTools.WriteIndentedOptions);
         var currentSettingsJsonObfuscated = currentSettingsJson.Encrypt(obfuscationKey);
         await File.WriteAllTextAsync(settingsFile.FullName, currentSettingsJsonObfuscated);
 
