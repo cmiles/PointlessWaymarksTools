@@ -1,18 +1,17 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Xaml.Behaviors;
 
 namespace PointlessWaymarks.WpfCommon.Behaviors;
 
 /// <summary>
-/// The Delay value of the TextBox Binding can not be bound directly - this behavior
-/// provides a way to indirectly bind the value. BEWARE not every binding option
-/// is supported!!! Currently, Path and Update Source Trigger
-/// will be used from the original/XAML binding, other binding properties WILL NOT
-/// be preserved by this behavior if the Delay is changed (notably Source and Converter
-/// will be lost).
+///     The Delay value of the TextBox Binding can not be bound directly - this behavior
+///     provides a way to indirectly bind the value. BEWARE not every binding option
+///     is supported!!! Currently, Path and Update Source Trigger
+///     will be used from the original/XAML binding, other binding properties WILL NOT
+///     be preserved by this behavior if the Delay is changed (notably Source and Converter
+///     will be lost).
 /// </summary>
 public class TextBoxDelayBindingBehavior : Behavior<TextBox>
 {

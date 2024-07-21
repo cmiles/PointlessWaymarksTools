@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace PointlessWaymarks.WpfCommon.Behaviors;
 
 /// <summary>
 ///     This Comparer tries to find numeric values and sort them and falls back to string sorting as
-///     is has to. This behavior is designed to help with sorting with a WPF Datagrid where especially for ease
+///     it has to. This behavior is designed to help with sorting with a WPF DataGrid where especially for ease
 ///     of use (but also for mixed values and other scenarios) you have used a DataGridTextColumn and
 ///     by default are getting string rather than numeric sorting.
 /// </summary>
