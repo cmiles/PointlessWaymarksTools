@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using PointlessWaymarks.WpfCommon.Status;
 
@@ -32,9 +32,7 @@ public partial class WindowScreenShotControl
 
             if (statusContext != null)
             {
-                if (result)
-                    statusContext.ToastSuccess("Window copied to Clipboard");
-                else
+                if (!result)
                     statusContext.ToastError("Problem Copying Window to Clipboard");
             }
         });
