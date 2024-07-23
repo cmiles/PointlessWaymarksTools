@@ -37,6 +37,24 @@ public class GenerateStatusCommandsAttribute : TypeAspect
         }
 
         foreach (var method in builder.Target.Methods.Where(p =>
+                     p.Attributes.Any(typeof(BlockingCommandAttribute)) && p.Parameters.Count == 2 &&
+                     p.Parameters[1].Type.ToType() == typeof(CancellationToken)))
+        {
+            var firstParameterType = method.Parameters[0].Type;
+
+            builder.Advice.IntroduceAutomaticProperty(method.DeclaringType, $"{method.Name}Command",
+                ((INamedType)TypeFactory.GetType(typeof(RelayCommand<>))).WithTypeArguments(firstParameterType)
+                .ToNullableType(),
+                IntroductionScope.Default,
+                OverrideStrategy.Ignore,
+                propertyBuilder =>
+                {
+                    propertyBuilder.Accessibility = Accessibility.Public;
+                    propertyBuilder.InitializerExpression = null;
+                });
+        }
+
+        foreach (var method in builder.Target.Methods.Where(p =>
                      (p.Attributes.Any(typeof(BlockingCommandAttribute)) ||
                       p.Attributes.Any(typeof(NonBlockingCommandAttribute))) && p.Parameters.Count == 1 &&
                      p.Parameters[0].Type.ToType() == typeof(CancellationToken)))
@@ -69,6 +87,12 @@ public class GenerateStatusCommandsAttribute : TypeAspect
             else
                 meta.InsertStatement(
                     $"{loopMethods.Name}Command = StatusContext.RunBlockingTaskWithCancellationCommand({loopMethods.Name}, \"Cancel {SplitCamelCase(loopMethods.Name)}\");");
+
+        foreach (var loopMethods in meta.Target.Type.Methods.Where(p =>
+                     p.Attributes.Any(typeof(BlockingCommandAttribute)) && p.Parameters.Count == 2))
+            if (loopMethods.Parameters[1].Type == TypeFactory.GetType(typeof(CancellationToken)))
+                meta.InsertStatement(
+                    $"{loopMethods.Name}Command = StatusContext.RunBlockingTaskWithCancellationCommand<{loopMethods.Parameters[0].Type}>({loopMethods.Name}, \"Cancel {SplitCamelCase(loopMethods.Name)}\");");
 
         foreach (var loopMethods in meta.Target.Type.Methods.Where(p =>
                      p.Attributes.Any(typeof(NonBlockingCommandAttribute)) && p.Parameters.Count == 1 &&

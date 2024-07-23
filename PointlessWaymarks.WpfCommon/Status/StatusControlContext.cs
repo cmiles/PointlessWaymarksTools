@@ -296,6 +296,31 @@ public partial class StatusControlContext
         Task.Run(async () => await toRun(token), token).ContinueWith(x => BlockTaskCompleted(x, tokenSource));
     }
 
+    public void RunBlockingTaskWithCancellation<T>(Func<T?, CancellationToken, Task> toRun, T parameter,
+        string cancelDescription)
+    {
+        IncrementBlockingTasks();
+        var tokenSource = new CancellationTokenSource();
+        var token = tokenSource.Token;
+
+        ContextDispatcher.InvokeAsync(() =>
+        {
+            CancellationList.Add(new UserCancellations { CancelSource = tokenSource, Description = cancelDescription });
+            ShowCancellations = CancellationList.Any();
+        });
+
+
+        // ReSharper disable once MethodSupportsCancellation No token for final cancellation
+        Task.Run(async () => await toRun(parameter, token), token)
+            .ContinueWith(x => BlockTaskCompleted(x, tokenSource));
+    }
+
+    public RelayCommand<T> RunBlockingTaskWithCancellationCommand<T>(Func<T?, CancellationToken, Task> toRun,
+        string cancelDescription)
+    {
+        return new RelayCommand<T>(x => RunBlockingTaskWithCancellation(toRun, x, cancelDescription));
+    }
+
     public RelayCommand RunBlockingTaskWithCancellationCommand(Func<CancellationToken, Task> toRun,
         string cancelDescription)
     {
@@ -474,7 +499,7 @@ public partial class StatusControlContext
         {
             if (e is not OperationCanceledException) Progress($"ShowStringEntry Exception {e.Message}");
 #pragma warning disable 4014
-            // Intended intended as Fire and Forget
+            // Intended as Fire and Forget
             Task.Run(() => Log.Error(e, "NonBlockTaskCompleted Exception - Status Context Id: {ContextId}",
 #pragma warning restore 4014
                 StatusControlContextId));
