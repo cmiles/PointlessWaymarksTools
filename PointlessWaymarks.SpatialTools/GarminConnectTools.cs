@@ -58,7 +58,7 @@ public static partial class GarminConnectTools
     private static partial Regex GarminArchiveActivityIdRegex();
 
     public static async Task<FileInfo?> GetGpx(GarminActivity activity, DirectoryInfo archiveDirectory,
-        bool tryCreateDirectoryIfNotFound, bool overwriteExistingFile, IRemoteGpxService connectWrapper, IProgress<string> progress)
+        bool tryCreateDirectoryIfNotFound, bool overwriteExistingFile, IRemoteGpxService connectWrapper, IProgress<string> progress, CancellationToken cancellationToken)
     {
         if (!archiveDirectory.Exists)
         {
@@ -100,7 +100,9 @@ public static partial class GarminConnectTools
 
         progress.Report($"Downloading Activity Id {activity.ActivityId} to GPX File {safeGpxFile.FullName}.");
 
-        var downloadedGpx = await connectWrapper.DownloadGpxFile(activity.ActivityId, safeGpxFile.FullName);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var downloadedGpx = await connectWrapper.DownloadGpxFile(activity.ActivityId, safeGpxFile.FullName, cancellationToken, progress);
 
         return downloadedGpx;
     }
@@ -161,7 +163,7 @@ public static partial class GarminConnectTools
                 $"Sending Query to Garmin Connect for From {loopDateSearchRange.startDate} to {loopDateSearchRange.endDate} - {++counter} of {searchDateRanges.Count}");
 
             var activityList = await connectWrapper.GetActivityList(loopDateSearchRange.startDate,
-                loopDateSearchRange.endDate);
+                loopDateSearchRange.endDate, progress);
 
             if (!activityList.Any())
             {
