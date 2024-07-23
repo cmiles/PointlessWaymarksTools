@@ -58,12 +58,13 @@ public static partial class GarminConnectTools
     private static partial Regex GarminArchiveActivityIdRegex();
 
     public static async Task<FileInfo?> GetGpx(GarminActivity activity, DirectoryInfo archiveDirectory,
-        bool tryCreateDirectoryIfNotFound, bool overwriteExistingFile, IRemoteGpxService connectWrapper, IProgress<string> progress, CancellationToken cancellationToken)
+        bool tryCreateDirectoryIfNotFound, bool overwriteExistingFile, IRemoteGpxService connectWrapper,
+        IProgress<string> progress, CancellationToken cancellationToken)
     {
         if (!archiveDirectory.Exists)
         {
             progress.Report($"Activity/GPX Archive Directory {archiveDirectory.FullName} not found - Creating...");
-            
+
             if (tryCreateDirectoryIfNotFound)
             {
                 archiveDirectory.Create();
@@ -102,7 +103,9 @@ public static partial class GarminConnectTools
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        var downloadedGpx = await connectWrapper.DownloadGpxFile(activity.ActivityId, safeGpxFile.FullName, cancellationToken, progress);
+        var downloadedGpx =
+            await connectWrapper.DownloadGpxFile(activity.ActivityId, safeGpxFile.FullName, cancellationToken,
+                progress);
 
         return downloadedGpx;
     }

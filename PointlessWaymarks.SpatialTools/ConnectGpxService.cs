@@ -18,7 +18,8 @@ public class ConnectGpxService : IRemoteGpxService
             new HttpClient { Timeout = TimeSpan.FromSeconds(10) },
             new BasicAuthParameters(ConnectUsername, ConnectPassword)));
 
-        var file = await Policy.Handle<Exception>().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(2 * i),
+        var file = await Policy.Handle<Exception>(e => e is not TaskCanceledException).WaitAndRetryAsync(3,
+                i => TimeSpan.FromSeconds(2 * i),
                 (exception, sleepDuration, retryCount, _) =>
                 {
                     progress?.Report(exception.Message);
@@ -48,7 +49,8 @@ public class ConnectGpxService : IRemoteGpxService
         var client = _client ?? new GarminConnectClient(new GarminConnectContext(
             new HttpClient { Timeout = TimeSpan.FromSeconds(10) }, new
                 BasicAuthParameters(ConnectUsername, ConnectPassword)));
-        var activities = await Policy.Handle<Exception>().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(2 * i),
+        var activities = await Policy.Handle<Exception>(e => e is not TaskCanceledException).WaitAndRetryAsync(3,
+                i => TimeSpan.FromSeconds(2 * i),
                 (exception, sleepDuration, retryCount, _) =>
                 {
                     progress?.Report(exception.Message);
