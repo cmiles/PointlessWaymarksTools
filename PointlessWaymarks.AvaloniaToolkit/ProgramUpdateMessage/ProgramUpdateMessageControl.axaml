@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:programUpdateMessage="clr-namespace:PointlessWaymarks.AvaloniaToolkit.ProgramUpdateMessage"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PointlessWaymarks.AvaloniaToolkit.ProgramUpdateMessageControl"
+             x:DataType="programUpdateMessage:ProgramUpdateMessageContext">
+    <Grid Margin="8"
+          IsVisible="{Binding ShowMessage}">
+        <Border BorderBrush="Black" BorderThickness="2" CornerRadius="14" Background="Goldenrod">
+            <Grid Margin="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Margin="8" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"
+                           Text="{Binding UpdateMessage}" />
+                <Grid Grid.Row="1" Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Command="{Binding UpdateCommand}">Update Now</Button>
+                    <Button Grid.Column="1" Command="{Binding DismissCommand}">Not Now</Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
