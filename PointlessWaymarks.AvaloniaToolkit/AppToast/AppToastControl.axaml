@@ -6,14 +6,23 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PointlessWaymarks.AvaloniaToolkit.AppToast.AppToastControl"
              x:DataType="appToast:AppToastContext">
-<ListBox Background="Transparent" BorderThickness="0" ItemsSource="{Binding Items}">
-    <ListBox.ItemTemplate>
-        <DataTemplate DataType="appToast:AppToastMessage">
-          <Grid>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}" />
-<Button HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding $parent[ItemsControl].DataContext.DisposeToastCommand}" CommandParameter="{Binding .}"></Button>
-          </Grid>
-        </DataTemplate>
-    </ListBox.ItemTemplate>
-</ListBox>
+    <UserControl.Resources>
+      <appToast:AppToastTypeToForegroundColorConverter x:Key="AppToastTypeToForegroundColor" />
+      <appToast:AppToastTypeToBackgroundColorConverter x:Key="AppToastTypeToBackgroundColor" />
+    </UserControl.Resources>
+    <ListBox Background="Transparent" BorderThickness="0" ItemsSource="{Binding Items}">
+        <ListBox.ItemTemplate>
+            <DataTemplate DataType="appToast:AppToastMessage">
+                <Border CornerRadius="4" Background="{Binding MessageType, Converter={StaticResource AppToastTypeToBackgroundColor}}" >
+                    <Grid >
+                        <TextBlock Margin="10" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}" Foreground="{Binding MessageType, Converter={StaticResource AppToastTypeToForegroundColor}}" />
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Command="{Binding $parent[ItemsControl].DataContext.DisposeToastCommand}"
+                                CommandParameter="{Binding .}">x
+                        </Button>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

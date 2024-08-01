@@ -515,20 +515,20 @@ public partial class StatusLayerContext
 
     public void ToastError(string? toastText)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, AppToastContext.ToastType.Error));
+        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Error));
         Task.Run(() => Log.Error("Toast Error: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
     }
 
     public void ToastSuccess(string? toastText)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, AppToastContext.ToastType.Success));
+        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Success));
         Task.Run(() =>
             Log.Information("Toast Success: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
     }
 
     public void ToastWarning(string? toastText)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, AppToastContext.ToastType.Warning));
+        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Warning));
         Task.Run(() => Log.Warning("Toast Warning: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
     }
 

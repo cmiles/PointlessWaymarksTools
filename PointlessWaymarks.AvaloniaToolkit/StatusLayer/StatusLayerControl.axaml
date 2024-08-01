@@ -59,7 +59,6 @@
         x:Name="TextBoxGrid"
         Grid.Column="0"
         IsVisible="{Binding StringEntryVisible}">
-
       <Border Background="White" CornerRadius="8">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
           <Grid.RowDefinitions>
@@ -165,7 +164,7 @@
       <avaloniaProgressRing:ProgressRing
           Margin="0,4,8,0"
           IsVisible="{Binding NonBlockingTaskAreRunning}" />
-      <appToast:AppToastControl DataContext="{Binding Toast}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" />
+      <appToast:AppToastControl DataContext="{Binding Toast}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" />
     </StackPanel>
   </Grid>
 </UserControl>

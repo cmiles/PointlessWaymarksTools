@@ -8,13 +8,6 @@ namespace PointlessWaymarks.AvaloniaToolkit.AppToast;
 [StaThreadConstructorGuard]
 public partial class AppToastContext
 {
-    public enum ToastType
-    {
-        Error,
-        Success,
-        Warning
-    }
-
     private readonly Timer _toastDisposalTimer;
 
     public AppToastContext(ObservableCollection<AppToastMessage> initialItems)
@@ -68,7 +61,8 @@ public partial class AppToastContext
     public async Task Show(string? toastText, ToastType toastType)
     {
         await UiThreadSwitcher.ResumeForegroundAsync();
-        Items.Add(new AppToastMessage { Message = toastText ?? string.Empty, AddedOn = DateTime.Now });
+        Items.Add(new AppToastMessage
+            { Message = toastText ?? string.Empty, AddedOn = DateTime.Now, MessageType = toastType });
         if (!_toastDisposalTimer.Enabled) _toastDisposalTimer.Start();
     }
 }
