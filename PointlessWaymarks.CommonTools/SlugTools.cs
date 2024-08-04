@@ -235,10 +235,35 @@ public static class SlugTools
         return sb.ToString();
     }
 
+    /// <summary>
+    /// A simple and straightforward lower case random string generator - consider using
+    /// the RandomLowerCaseSaferString method for most cases.
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
     public static string RandomLowerCaseString(int length)
     {
         // ReSharper disable once StringLiteralTypo
         var chars = "abcdefghijklmnopqrstuvwxyz";
+        var stringChars = new char[length];
+        var random = new Random();
+
+        for (var i = 0; i < stringChars.Length; i++) stringChars[i] = chars[random.Next(chars.Length)];
+
+        return new string(stringChars);
+    }
+
+    /// <summary>
+    /// This uses random lower case letters omitting vowels and some easily confused
+    /// letters (like l and 1) to create a string that is less likely to be offensive,
+    /// funny or imply meaning when there is none... 
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    public static string RandomLowerCaseSaferString(int length)
+    {
+        // ReSharper disable once StringLiteralTypo
+        var chars = "bcdfghjmpqrtvwxy";
         var stringChars = new char[length];
         var random = new Random();
 
