@@ -9,6 +9,12 @@ public static class ProcessTools
     public static async Task<(bool success, string standardOutput, string errorOutput)> Execute(string programToExecute,
         string executionParameters, IProgress<string>? progress)
     {
+        return await Execute(programToExecute, executionParameters, string.Empty, progress);
+    }
+
+    public static async Task<(bool success, string standardOutput, string errorOutput)> Execute(string programToExecute,
+        string executionParameters, string workingDirectory, IProgress<string>? progress)
+    {
         if (string.IsNullOrWhiteSpace(programToExecute)) return (false, string.Empty, "Blank program to Execute?");
 
         var programToExecuteFile = new FileInfo(programToExecute);
@@ -30,13 +36,17 @@ public static class ProcessTools
         {
             progress?.Report("Starting Process");
 
-            var commandResult = await Cli.Wrap(programToExecuteFile.FullName)
+            var cliCommand = Cli.Wrap(programToExecuteFile.FullName)
                 .WithArguments(executionParameters)
                 .WithStandardOutputPipe(PipeTarget.ToDelegate(x =>
                 {
                     standardOutput.AppendLine(x);
                     progress?.Report(x);
-                })).ExecuteAsync(forcefulCts.Token, gracefulCts.Token);
+                }));
+
+            if (!string.IsNullOrWhiteSpace(workingDirectory)) cliCommand.WithWorkingDirectory(workingDirectory);
+
+            var commandResult = await cliCommand.ExecuteAsync(forcefulCts.Token, gracefulCts.Token);
 
             return (commandResult.IsSuccess, standardOutput.ToString(), errorOutput.ToString());
         }
