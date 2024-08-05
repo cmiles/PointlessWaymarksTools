@@ -1,5 +1,4 @@
 using System.Text;
-using Amazon.S3.Model;
 
 namespace PointlessWaymarks.CommonTools;
 
@@ -78,7 +77,7 @@ public static class SlugTools
     /// <returns></returns>
     public static string CreateSlug(bool toLower, params string[] values)
     {
-        if(values.Length == 0)
+        if (values.Length == 0)
             return "";
         return CreateSlug(toLower, string.Join("-", values));
     }
@@ -236,8 +235,8 @@ public static class SlugTools
     }
 
     /// <summary>
-    /// A simple and straightforward lower case random string generator - consider using
-    /// the RandomLowerCaseSaferString method for most cases.
+    ///     A simple and straightforward lower case random string generator - consider using
+    ///     the RandomLowerCaseSaferString method for most cases.
     /// </summary>
     /// <param name="length"></param>
     /// <returns></returns>
@@ -254,9 +253,9 @@ public static class SlugTools
     }
 
     /// <summary>
-    /// This uses random lower case letters omitting vowels and some easily confused
-    /// letters (like l and 1) to create a string that is less likely to be offensive,
-    /// funny or imply meaning when there is none... 
+    ///     This uses random lower case letters omitting vowels and some easily confused
+    ///     letters (like l and 1) to create a string that is less likely to be offensive,
+    ///     funny or imply meaning when there is none...
     /// </summary>
     /// <param name="length"></param>
     /// <returns></returns>
