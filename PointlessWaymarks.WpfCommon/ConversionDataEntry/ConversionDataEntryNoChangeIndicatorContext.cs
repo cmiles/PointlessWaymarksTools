@@ -7,11 +7,10 @@ using TypeSupport.Extensions;
 
 namespace PointlessWaymarks.WpfCommon.ConversionDataEntry;
 
-public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges, IHasValidationIssues
+public class ConversionDataEntryNoChangeIndicatorContext<T> : INotifyPropertyChanged, IHasValidationIssues, IHasChanges
 {
     private readonly Func<string, (bool passed, string conversionMessage, T result)>? _converter;
     private Func<T?, T?, bool> _comparisonFunction;
-    private bool _hasChanges;
     private bool _hasValidationIssues;
     private string _helpText = string.Empty;
     private bool _isNumeric;
@@ -22,7 +21,7 @@ public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges
     private List<Func<T?, Task<IsValid>>> _validationFunctions = [];
     private string? _validationMessage;
 
-    private ConversionDataEntryContext()
+    private ConversionDataEntryNoChangeIndicatorContext()
     {
         _comparisonFunction = EqualComparison;
         if (typeof(T).GetExtendedType().IsNumericType) IsNumeric = true;
@@ -85,6 +84,7 @@ public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges
         }
     }
 
+
     public string Title
     {
         // ReSharper disable once UnusedMember.Global
@@ -142,16 +142,7 @@ public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges
         }
     }
 
-    public bool HasChanges
-    {
-        get => _hasChanges;
-        set
-        {
-            if (value == _hasChanges) return;
-            _hasChanges = value;
-            OnPropertyChanged();
-        }
-    }
+    public bool HasChanges => false;
 
     public bool HasValidationIssues
     {
@@ -177,8 +168,6 @@ public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges
 
     private async Task CheckForChangesAndValidate()
     {
-        HasChanges = !ComparisonFunction(ReferenceValue, UserValue);
-
         if (ValidationFunctions.Any())
             foreach (var loopValidations in ValidationFunctions)
             {
@@ -195,10 +184,10 @@ public class ConversionDataEntryContext<T> : INotifyPropertyChanged, IHasChanges
         ValidationMessage = string.Empty;
     }
 
-    public static Task<ConversionDataEntryContext<T>> CreateInstance(
+    public static Task<ConversionDataEntryNoChangeIndicatorContext<T>> CreateInstance(
         Func<string, (bool passed, string conversionMessage, T result)> converter)
     {
-        return Task.FromResult(new ConversionDataEntryContext<T> { Converter = converter });
+        return Task.FromResult(new ConversionDataEntryNoChangeIndicatorContext<T> { Converter = converter });
     }
 
     [NotifyPropertyChangedInvocator]
