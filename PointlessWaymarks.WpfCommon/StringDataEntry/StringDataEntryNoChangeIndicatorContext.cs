@@ -3,39 +3,32 @@ using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.ChangesAndValidation;
 
-namespace PointlessWaymarks.WpfCommon.BoolDataEntry;
+namespace PointlessWaymarks.WpfCommon.StringDataEntry;
 
 [NotifyPropertyChanged]
-public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
+public partial class StringDataEntryNoChangeIndicatorContext : IHasChanges, IHasValidationIssues
 {
-    private BoolDataEntryContext()
+    private StringDataEntryNoChangeIndicatorContext()
     {
         PropertyChanged += OnPropertyChanged;
     }
 
+    public int BindingDelay { get; set; } = 10;
     public string HelpText { get; set; } = string.Empty;
-    public bool IsEnabled { get; set; } = true;
-    public bool ReferenceValue { get; set; }
+    public string ReferenceValue { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
-    public bool UserValue { get; set; }
-
-    // ReSharper disable once UnusedMember.Global
-    public bool UserValueIsNullable => false;
-    public List<Func<bool, IsValid>> ValidationFunctions { get; set; } = [];
-
+    public string UserValue { get; set; } = string.Empty;
+    public List<Func<string?, Task<IsValid>>> ValidationFunctions { get; set; } = [];
     public string ValidationMessage { get; set; } = string.Empty;
-
-    public bool HasChanges { get; set; }
+    public bool HasChanges => false;
     public bool HasValidationIssues { get; set; }
 
-    public void CheckForChangesAndValidate()
+    public async Task CheckForChangesAndValidationIssues()
     {
-        HasChanges = UserValue != ReferenceValue;
-
         if (ValidationFunctions.Any())
             foreach (var loopValidations in ValidationFunctions)
             {
-                var validationResult = loopValidations(UserValue);
+                var validationResult = await loopValidations(UserValue);
                 if (!validationResult.Valid)
                 {
                     HasValidationIssues = true;
@@ -48,17 +41,17 @@ public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
         ValidationMessage = string.Empty;
     }
 
-    public static Task<BoolDataEntryContext> CreateInstance()
+    public static StringDataEntryNoChangeIndicatorContext CreateInstance()
     {
-        return Task.FromResult(new BoolDataEntryContext());
+        return new StringDataEntryNoChangeIndicatorContext();
     }
 
-    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private async void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(e.PropertyName)) return;
 
         if (e.PropertyName.Equals(nameof(ReferenceValue)) || e.PropertyName.Equals(nameof(UserValue)) ||
-            e.PropertyName.Equals(nameof(ValidationFunctions)) || e.PropertyName.Equals(nameof(IsEnabled)))
-            CheckForChangesAndValidate();
+            e.PropertyName.Equals(nameof(ValidationFunctions)))
+            await CheckForChangesAndValidationIssues();
     }
 }

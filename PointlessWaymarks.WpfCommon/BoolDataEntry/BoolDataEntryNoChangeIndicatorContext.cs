@@ -6,9 +6,9 @@ using PointlessWaymarks.WpfCommon.ChangesAndValidation;
 namespace PointlessWaymarks.WpfCommon.BoolDataEntry;
 
 [NotifyPropertyChanged]
-public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
+public partial class BoolDataEntryNoChangeIndicatorContext : IHasChanges, IHasValidationIssues
 {
-    private BoolDataEntryContext()
+    private BoolDataEntryNoChangeIndicatorContext()
     {
         PropertyChanged += OnPropertyChanged;
     }
@@ -18,20 +18,15 @@ public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
     public bool ReferenceValue { get; set; }
     public string Title { get; set; } = string.Empty;
     public bool UserValue { get; set; }
-
     // ReSharper disable once UnusedMember.Global
     public bool UserValueIsNullable => false;
     public List<Func<bool, IsValid>> ValidationFunctions { get; set; } = [];
-
     public string ValidationMessage { get; set; } = string.Empty;
-
-    public bool HasChanges { get; set; }
+    public bool HasChanges => false;
     public bool HasValidationIssues { get; set; }
 
     public void CheckForChangesAndValidate()
     {
-        HasChanges = UserValue != ReferenceValue;
-
         if (ValidationFunctions.Any())
             foreach (var loopValidations in ValidationFunctions)
             {
@@ -48,9 +43,9 @@ public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
         ValidationMessage = string.Empty;
     }
 
-    public static Task<BoolDataEntryContext> CreateInstance()
+    public static Task<BoolDataEntryNoChangeIndicatorContext> CreateInstance()
     {
-        return Task.FromResult(new BoolDataEntryContext());
+        return Task.FromResult(new BoolDataEntryNoChangeIndicatorContext());
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
