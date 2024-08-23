@@ -1,170 +1,176 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:markdownCanvas="clr-namespace:VectSharp.MarkdownCanvas;assembly=VectSharp.MarkdownCanvas"
-             xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
-             xmlns:statusLayer="clr-namespace:PointlessWaymarks.AvaloniaToolkit.StatusLayer"
-             xmlns:utility="clr-namespace:PointlessWaymarks.AvaloniaToolkit.Utility"
-             xmlns:appToast="clr-namespace:PointlessWaymarks.AvaloniaToolkit.AppToast"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PointlessWaymarks.AvaloniaToolkit.StatusLayer.StatusLayerControl"
-             x:DataType="statusLayer:StatusLayerContext"
-             Name="StatusControlXaml"
-             x:CompileBindings="False">
-  <Grid
-      x:Name="MainGrid"
-      HorizontalAlignment="Stretch"
-      VerticalAlignment="Stretch">
-    <Rectangle
-        Grid.Column="0"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Fill="LightGray"
-        Opacity=".4"
-        IsVisible="{Binding BlockUi}"/>
-    <Border
-        Margin="2"
-        Background="White"
-        BorderBrush="Green"
-        BorderThickness="2"
-        CornerRadius="5"
-        Opacity=".9"
-        IsVisible="{Binding BlockUi}">
-      <ListBox
-          x:Name="StatusLogListBox"
-          Margin="24"
-          HorizontalAlignment="Stretch"
-          VerticalAlignment="Center"
-          BorderThickness="0"
-          Cursor="Wait"
-          ItemsSource="{Binding StatusLog}"
-          Opacity=".7"
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-          ScrollViewer.VerticalScrollBarVisibility="Hidden"
-          IsVisible="{Binding BlockUi}">
-        <Interaction.Behaviors>
-          <utility:ListBoxAutoScrollToNewItems />
-        </Interaction.Behaviors>
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Margin="0,0,0,4">
-              <TextBlock Text="{Binding .}" TextWrapping="Wrap" />
-            </Grid>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
-    </Border>
+﻿<UserControl
+    x:Class="PointlessWaymarks.AvaloniaToolkit.StatusLayer.StatusLayerControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appToast="clr-namespace:PointlessWaymarks.AvaloniaToolkit.AppToast"
+    xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:markdownCanvas="clr-namespace:VectSharp.MarkdownCanvas;assembly=VectSharp.MarkdownCanvas"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statusLayer="clr-namespace:PointlessWaymarks.AvaloniaToolkit.StatusLayer"
+    xmlns:utility="clr-namespace:PointlessWaymarks.AvaloniaToolkit.Utility"
+    Name="StatusControlXaml"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:CompileBindings="False"
+    x:DataType="statusLayer:StatusLayerContext"
+    mc:Ignorable="d">
     <Grid
-        x:Name="TextBoxGrid"
-        Grid.Column="0"
-        IsVisible="{Binding StringEntryVisible}">
-      <Border Background="White" CornerRadius="8">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <TextBlock
-              MaxWidth="400"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              FontSize="24"
-              Text="{Binding StringEntryTitle}"
-              TextWrapping="Wrap" />
-          <TextBlock
-              Grid.Row="1"
-              MaxWidth="800"
-              Margin="4,12"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Text="{Binding StringEntryMessage}"
-              TextWrapping="Wrap" />
-          <TextBox
-              x:Name="UserTextTextBox"
-              Grid.Row="2"
-              MaxWidth="800"
-              Margin="4,12"
-              Padding="4,4"
-              Text="{Binding StringEntryUserText}"
-              TextAlignment="Right" />
-          <Grid Grid.Row="3" Margin="4,12">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Command="{Binding UserStringEntryCancelledResponseCommand}">Cancel</Button>
-            <Button Grid.Column="1" Command="{Binding UserStringEntryApprovedResponseCommand}">Submit</Button>
-          </Grid>
+        x:Name="MainGrid"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Rectangle
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="LightGray"
+            IsVisible="{Binding BlockUi}"
+            Opacity=".4" />
+        <Border
+            Margin="2"
+            Background="White"
+            BorderBrush="Green"
+            BorderThickness="2"
+            CornerRadius="5"
+            IsVisible="{Binding BlockUi}"
+            Opacity=".9">
+            <ListBox
+                x:Name="StatusLogListBox"
+                Margin="24"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                BorderThickness="0"
+                Cursor="Wait"
+                IsVisible="{Binding BlockUi}"
+                ItemsSource="{Binding StatusLog}"
+                Opacity=".7"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <Interaction.Behaviors>
+                    <utility:ListBoxAutoScrollToNewItems />
+                </Interaction.Behaviors>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,4">
+                            <TextBlock Text="{Binding .}" TextWrapping="Wrap" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Grid
+            x:Name="TextBoxGrid"
+            Grid.Column="0"
+            IsVisible="{Binding StringEntryVisible}">
+            <Border Background="White" CornerRadius="8">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        MaxWidth="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Text="{Binding StringEntryTitle}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Grid.Row="1"
+                        MaxWidth="800"
+                        Margin="4,12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding StringEntryMessage}"
+                        TextWrapping="Wrap" />
+                    <TextBox
+                        x:Name="UserTextTextBox"
+                        Grid.Row="2"
+                        MaxWidth="800"
+                        Margin="4,12"
+                        Padding="4,4"
+                        Text="{Binding StringEntryUserText}"
+                        TextAlignment="Right" />
+                    <Grid Grid.Row="3" Margin="4,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Command="{Binding UserStringEntryCancelledResponseCommand}">Cancel</Button>
+                        <Button Grid.Column="1" Command="{Binding UserStringEntryApprovedResponseCommand}">Submit</Button>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
-      </Border>
-    </Grid>
-    <ListBox
-        HorizontalAlignment="Center"
-        VerticalAlignment="Bottom"
-        Background="Transparent"
-        BorderThickness="0"
-        ItemsSource="{Binding CancellationList}"
-        Opacity=".7"
-        IsVisible="{Binding ShowCancellations}">
-      <ListBox.ItemTemplate>
-        <DataTemplate DataType="statusLayer:UserCancellations">
-          <Button Command="{Binding Cancel}" IsEnabled="{Binding IsEnabled}">
-            <TextBlock Margin="24,0,24,0" Text="{Binding Description}" />
-          </Button>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+        <ListBox
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Background="Transparent"
+            BorderThickness="0"
+            IsVisible="{Binding ShowCancellations}"
+            ItemsSource="{Binding CancellationList}"
+            Opacity=".7">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="statusLayer:UserCancellations">
+                    <Button Command="{Binding Cancel}" IsEnabled="{Binding IsEnabled}">
+                        <TextBlock Margin="24,0,24,0" Text="{Binding Description}" />
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-    <Grid Grid.Column="0" IsVisible="{Binding MessageBoxVisible}">
-      <Border Background="White" CornerRadius="8">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <TextBlock
-              MaxWidth="800"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              FontSize="24"
-              Text="{Binding MessageBoxTitle}"
-              TextWrapping="Wrap" />
-          <markdownCanvas:MarkdownCanvasControl
-              Grid.Row="1"
-              MaxWidth="1200"
-              Margin="0,12,0,12"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              BorderThickness="0"
-              DocumentSource="{Binding MessageBoxMessage}"/>
-          <ItemsControl Grid.Row="2" ItemsSource="{Binding MessageBoxButtonList}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="statusLayer:StatusControlMessageButton">
-                <Button
-                    Command="{Binding DataContext.UserMessageBoxResponseCommand, ElementName=StatusControlXaml}"
-                    CommandParameter="{Binding MessageText}"
-                    Content="{Binding MessageText}"
-                    Margin="4" MaxWidth="400" Height="30">
-                </Button>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
+        <Grid Grid.Column="0" IsVisible="{Binding MessageBoxVisible}">
+            <Border Background="White" CornerRadius="8">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        MaxWidth="800"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Text="{Binding MessageBoxTitle}"
+                        TextWrapping="Wrap" />
+                    <markdownCanvas:MarkdownCanvasControl
+                        Grid.Row="1"
+                        MaxWidth="1200"
+                        Margin="0,12,0,12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BorderThickness="0"
+                        DocumentSource="{Binding MessageBoxMessage}" />
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding MessageBoxButtonList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="statusLayer:StatusControlMessageButton">
+                                <Button
+                                    Height="30"
+                                    MaxWidth="400"
+                                    Margin="4"
+                                    Command="{Binding DataContext.UserMessageBoxResponseCommand, ElementName=StatusControlXaml}"
+                                    CommandParameter="{Binding MessageText}"
+                                    Content="{Binding MessageText}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
         </Grid>
-      </Border>
+        <StackPanel
+            Grid.Column="0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <avaloniaProgressRing:ProgressRing Margin="0,4,8,0" IsVisible="{Binding NonBlockingTaskAreRunning}" />
+            <appToast:AppToastControl
+                Width="300"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                DataContext="{Binding Toast}" />
+        </StackPanel>
     </Grid>
-    <StackPanel
-        Grid.Column="0"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Orientation="Vertical">
-      <avaloniaProgressRing:ProgressRing
-          Margin="0,4,8,0"
-          IsVisible="{Binding NonBlockingTaskAreRunning}" />
-      <appToast:AppToastControl DataContext="{Binding Toast}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" />
-    </StackPanel>
-  </Grid>
 </UserControl>

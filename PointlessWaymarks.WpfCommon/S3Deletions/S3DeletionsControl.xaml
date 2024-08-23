@@ -69,7 +69,7 @@
                                 </Grid.RowDefinitions>
                                 <TextBox Style="{StaticResource ReadOnlyTextBoxStyle}" TextWrapping="Wrap">
                                     <TextBox.Text>
-                                        <MultiBinding StringFormat="{}{0}/{1}" Mode="OneWay">
+                                        <MultiBinding Mode="OneWay" StringFormat="{}{0}/{1}">
                                             <Binding Path="BucketName" />
                                             <Binding Path="AmazonObjectKey" />
                                         </MultiBinding>

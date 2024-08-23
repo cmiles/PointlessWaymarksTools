@@ -178,15 +178,17 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         BorderThickness="0"
-                        Markdown="{Binding MessageBoxMessage}"/>
+                        Markdown="{Binding MessageBoxMessage}" />
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding MessageBoxButtonList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="status:StatusControlMessageButton">
                                 <Button
+                                    Height="30"
+                                    MaxWidth="400"
+                                    Margin="4"
                                     Command="{Binding DataContext.UserMessageBoxResponseCommand, ElementName=StatusControlXaml}"
                                     CommandParameter="{Binding MessageText}"
-                                    Content="{Binding MessageText}"
-                                    Margin="4" MaxWidth="400" Height="30">
+                                    Content="{Binding MessageText}">
                                     <Button.Style>
                                         <Style>
                                             <Style.Triggers>

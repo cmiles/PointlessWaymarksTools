@@ -5,8 +5,8 @@
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wpfBehavior="clr-namespace:PointlessWaymarks.WpfCommon.Behaviors"
     xmlns:s3Uploads="clr-namespace:PointlessWaymarks.WpfCommon.S3Uploads"
+    xmlns:wpfBehavior="clr-namespace:PointlessWaymarks.WpfCommon.Behaviors"
     Name="S3UploadsControlXaml"
     d:DataContext="{d:DesignInstance s3Uploads:S3UploadsContext}"
     d:DesignHeight="450"
@@ -43,9 +43,7 @@
                             </b:Interaction.Behaviors>
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectionChanged">
-                                    <wpfBehavior:EventToCommand
-                                        Command="{Binding SelectedTextTracker.SelectedTextChangedCommand}"
-                                        PassEventArgsToCommand="True" />
+                                    <wpfBehavior:EventToCommand Command="{Binding SelectedTextTracker.SelectedTextChangedCommand}" PassEventArgsToCommand="True" />
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                         </TextBox>
@@ -75,7 +73,7 @@
                             Style="{StaticResource ReadOnlyTextBoxStyle}"
                             TextWrapping="Wrap">
                             <TextBox.Text>
-                                <MultiBinding StringFormat="To: {0}/{1}" Mode="OneWay">
+                                <MultiBinding Mode="OneWay" StringFormat="To: {0}/{1}">
                                     <Binding Path="BucketName" />
                                     <Binding Path="AmazonObjectKey" />
                                 </MultiBinding>
@@ -85,9 +83,7 @@
                             </b:Interaction.Behaviors>
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectionChanged">
-                                    <wpfBehavior:EventToCommand
-                                        Command="{Binding SelectedTextTracker.SelectedTextChangedCommand}"
-                                        PassEventArgsToCommand="True" />
+                                    <wpfBehavior:EventToCommand Command="{Binding SelectedTextTracker.SelectedTextChangedCommand}" PassEventArgsToCommand="True" />
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                         </TextBox>
@@ -159,7 +155,7 @@
                             Style="{StaticResource ReadOnlyTextBoxStyle}"
                             TextWrapping="Wrap">
                             <TextBox.Text>
-                                <MultiBinding StringFormat="To: {0}/{1}" Mode="OneWay">
+                                <MultiBinding Mode="OneWay" StringFormat="To: {0}/{1}">
                                     <Binding Path="BucketName" />
                                     <Binding Path="AmazonObjectKey" />
                                 </MultiBinding>
@@ -201,11 +197,9 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Save">
-                <MenuItem Command="{Binding SaveSelectedToUploadJsonFileCommand}"
-                          Header="Selected to Uploader Json File" />
+                <MenuItem Command="{Binding SaveSelectedToUploadJsonFileCommand}" Header="Selected to Uploader Json File" />
                 <MenuItem Command="{Binding SaveAllToUploadJsonFileCommand}" Header="All to Uploader Json File" />
-                <MenuItem Command="{Binding SaveNotUploadedToUploadJsonFileCommand}"
-                          Header="Not Uploaded to Uploader Json File" />
+                <MenuItem Command="{Binding SaveNotUploadedToUploadJsonFileCommand}" Header="Not Uploaded to Uploader Json File" />
             </MenuItem>
             <MenuItem Header="Excel">
                 <MenuItem Command="{Binding ToExcelSelectedItemsCommand}" Header="Selected To Excel" />
@@ -264,8 +258,7 @@
                         Text="{Binding UploadBatch.Status, FallbackValue=''}" />
                     <TextBlock Grid.Row="0" Grid.Column="1">
                         <TextBlock.Text>
-                            <MultiBinding
-                                StringFormat="{}{0:P1} - Total Upload Count: {3:N0} - {1:N0} Uploaded, {2:N0} Errors">
+                            <MultiBinding StringFormat="{}{0:P1} - Total Upload Count: {3:N0} - {1:N0} Uploaded, {2:N0} Errors">
                                 <Binding FallbackValue="" Path="UploadBatch.CompletedItemPercent" />
                                 <Binding FallbackValue="" Path="UploadBatch.UploadedItemCount" />
                                 <Binding FallbackValue="" Path="UploadBatch.ErrorItemCount" />
@@ -275,8 +268,7 @@
                     </TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="1">
                         <TextBlock.Text>
-                            <MultiBinding
-                                StringFormat="{}{0:P1} - Total Upload Size: {3:N0} - {1:N0} Uploaded, {2:N0} Errors">
+                            <MultiBinding StringFormat="{}{0:P1} - Total Upload Size: {3:N0} - {1:N0} Uploaded, {2:N0} Errors">
                                 <Binding FallbackValue="" Path="UploadBatch.CompletedSizePercent" />
                                 <Binding FallbackValue="" Path="UploadBatch.UploadedSize" />
                                 <Binding FallbackValue="" Path="UploadBatch.ErrorSize" />
@@ -302,8 +294,7 @@
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Visible"
                         Visibility="{Binding UploadBatch.Uploading, Converter={StaticResource BooleanToVisibility}, FallbackValue=Hidden}">
-                        <ContentControl Content="{Binding UploadBatch.CurrentUpload, FallbackValue=''}"
-                                        ContentTemplate="{StaticResource S3SummaryUploadDataTemplate}" />
+                        <ContentControl Content="{Binding UploadBatch.CurrentUpload, FallbackValue=''}" ContentTemplate="{StaticResource S3SummaryUploadDataTemplate}" />
                     </ScrollViewer>
                 </GroupBox>
                 <GroupBox Grid.Row="4" Header="Upload Errors">
@@ -315,8 +306,8 @@
                     </GroupBox.Visibility>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock TextWrapping="Wrap">There were upload errors in this batch! To see the errors you can clear the successfully upload files and/or try again. The menu above has options to save information about these uploads.</TextBlock>
                         <WrapPanel Grid.Row="1" HorizontalAlignment="Center">
@@ -360,8 +351,7 @@
                 VirtualizingPanel.IsVirtualizing="True"
                 VirtualizingPanel.ScrollUnit="Pixel">
                 <b:Interaction.Behaviors>
-                    <wpfBehavior:AttachCommandBindingsBehavior
-                        CommandBindings="{Binding ListSelection.ListBoxAppCommandBindings}" />
+                    <wpfBehavior:AttachCommandBindingsBehavior CommandBindings="{Binding ListSelection.ListBoxAppCommandBindings}" />
                 </b:Interaction.Behaviors>
                 <ListBox.InputBindings>
                     <KeyBinding Key="Delete" Command="{Binding Path=RemoveSelectedItemsCommand}" />

@@ -1,15 +1,17 @@
-﻿<UserControl x:Class="PointlessWaymarks.WpfCommon.FileList.FileListControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:PointlessWaymarks.WpfCommon.FileList"
-             xmlns:behaviors="clr-namespace:PointlessWaymarks.WpfCommon.Behaviors"
-             xmlns:dd="urn:gong-wpf-dragdrop"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:FileListContext}">
-    <UserControl.Resources>
-    </UserControl.Resources>
+﻿<UserControl
+    x:Class="PointlessWaymarks.WpfCommon.FileList.FileListControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:PointlessWaymarks.WpfCommon.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="urn:gong-wpf-dragdrop"
+    xmlns:local="clr-namespace:PointlessWaymarks.WpfCommon.FileList"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance local:FileListContext}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources />
     <Grid>
         <Grid Margin="4">
             <Grid.RowDefinitions>
@@ -17,28 +19,53 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,8">
-                <TextBlock FontSize="20" Margin="4,0,12,0">Select:</TextBlock>
-                <Button Margin="2" MinWidth="180" Command="{Binding AddFilesToTagFromDirectoryCommand}">Directory</Button>
-                <Button Margin="2" MinWidth="180"
-                        Command="{Binding AddFilesToTagFromDirectoryAndSubdirectoriesCommand }">
+            <WrapPanel
+                Margin="0,8,0,8"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Margin="4,0,12,0" FontSize="20">Select:</TextBlock>
+                <Button
+                    MinWidth="180"
+                    Margin="2"
+                    Command="{Binding AddFilesToTagFromDirectoryCommand}">
+                    Directory
+                </Button>
+                <Button
+                    MinWidth="180"
+                    Margin="2"
+                    Command="{Binding AddFilesToTagFromDirectoryAndSubdirectoriesCommand}">
                     Directory + Subdirectories
                 </Button>
-                <Button Margin="2" MinWidth="180" Command="{Binding AddFilesToTagCommand}">Files</Button>
+                <Button
+                    MinWidth="180"
+                    Margin="2"
+                    Command="{Binding AddFilesToTagCommand}">
+                    Files
+                </Button>
             </WrapPanel>
-            <CheckBox HorizontalAlignment="Center" Margin="4,8,4,4" Grid.Row="1" IsChecked="{Binding ReplaceMode}">
+            <CheckBox
+                Grid.Row="1"
+                Margin="4,8,4,4"
+                HorizontalAlignment="Center"
+                IsChecked="{Binding ReplaceMode}">
                 <TextBlock FontWeight="Bold">Replace Current Selection</TextBlock>
             </CheckBox>
             <GroupBox Grid.Row="2" Header="Files">
-                <DataGrid Margin="2" ItemsSource="{Binding Files}"
-                          dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.DropHandler="{Binding}"
-                          CanUserAddRows="False"
-                          CanUserReorderColumns="true"
-                          CanUserDeleteRows="false" CanUserResizeColumns="true" CanUserResizeRows="False"
-                          CanUserSortColumns="true" AutoGenerateColumns="False" IsReadOnly="True"
-                          SelectedItem="{Binding SelectedFile}"
-                          behaviors:MultiSelectBehavior.SynchronizedSelectedItems="{Binding SelectedFiles}">
+                <DataGrid
+                    Margin="2"
+                    behaviors:MultiSelectBehavior.SynchronizedSelectedItems="{Binding SelectedFiles}"
+                    dd:DragDrop.DropHandler="{Binding}"
+                    dd:DragDrop.IsDropTarget="True"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="false"
+                    CanUserReorderColumns="true"
+                    CanUserResizeColumns="true"
+                    CanUserResizeRows="False"
+                    CanUserSortColumns="true"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Files}"
+                    SelectedItem="{Binding SelectedFile}">
                     <DataGrid.InputBindings>
                         <KeyBinding Key="Delete" Command="{Binding DeleteSelectedFilesCommand}" />
                     </DataGrid.InputBindings>
@@ -53,7 +80,10 @@
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*" Header="File" Binding="{Binding FullName}" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding FullName}"
+                            Header="File" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

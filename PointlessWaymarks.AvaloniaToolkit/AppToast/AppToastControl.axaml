@@ -1,16 +1,22 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:appToast="clr-namespace:PointlessWaymarks.AvaloniaToolkit.AppToast"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PointlessWaymarks.AvaloniaToolkit.AppToast.AppToastControl"
-             x:DataType="appToast:AppToastContext">
+﻿<UserControl
+    x:Class="PointlessWaymarks.AvaloniaToolkit.AppToast.AppToastControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appToast="clr-namespace:PointlessWaymarks.AvaloniaToolkit.AppToast"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="appToast:AppToastContext"
+    mc:Ignorable="d">
     <UserControl.Resources>
-      <appToast:AppToastTypeToForegroundColorConverter x:Key="AppToastTypeToForegroundColor" />
-      <appToast:AppToastTypeToBackgroundColorConverter x:Key="AppToastTypeToBackgroundColor" />
+        <appToast:AppToastTypeToForegroundColorConverter x:Key="AppToastTypeToForegroundColor" />
+        <appToast:AppToastTypeToBackgroundColorConverter x:Key="AppToastTypeToBackgroundColor" />
     </UserControl.Resources>
-    <ListBox Background="Transparent" BorderThickness="0" ItemsSource="{Binding Items}">
+    <ListBox
+        Background="Transparent"
+        BorderThickness="0"
+        ItemsSource="{Binding Items}">
         <ListBox.Styles>
             <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="1" />
@@ -18,12 +24,20 @@
         </ListBox.Styles>
         <ListBox.ItemTemplate>
             <DataTemplate DataType="appToast:AppToastMessage">
-                <Border CornerRadius="4" Background="{Binding MessageType, Converter={StaticResource AppToastTypeToBackgroundColor}}" >
-                    <Grid >
-                        <TextBlock Margin="10" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}" Foreground="{Binding MessageType, Converter={StaticResource AppToastTypeToForegroundColor}}" />
-                        <Button HorizontalAlignment="Right" VerticalAlignment="Top"
-                                Command="{Binding $parent[ItemsControl].DataContext.DisposeToastCommand}"
-                                CommandParameter="{Binding .}">x
+                <Border Background="{Binding MessageType, Converter={StaticResource AppToastTypeToBackgroundColor}}" CornerRadius="4">
+                    <Grid>
+                        <TextBlock
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            Foreground="{Binding MessageType, Converter={StaticResource AppToastTypeToForegroundColor}}"
+                            Text="{Binding Message}"
+                            TextWrapping="Wrap" />
+                        <Button
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding $parent[ItemsControl].DataContext.DisposeToastCommand}"
+                            CommandParameter="{Binding .}">
+                            x
                         </Button>
                     </Grid>
                 </Border>
