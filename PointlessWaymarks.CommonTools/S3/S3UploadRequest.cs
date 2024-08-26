@@ -34,12 +34,26 @@ public class S3UploadRequest
 
     public S3LocalFileAndMetadata ToUpload { get; }
 
-    public TransferUtilityUploadRequest UploadRequest()
+    public TransferUtilityUploadRequest UploadRequestFilePath()
     {
         var uploadRequest = new TransferUtilityUploadRequest
         {
             BucketName = BucketName,
             FilePath = ToUpload.LocalFile.FullName,
+            Key = S3Key
+        };
+
+        return ToUpload.UploadMetadata.AddMetadataToRequest(uploadRequest);
+    }
+
+    public TransferUtilityUploadRequest UploadRequestStream()
+    {
+        var fileStream = new FileStream(ToUpload.LocalFile.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+        var uploadRequest = new TransferUtilityUploadRequest
+        {
+            BucketName = BucketName,
+            InputStream = fileStream,
             Key = S3Key
         };
 
