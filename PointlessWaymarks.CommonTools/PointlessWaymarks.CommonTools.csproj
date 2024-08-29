@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="AnyClone" Version="1.1.6" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.402.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.402.3" />
     <PackageReference Include="CliWrap" Version="3.6.6" />
     <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="Devlooped.CredentialManager" Version="2.5.0.1" />
@@ -35,7 +35,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Markdig" Version="0.37.0" />
-    <PackageReference Include="Metalama.Framework" Version="2024.2.20" />
+    <PackageReference Include="Metalama.Framework" Version="2024.2.22" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.8" />
     <PackageReference Include="ObjectDumper.NET" Version="4.2.7" />
     <PackageReference Include="OneOf" Version="3.0.271" />
