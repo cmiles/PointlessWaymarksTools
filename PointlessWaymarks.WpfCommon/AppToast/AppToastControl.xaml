@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="PointlessWaymarks.WpfCommon.AppToast.AppToastControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PointlessWaymarks.WpfCommon.AppToast"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+    xmlns:utility="clr-namespace:PointlessWaymarks.WpfCommon.Utility"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:AppToastTypeToForegroundColorConverter x:Key="AppToastTypeToForegroundColor" />
+        <local:AppToastTypeToBackgroundColorConverter x:Key="AppToastTypeToBackgroundColor" />
+        <utility:BindingProxy x:Key="Proxy" Data="{Binding}" />
+    </UserControl.Resources>
+    <ListBox
+        HorizontalContentAlignment="Stretch"
+        Background="Transparent"
+        BorderThickness="0"
+        ItemsSource="{Binding Items}"
+        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type local:AppToastMessage}">
+                <Border Background="{Binding MessageType, Converter={StaticResource AppToastTypeToBackgroundColor}}" CornerRadius="3">
+                    <Grid>
+                        <TextBlock
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            FontSize="15"
+                            FontWeight="Normal"
+                            Foreground="{Binding MessageType, Converter={StaticResource AppToastTypeToForegroundColor}}"
+                            Text="{Binding Message}"
+                            TextWrapping="Wrap" />
+                        <Image
+                            Width="10"
+                            Margin="6"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Source="{svgc:SvgImage Source=/Icons/close.svg,
+                                                   AppName=PointlessWaymarks.WpfCommon}"
+                            ToolTip="Close Message">
+                            <Image.InputBindings>
+                                <MouseBinding Command="{Binding Data.DisposeToastCommand, Source={StaticResource Proxy}}" Gesture="LeftClick" CommandParameter="{Binding .}" />
+                            </Image.InputBindings>
+                        </Image>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</UserControl>

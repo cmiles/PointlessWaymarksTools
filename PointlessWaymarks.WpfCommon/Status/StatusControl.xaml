@@ -2,6 +2,7 @@
     x:Class="PointlessWaymarks.WpfCommon.Status.StatusControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appToast="clr-namespace:PointlessWaymarks.WpfCommon.AppToast"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:PointlessWaymarks.WpfCommon.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -217,7 +218,7 @@
                 Color2="Transparent"
                 Diameter="36"
                 Visibility="{Binding NonBlockingTaskAreRunning, Converter={StaticResource BoolTrueVisibleFalseCollapsed}}" />
-            <toastControl:ToastTray DataContext="{Binding Toast}" />
+            <appToast:AppToastControl Width="260" Margin="2" DataContext="{Binding Toast}" />
         </StackPanel>
     </Grid>
 </UserControl>

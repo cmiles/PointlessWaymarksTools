@@ -25,12 +25,12 @@ public class BindingProxy : Freezable
     //
     //To use this the proxy must be set in resources
     //<DataGrid.Resources>
-    //  <local:BindingProxy x:Key="proxy" Data="{Binding}" />
+    //  <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
     //</DataGrid.Resources>
     //
     //And a usage example:
     //<DataGridTextColumn Header="Price" Binding="{Binding Price}" IsReadOnly="False"
-    //  Visibility="{Binding Data.ShowPrice, Converter={StaticResource visibilityConverter}, Source={StaticResource proxy}}"/>
+    //  Visibility="{Binding Data.ShowPrice, Converter={StaticResource visibilityConverter}, Source={StaticResource Proxy}}"/>
     //
 
     protected override Freezable CreateInstanceCore()

@@ -3,9 +3,10 @@ using System.Windows;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using PointlessWaymarks.LlamaAspects;
-using PointlessWaymarks.WpfCommon.ToastControl;
+using PointlessWaymarks.WpfCommon.AppToast;
 using PointlessWaymarks.WpfCommon.Utility;
 using Serilog;
+using ToastType = PointlessWaymarks.WpfCommon.ToastControl.ToastType;
 
 namespace PointlessWaymarks.WpfCommon.Status;
 
@@ -20,7 +21,7 @@ public partial class StatusControlContext
         ContextDispatcher = Application.Current?.Dispatcher ??
                             ThreadSwitcher.PinnedDispatcher ?? Dispatcher.CurrentDispatcher;
 
-        Toast = new ToastSource(ContextDispatcher);
+        Toast = new AppToastContext();
         StatusLog = [];
         CancellationList = [];
 
@@ -47,7 +48,7 @@ public partial class StatusControlContext
     public string StringEntryTitle { get; set; } = string.Empty;
     public string StringEntryUserText { get; set; } = string.Empty;
     public bool StringEntryVisible { get; set; }
-    public ToastSource Toast { get; set; }
+    public AppToastContext Toast { get; set; }
     public RelayCommand<string> UserMessageBoxResponseCommand { get; set; }
     public RelayCommand UserStringEntryApprovedResponseCommand { get; set; }
     public RelayCommand UserStringEntryCancelledResponseCommand { get; set; }
@@ -530,23 +531,19 @@ public partial class StatusControlContext
         CurrentFullScreenCancellationSource?.Cancel();
     }
 
-    public void ToastError(string? toastText)
+    public async Task ToastError(string? toastText, bool userMustDismiss = false)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Error));
-        Task.Run(() => Log.Error("Toast Error: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
+        await Toast.Show(toastText, AppToast.ToastType.Error, userMustDismiss);
     }
 
-    public void ToastSuccess(string? toastText)
+    public async Task ToastSuccess(string? toastText, bool userMustDismiss = false)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Success));
-        Task.Run(() =>
-            Log.Information("Toast Success: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
+        await Toast.Show(toastText, AppToast.ToastType.Success, userMustDismiss);
     }
 
-    public void ToastWarning(string? toastText)
+    public async Task ToastWarning(string? toastText, bool userMustDismiss = false)
     {
-        ContextDispatcher.InvokeAsync(() => Toast.Show(toastText, ToastType.Warning));
-        Task.Run(() => Log.Warning("Toast Warning: {0} - Status Context Id: {1}", toastText, StatusControlContextId));
+        await Toast.Show(toastText, AppToast.ToastType.Warning, userMustDismiss);
     }
 
     private void UserMessageBoxResponse(string? responseString)

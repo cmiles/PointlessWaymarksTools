@@ -20,7 +20,11 @@
     <None Remove="Icons\arrow-up-thick.svg" />
     <None Remove="Icons\arrow-up.svg" />
     <None Remove="Icons\camera-outline.svg" />
+    <None Remove="Icons\close.svg" />
+    <None Remove="Icons\file-code-outline.svg" />
+    <None Remove="Icons\folder-file-outline.svg" />
     <None Remove="Icons\home-circle.svg" />
+    <None Remove="Icons\image-outline.svg" />
     <None Remove="Icons\information-outline.svg" />
     <None Remove="Icons\pause.svg" />
     <None Remove="Icons\play.svg" />
@@ -101,7 +105,11 @@
     <Resource Include="Icons\arrow-up-thick.svg" />
     <Resource Include="Icons\arrow-up.svg" />
     <Resource Include="Icons\camera-outline.svg" />
+    <Resource Include="Icons\close.svg" />
+    <Resource Include="Icons\file-code-outline.svg" />
+    <Resource Include="Icons\folder-file-outline.svg" />
     <Resource Include="Icons\home-circle.svg" />
+    <Resource Include="Icons\image-outline.svg" />
     <Resource Include="Icons\information-outline.svg" />
     <Resource Include="Icons\pause.svg" />
     <Resource Include="Icons\play.svg" />

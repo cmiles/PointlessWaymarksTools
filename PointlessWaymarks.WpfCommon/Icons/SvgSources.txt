@@ -7,6 +7,7 @@ arrow-right-circle - Austin Andrews - https://pictogrammers.com/library/mdi/icon
 arrow-up - Austin Andrews - https://pictogrammers.com/library/mdi/icon/arrow-up
 arrow-up-thick - Austin Andrews - https://pictogrammers.com/library/mdi/icon/arrow-up-thick
 camera-outline - Google - https://pictogrammers.com/library/mdi/icon/camera-outline
+close - Google - https://pictogrammers.com/library/mdi/icon/close/
 file-code-outline - Terren - https://pictogrammers.com/library/mdi/icon/file-code-outline/
 folder-file-outline - Colton Wiscombe - https://pictogrammers.com/library/mdi/icon/folder-file-outline/
 home-circle - Austin Andrews - https://pictogrammers.com/library/mdi/icon/home-circle
