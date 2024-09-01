@@ -13,6 +13,31 @@ This library has several controls and ideas that I like for building small to me
 
 A very useful approach to getting user data from Excel is reading directly from the Excel application. This can be messy (give the user any message/help you want but you will still spend time explaining that reading from Excel isn't working because they have a cell open for editing...) - but especially for power users it can avoid confusion over what data is saved vs on screen and can reduce repetitive steps like saving/picking/dragging/etc. This is not my first .NET journey into Excel interop code and if you are exploring this approach I encourage you to look at and/or reuse this code. It is very heavily based on [Automate multiple Excel instances - CodeProject](https://www.codeproject.com/articles/1157395/automate-multiple-excel-instances) by James Faix. Faix's code, and other code in this vein, all ultimately link back to [Andrew Whitechapel : Getting the Application Object in a Shimmed Automation Add-in (archived link)](https://web.archive.org/web/20130518152056/http://blogs.officezealot.com/whitechapel/archive/2005/04/10/4514.aspx) (the source I used in the mid-2000s when I first started to do .NET Excel Interop!).
 
+## Tools and Libraries
+
+I am incredibly grateful to the all the people and projects that make it possible to rapidly build useful, open, low/no-cost software. Below is a mostly-up-to-date-and-largely-comprehensive list of tools/packages/libraries/etc. that are used to build the this project:
+
+**Tools:**
+ - [Visual Studio IDE](https://visualstudio.microsoft.com/), [.NET Core (Linux, macOS, and Windows)](https://dotnet.microsoft.com/download/dotnet-core)
+ - [ReSharper: The Visual Studio Extension for .NET Developers by JetBrains](https://www.jetbrains.com/resharper/)
+ - [GitHub Copilot · Your AI pair programmer · GitHub](https://github.com/features/copilot)
+ - [Metalama: A Framework for Clean & Concise Code in C#](https://www.postsharp.net/metalama)
+ - [Xavalon/XamlStyler: Visual Studio extension to help format your XAML source code](https://github.com/Xavalon/XamlStyler)
+ - [PowerShell](https://github.com/PowerShell/PowerShell)
+ - [tareqimbasher/NetPad: A cross-platform C# editor and playground.](https://github.com/tareqimbasher/NetPad)
+ - [dotnet-script/dotnet-script: Run C# scripts from the .NET CLI.](https://github.com/dotnet-script/dotnet-script)
+ - [AutoHotkey](https://www.autohotkey.com/)
+ - [Beyond Compare](https://www.scootersoftware.com/)
+ - [Compact-Log-Format-Viewer: A cross platform tool to read & query JSON aka CLEF log files created by Serilog](https://github.com/warrenbuckley/Compact-Log-Format-Viewer)
+ - [DB Browser for SQLite](https://sqlitebrowser.org/)
+ - [ExifTool by Phil Harvey](https://exiftool.org/) and [Oliver Betz | ExifTool Windows installer and portable package](https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows)
+ - [Fork - a fast and friendly git client for Mac and Windows](https://git-fork.com/)
+ - [grepWin: A powerful and fast search tool using regular expressions](https://github.com/stefankueng/grepWin)
+ - [Inno Setup](https://jrsoftware.org/isinfo.php)
+ - [Greenfish Icon Editor Pro](http://greenfishsoftware.org/gfie.php)
+ - [Notepad++](https://notepad-plus-plus.org/)
+ - [RegexBuddy: Learn, Create, Understand, Test, Use and Save Regular Expression](https://www.regexbuddy.com/)
+
 **Core Technologies:**
  - [dotnet/core: Home repository for .NET Core](https://github.com/dotnet/core)
  - [dotnet/wpf: WPF is a .NET Core UI framework for building Windows desktop applications.](https://github.com/dotnet/wpf). MIT License.
