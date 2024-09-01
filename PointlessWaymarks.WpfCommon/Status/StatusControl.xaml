@@ -218,7 +218,10 @@
                 Color2="Transparent"
                 Diameter="36"
                 Visibility="{Binding NonBlockingTaskAreRunning, Converter={StaticResource BoolTrueVisibleFalseCollapsed}}" />
-            <appToast:AppToastControl Width="260" Margin="2" DataContext="{Binding Toast}" />
+            <appToast:AppToastControl
+                Width="260"
+                Margin="2"
+                DataContext="{Binding Toast}" />
         </StackPanel>
     </Grid>
 </UserControl>
