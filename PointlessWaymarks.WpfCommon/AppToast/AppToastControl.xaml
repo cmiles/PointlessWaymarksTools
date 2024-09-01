@@ -42,7 +42,10 @@
                                                    AppName=PointlessWaymarks.WpfCommon}"
                             ToolTip="Close Message">
                             <Image.InputBindings>
-                                <MouseBinding Command="{Binding Data.DisposeToastCommand, Source={StaticResource Proxy}}" Gesture="LeftClick" CommandParameter="{Binding .}" />
+                                <MouseBinding
+                                    Command="{Binding Data.DisposeToastCommand, Source={StaticResource Proxy}}"
+                                    CommandParameter="{Binding .}"
+                                    Gesture="LeftClick" />
                             </Image.InputBindings>
                         </Image>
                     </Grid>
