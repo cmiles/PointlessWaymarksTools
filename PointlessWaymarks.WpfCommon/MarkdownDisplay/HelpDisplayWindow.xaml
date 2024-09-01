@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="PointlessWaymarks.WpfCommon.MarkdownDisplay.HelpDisplayWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignInstance local:HelpDisplayWindow}"
     mc:Ignorable="d">
     <Grid>
-        <local:HelpDisplayControl ContextMenu="{Binding HelpContext}" />
+        <local:HelpDisplayControl DataContext="{Binding HelpContext}" />
         <status:StatusControl
             Grid.Row="0"
             d:IsHidden="true"
