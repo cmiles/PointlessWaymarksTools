@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 using PointlessWaymarks.WpfCommon.Utility;
@@ -24,11 +24,11 @@ public partial class HelpDisplayWindow : Window
 
     public static async Task CreateInstanceAndShow(List<string> markdown, string windowTitle)
     {
-        await ThreadSwitcher.ResumeForegroundAsync();
+        var factoryContext = await StatusControlContext.ResumeForegroundAsyncAndCreateInstance();
 
         var window = new HelpDisplayWindow
         {
-            HelpContext = new HelpDisplayContext(markdown), StatusContext = new StatusControlContext(),
+            HelpContext = new HelpDisplayContext(markdown), StatusContext = factoryContext,
             WindowTitle = windowTitle
         };
 

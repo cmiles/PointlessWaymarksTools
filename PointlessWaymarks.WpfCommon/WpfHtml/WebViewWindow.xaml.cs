@@ -1,4 +1,4 @@
-﻿using PointlessWaymarks.CommonTools;
+using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 using PointlessWaymarks.WpfCommon.WebViewVirtualDomain;
@@ -9,6 +9,7 @@ namespace PointlessWaymarks.WpfCommon.WpfHtml;
 ///     Interaction logic for WebViewWindow.xaml
 /// </summary>
 [NotifyPropertyChanged]
+[StaThreadConstructorGuard]
 public partial class WebViewWindow : IWebViewMessenger
 {
     public WebViewWindow()

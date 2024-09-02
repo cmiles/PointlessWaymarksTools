@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using PointlessWaymarks.CommonTools.S3;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
@@ -9,6 +9,7 @@ namespace PointlessWaymarks.WpfCommon.S3Deletions;
 ///     Interaction logic for S3DeletionsWindow.xaml
 /// </summary>
 [NotifyPropertyChanged]
+[StaThreadConstructorGuard]
 public partial class S3DeletionsWindow
 {
     public S3DeletionsWindow(IS3AccountInformation s3Info, List<S3DeletionsItem> itemsToDelete)

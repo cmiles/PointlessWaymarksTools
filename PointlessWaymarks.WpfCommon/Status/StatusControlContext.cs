@@ -1,11 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.AppToast;
 using PointlessWaymarks.WpfCommon.Utility;
 using Serilog;
+using Application = System.Windows.Application;
 using ToastType = PointlessWaymarks.WpfCommon.ToastControl.ToastType;
 
 namespace PointlessWaymarks.WpfCommon.Status;
@@ -15,6 +16,12 @@ public partial class StatusControlContext
 {
     private int _countOfRunningBlockingTasks;
     private int _countOfRunningNonBlockingTasks;
+
+    public static async Task<StatusControlContext> ResumeForegroundAsyncAndCreateInstance(StatusControlContext? statusContext = null)
+    {
+        await ThreadSwitcher.ResumeForegroundAsync();
+        return statusContext ?? new StatusControlContext();
+    }
 
     public StatusControlContext()
     {

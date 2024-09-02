@@ -9,6 +9,7 @@ namespace PointlessWaymarks.WpfCommon.S3Uploads;
 ///     Interaction logic for S3UploadsWindow.xaml
 /// </summary>
 [NotifyPropertyChanged]
+[StaThreadConstructorGuard]
 public partial class S3UploadsWindow
 {
     public S3UploadsWindow(IS3AccountInformation s3Info, List<S3UploadRequest> toLoad, string windowTitleNote, bool autoStartUpload)

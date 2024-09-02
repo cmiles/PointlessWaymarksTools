@@ -4,10 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using JetBrains.Annotations;
+using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 
 namespace PointlessWaymarks.WpfCommon.Utility;
 
+[StaThreadConstructorGuard]
 public class ContentListSelected<T> : INotifyPropertyChanged where T : ISelectedTextTracker
 {
     private ObservableCollection<CommandBinding>? _listBoxAppCommandBindings;

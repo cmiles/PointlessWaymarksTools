@@ -54,9 +54,11 @@ public partial class ExistingDirectoryDataEntryContext : IHasChanges, IHasValida
         ValidationMessage = string.Empty;
     }
 
-    public static ExistingDirectoryDataEntryContext CreateInstance(StatusControlContext? statusContext)
+    public static async Task<ExistingDirectoryDataEntryContext> CreateInstance(StatusControlContext? statusContext)
     {
-        return new ExistingDirectoryDataEntryContext(statusContext ?? new StatusControlContext());
+        var factoryContext = await StatusControlContext.ResumeForegroundAsyncAndCreateInstance(statusContext);
+
+        return new ExistingDirectoryDataEntryContext(factoryContext);
     }
 
     private async void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)

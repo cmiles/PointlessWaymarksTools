@@ -14,6 +14,7 @@ namespace PointlessWaymarks.WpfCommon.S3Uploads;
 
 [NotifyPropertyChanged]
 [GenerateStatusCommands]
+[StaThreadConstructorGuard]
 public partial class S3UploadsContext
 {
     private S3UploadsContext(StatusControlContext? statusContext, IS3AccountInformation s3Info,
