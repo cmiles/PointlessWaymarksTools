@@ -12,12 +12,11 @@ namespace PointlessWaymarks.WpfCommon.S3Deletions;
 
 [NotifyPropertyChanged]
 [GenerateStatusCommands]
-[StaThreadConstructorGuard]
 public partial class S3DeletionsContext
 {
-    private S3DeletionsContext(StatusControlContext? statusContext, IS3AccountInformation s3Info)
+    private S3DeletionsContext(StatusControlContext statusContext, IS3AccountInformation s3Info)
     {
-        StatusContext = statusContext ?? new StatusControlContext();
+        StatusContext = statusContext;
 
         BuildCommands();
 

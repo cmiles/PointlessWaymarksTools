@@ -12,12 +12,13 @@ using ToastType = PointlessWaymarks.WpfCommon.ToastControl.ToastType;
 namespace PointlessWaymarks.WpfCommon.Status;
 
 [NotifyPropertyChanged]
+[StaThreadConstructorGuard]
 public partial class StatusControlContext
 {
     private int _countOfRunningBlockingTasks;
     private int _countOfRunningNonBlockingTasks;
 
-    public static async Task<StatusControlContext> ResumeForegroundAsyncAndCreateInstance(StatusControlContext? statusContext = null)
+    public static async Task<StatusControlContext> CreateInstance(StatusControlContext? statusContext = null)
     {
         await ThreadSwitcher.ResumeForegroundAsync();
         return statusContext ?? new StatusControlContext();

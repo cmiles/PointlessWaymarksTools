@@ -19,19 +19,18 @@ public partial class WebViewWindow : IWebViewMessenger
         FromWebView = new WorkQueue<FromWebViewMessage>();
         ToWebView = new WorkQueue<ToWebViewRequest>(true);
 
-        StatusContext = new StatusControlContext();
         DataContext = this;
     }
 
-    public WorkQueue<FromWebViewMessage> FromWebView { get; set; }
-    public StatusControlContext StatusContext { get; set; }
-    public WorkQueue<ToWebViewRequest> ToWebView { get; set; }
+    public required StatusControlContext StatusContext { get; set; }
     public string WindowTitle { get; set; } = "Pointless Waymarks";
+    public WorkQueue<FromWebViewMessage> FromWebView { get; set; }
+    public WorkQueue<ToWebViewRequest> ToWebView { get; set; }
 
     public static async Task<WebViewWindow> CreateInstance()
     {
         await ThreadSwitcher.ResumeForegroundAsync();
 
-        return new WebViewWindow();
+        return new WebViewWindow { StatusContext = await StatusControlContext.CreateInstance() };
     }
 }

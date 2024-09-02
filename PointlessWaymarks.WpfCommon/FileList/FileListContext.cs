@@ -13,13 +13,12 @@ namespace PointlessWaymarks.WpfCommon.FileList;
 
 [NotifyPropertyChanged]
 [GenerateStatusCommands]
-[StaThreadConstructorGuard]
 public partial class FileListContext : IDropTarget
 {
-    public FileListContext(StatusControlContext? statusContext, IFileListSettings? settings,
+    public FileListContext(StatusControlContext statusContext, IFileListSettings? settings,
         List<ContextMenuItemData> contextMenuItems)
     {
-        StatusContext = statusContext ?? new StatusControlContext();
+        StatusContext = statusContext;
         Settings = settings;
 
         BuildCommands();

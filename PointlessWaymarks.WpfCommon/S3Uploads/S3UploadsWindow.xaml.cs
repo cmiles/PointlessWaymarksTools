@@ -12,28 +12,42 @@ namespace PointlessWaymarks.WpfCommon.S3Uploads;
 [StaThreadConstructorGuard]
 public partial class S3UploadsWindow
 {
-    public S3UploadsWindow(IS3AccountInformation s3Info, List<S3UploadRequest> toLoad, string windowTitleNote, bool autoStartUpload)
+    public S3UploadsWindow()
     {
         InitializeComponent();
 
-        StatusContext = new StatusControlContext();
-        WindowStatus = new WindowIconStatus();
-        WindowTitle = string.IsNullOrWhiteSpace(windowTitleNote) ? "S3 Uploads" : $"S3 Uploads - {windowTitleNote}";
-
         DataContext = this;
-
-        StatusContext.RunFireAndForgetBlockingTask(async () =>
-        {
-            UploadContext = await S3UploadsContext.CreateInstance(StatusContext, s3Info, toLoad, WindowStatus);
-            if (autoStartUpload) UploadContext.StatusContext.RunNonBlockingTask(UploadContext.StartAllUploads);
-        });
     }
 
     public bool ForceClose { get; set; }
-    public StatusControlContext StatusContext { get; set; }
+    public required StatusControlContext StatusContext { get; set; }
     public S3UploadsContext? UploadContext { get; set; }
     public WindowIconStatus? WindowStatus { get; set; }
-    public string WindowTitle { get; set; }
+    public required string WindowTitle { get; set; }
+
+    public static async Task<S3UploadsWindow> CreateInstance(IS3AccountInformation s3Info, List<S3UploadRequest> toLoad,
+        string windowTitleNote,
+        bool autoStartUpload = false)
+    {
+        await ThreadSwitcher.ResumeForegroundAsync();
+
+        var window = new S3UploadsWindow
+        {
+            StatusContext = await StatusControlContext.CreateInstance(),
+            WindowStatus = new WindowIconStatus(),
+            WindowTitle = string.IsNullOrWhiteSpace(windowTitleNote) ? "S3 Uploads" : $"S3 Uploads - {windowTitleNote}"
+        };
+
+        window.StatusContext.RunFireAndForgetBlockingTask(async () =>
+        {
+            window.UploadContext =
+                await S3UploadsContext.CreateInstance(window.StatusContext, s3Info, toLoad, window.WindowStatus);
+            if (autoStartUpload)
+                window.UploadContext.StatusContext.RunNonBlockingTask(window.UploadContext.StartAllUploads);
+        });
+
+        return window;
+    }
 
     private void S3UploadsWindow_OnClosing(object? sender, CancelEventArgs e)
     {

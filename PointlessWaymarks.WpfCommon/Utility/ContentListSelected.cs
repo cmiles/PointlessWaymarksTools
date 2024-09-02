@@ -9,16 +9,15 @@ using PointlessWaymarks.WpfCommon.Status;
 
 namespace PointlessWaymarks.WpfCommon.Utility;
 
-[StaThreadConstructorGuard]
 public class ContentListSelected<T> : INotifyPropertyChanged where T : ISelectedTextTracker
 {
     private ObservableCollection<CommandBinding>? _listBoxAppCommandBindings;
     private T? _selected;
     private List<T>? _selectedItems = [];
 
-    private ContentListSelected(StatusControlContext? statusContext = null)
+    private ContentListSelected(StatusControlContext statusContext)
     {
-        StatusContext = statusContext ?? new StatusControlContext();
+        StatusContext = statusContext;
     }
 
     public ObservableCollection<CommandBinding>? ListBoxAppCommandBindings

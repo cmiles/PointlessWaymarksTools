@@ -12,22 +12,30 @@ namespace PointlessWaymarks.WpfCommon.S3Deletions;
 [StaThreadConstructorGuard]
 public partial class S3DeletionsWindow
 {
-    public S3DeletionsWindow(IS3AccountInformation s3Info, List<S3DeletionsItem> itemsToDelete)
+    public S3DeletionsWindow()
     {
         InitializeComponent();
 
-        StatusContext = new StatusControlContext();
-
         DataContext = this;
-
-        StatusContext.RunFireAndForgetBlockingTask(async () =>
-        {
-            DeletionContext = await S3DeletionsContext.CreateInstance(StatusContext, s3Info, itemsToDelete);
-        });
     }
 
     public S3DeletionsContext? DeletionContext { get; set; }
-    public StatusControlContext StatusContext { get; set; }
+    public required StatusControlContext StatusContext { get; set; }
+
+    public static async Task<S3DeletionsWindow> CreateInstance(IS3AccountInformation s3Info,
+        List<S3DeletionsItem> itemsToDelete)
+    {
+        await ThreadSwitcher.ResumeForegroundAsync();
+
+        var window = new S3DeletionsWindow {StatusContext = await StatusControlContext.CreateInstance()};
+
+        window.StatusContext.RunFireAndForgetBlockingTask(async () =>
+        {
+            window.DeletionContext = await S3DeletionsContext.CreateInstance(window.StatusContext, s3Info, itemsToDelete);
+        });
+
+        return window;
+    }
 
     private void S3DeletionsWindow_OnClosing(object? sender, CancelEventArgs e)
     {

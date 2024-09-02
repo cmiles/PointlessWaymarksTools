@@ -24,11 +24,13 @@ public partial class HelpDisplayWindow : Window
 
     public static async Task CreateInstanceAndShow(List<string> markdown, string windowTitle)
     {
-        var factoryContext = await StatusControlContext.ResumeForegroundAsyncAndCreateInstance();
+        await ThreadSwitcher.ResumeForegroundAsync();
+
+        var factoryStatusContext = await StatusControlContext.CreateInstance();
 
         var window = new HelpDisplayWindow
         {
-            HelpContext = new HelpDisplayContext(markdown), StatusContext = factoryContext,
+            HelpContext = new HelpDisplayContext(markdown), StatusContext = factoryStatusContext,
             WindowTitle = windowTitle
         };
 
