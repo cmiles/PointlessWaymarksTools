@@ -1,4 +1,5 @@
 using MetadataExtractor;
+using Serilog;
 using XmpCore;
 
 namespace PointlessWaymarks.SpatialTools;
@@ -128,13 +129,19 @@ public static class FileMetadataTools
             return xmpLocation.HasValidLocation();
         }
 
-        var metadataDirectories = ImageMetadataReader.ReadMetadata(loopFile.FullName);
-
-        var metaLocation =
-            await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
-                false, progress);
-
-        return metaLocation.HasValidLocation();
+        try
+        {
+            var metadataDirectories = ImageMetadataReader.ReadMetadata(loopFile.FullName);
+            var metaLocation =
+                await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
+                    false, progress);
+            return metaLocation.HasValidLocation();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Trouble Reading Metadata - {0}", loopFile.FullName);
+            return false;
+        }
     }
 
     public static async Task<List<string>> FileKeywords(FileInfo fileToProcess, bool splitOnCommaAndSemiColon)
@@ -173,21 +180,29 @@ public static class FileMetadataTools
             return xmpCreatedOn.createdOnUtc;
         }
 
-        var metadataDirectories = ImageMetadataReader.ReadMetadata(fileToProcess.FullName);
-
-        var metaCreatedOn =
-            await FileMetadataEmbeddedTools.CreatedOnLocalAndUtc(metadataDirectories);
-
-        if (metaCreatedOn.createdOnUtc is null)
+        try
         {
+            var metadataDirectories = ImageMetadataReader.ReadMetadata(fileToProcess.FullName);
+
+            var metaCreatedOn =
+                await FileMetadataEmbeddedTools.CreatedOnLocalAndUtc(metadataDirectories);
+
+            if (metaCreatedOn.createdOnUtc is null)
+            {
+                progress?.Report(
+                    $"No UTC Date/Time found in file {fileToProcess.FullName} - skipping");
+                return null;
+            }
+
             progress?.Report(
-                $"No UTC Date/Time found in file {fileToProcess.FullName} - skipping");
+                $"{fileToProcess.FullName} Found UTC Time {metaCreatedOn.createdOnUtc} from file metadata");
+            return metaCreatedOn.createdOnUtc;
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Trouble Reading Metadata - {0}", fileToProcess.FullName);
             return null;
         }
-
-        progress?.Report(
-            $"{fileToProcess.FullName} Found UTC Time {metaCreatedOn.createdOnUtc} from file metadata");
-        return metaCreatedOn.createdOnUtc;
     }
 
     public static async Task<MetadataLocation> Location(FileInfo file, bool tryGetElevationIfNotInMetadata,
@@ -207,12 +222,21 @@ public static class FileMetadataTools
             return xmpLocation;
         }
 
-        var metadataDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
+        try
+        {
+            var metadataDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
 
-        var metaLocation =
-            await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
-                tryGetElevationIfNotInMetadata, progress);
+            var metaLocation =
+                await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
+                    tryGetElevationIfNotInMetadata, progress);
 
-        return metaLocation;
+            return metaLocation;
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Trouble Reading Metadata - {0}", file.FullName);
+
+            return new MetadataLocation();
+        }
     }
 }
