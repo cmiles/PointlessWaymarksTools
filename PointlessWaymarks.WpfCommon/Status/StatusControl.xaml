@@ -214,6 +214,7 @@
             Orientation="Vertical">
             <waitingSpinner:WaitingSpinnerControl
                 Margin="0,4,8,0"
+                HorizontalAlignment="Right"
                 Color1="Green"
                 Color2="Transparent"
                 Diameter="36"
