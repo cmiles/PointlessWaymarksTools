@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Markdig.Helpers;
 
 namespace PointlessWaymarks.CommonTools;
@@ -211,9 +211,9 @@ public static class DateTimeTools
 
         if (string.IsNullOrWhiteSpace(cleanedInput)) return null;
 
-        if (!MonthNameLowercaseIntMonthLookup.ContainsKey(cleanedInput)) return null;
+        if (!MonthNameLowercaseIntMonthLookup.TryGetValue(cleanedInput, out var i)) return null;
 
-        return MonthNameLowercaseIntMonthLookup[cleanedInput];
+        return i;
     }
 
     /// <summary>

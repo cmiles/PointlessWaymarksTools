@@ -1,8 +1,17 @@
-﻿using System.Reflection;
+using System.Reflection;
+using System.Text.Json;
 using System.Text.RegularExpressions;
+using Flurl.Http;
 using Serilog;
 
 namespace PointlessWaymarks.CommonTools;
+
+public class ProgramInfoJson
+{
+    public string AppName { get; set; } = string.Empty;
+    public DateTime? AppVersion  { get; set; }
+    public string InstallerUrl { get; set; } = string.Empty;
+}
 
 public static class ProgramInfoTools
 {
@@ -29,11 +38,24 @@ public static class ProgramInfoTools
         return null;
     }
 
-    public static (string? dateString, FileInfo? setupFile) LatestInstaller(string installerDirectory,
+    public static async Task<(string? dateString, string? setupFile)> LatestInstaller(string installerDirectory,
         string baseInstallerName)
     {
         if (string.IsNullOrEmpty(installerDirectory)) return (null, null);
         if (string.IsNullOrEmpty(baseInstallerName)) return (null, null);
+
+        if (installerDirectory.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+        {
+            var jsonString = installerDirectory.StartsWith("http") ? await installerDirectory.GetStringAsync() : FileAndFolderTools.ReadAllText(installerDirectory);
+
+            if (string.IsNullOrEmpty(jsonString)) return (null, null);
+
+            var fileList = JsonSerializer.Deserialize<List<ProgramInfoJson>>(jsonString);
+            var latestInstaller = fileList?.Where(x => x.AppName.Equals(installerDirectory, StringComparison.OrdinalIgnoreCase)).MaxBy(x => x.AppVersion);
+
+            if (latestInstaller?.AppVersion is null) return (null, null);
+            return (latestInstaller.AppVersion.Value.ToString("yyyy-MM-dd-HH-mm"), latestInstaller.InstallerUrl);
+        }
 
         var containingDirectory = new DirectoryInfo(installerDirectory);
 
@@ -46,9 +68,9 @@ public static class ProgramInfoTools
         var dateVersionString = Regex
             .Match(publishFile.Name, @".*--(?<dateVersion>\d\d\d\d-\d\d-\d\d-\d\d-\d\d).exe");
 
-        if (!dateVersionString.Groups.ContainsKey("dateVersion")) return (null, null);
+        if (!dateVersionString.Groups.TryGetValue("dateVersion", out var group)) return (null, null);
 
-        return (dateVersionString.Groups["dateVersion"].Value, publishFile);
+        return (group.Value, publishFile.FullName);
     }
 
     public static (string humanTitleString, string dateVersion, bool isInstalled) StandardAppInformationString(
