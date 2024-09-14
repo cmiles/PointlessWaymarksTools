@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.Xaml.Interactivity;
+using Action = System.Action;
 
 namespace PointlessWaymarks.AvaloniaToolkit.Utility;
 
