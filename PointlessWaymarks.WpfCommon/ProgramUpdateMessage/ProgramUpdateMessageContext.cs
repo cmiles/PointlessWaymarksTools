@@ -98,6 +98,8 @@ public partial class ProgramUpdateMessageContext
             var filePath = Path.Combine(GetUserDownloadDirectory(), fileName);
             await File.WriteAllBytesAsync(filePath, bytes);
 
+            localFile = filePath;
+
             Log.Information("Update File {0} saved to {1}", SetupFile, filePath);
         }
         else

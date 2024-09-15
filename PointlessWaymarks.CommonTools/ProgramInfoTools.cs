@@ -8,8 +8,11 @@ namespace PointlessWaymarks.CommonTools;
 
 public class ProgramInfoJson
 {
-    public string AppName { get; set; } = string.Empty;
-    public DateTime? AppVersion  { get; set; }
+    public string ApplicationName { get; set; } = string.Empty;
+    public string InstallerFileName { get; set; } = string.Empty;
+    public string InstallerFileSha1 { get; set; } = string.Empty;
+    public string InstallerBaseName { get; set; } = string.Empty;
+    public DateTime? ApplicationVersion { get; set; }
     public string InstallerUrl { get; set; } = string.Empty;
 }
 
@@ -51,10 +54,10 @@ public static class ProgramInfoTools
             if (string.IsNullOrEmpty(jsonString)) return (null, null);
 
             var fileList = JsonSerializer.Deserialize<List<ProgramInfoJson>>(jsonString);
-            var latestInstaller = fileList?.Where(x => x.AppName.Equals(installerDirectory, StringComparison.OrdinalIgnoreCase)).MaxBy(x => x.AppVersion);
+            var latestInstaller = fileList?.Where(x => x.InstallerBaseName.Equals(baseInstallerName, StringComparison.OrdinalIgnoreCase)).MaxBy(x => x.ApplicationVersion);
 
-            if (latestInstaller?.AppVersion is null) return (null, null);
-            return (latestInstaller.AppVersion.Value.ToString("yyyy-MM-dd-HH-mm"), latestInstaller.InstallerUrl);
+             if (latestInstaller?.ApplicationVersion is null) return (null, null);
+            return (latestInstaller.ApplicationVersion.Value.ToString("yyyy-MM-dd-HH-mm"), latestInstaller.InstallerUrl);
         }
 
         var containingDirectory = new DirectoryInfo(installerDirectory);
