@@ -254,10 +254,10 @@ public static class FileAndFolderTools
         return Task.FromResult(finalFile)!;
     }
 
-    public static string TryMakeFilenameValid(string filenameWithoutExtensionToTransform)
+    public static string TryMakeFilenameValid(string fileNameToTransform)
     {
-        return string.IsNullOrWhiteSpace(filenameWithoutExtensionToTransform)
+        return string.IsNullOrWhiteSpace(fileNameToTransform)
             ? string.Empty
-            : Regex.Replace(filenameWithoutExtensionToTransform, InvalidFileNameCharsRegexPattern(), string.Empty);
+            : Regex.Replace(fileNameToTransform, InvalidFileNameCharsRegexPattern(), string.Empty);
     }
 }

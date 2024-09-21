@@ -83,7 +83,9 @@ public static class UniqueFileTools
     {
         if (!directory.Exists) return null;
 
-        var file = new FileInfo(Path.Combine(directory.FullName, baseName));
+        var cleanedBaseName = FileAndFolderTools.TryMakeFilenameValid(baseName);
+
+        var file = new FileInfo(Path.Combine(directory.FullName, cleanedBaseName));
 
         if (!file.Exists) return file;
 
@@ -95,7 +97,7 @@ public static class UniqueFileTools
             filePostfix++;
 
             file = new FileInfo(Path.Combine(directory.FullName,
-                $"{Path.GetFileNameWithoutExtension(baseName)}-{filePostfix:000}{Path.GetExtension(baseName)}"));
+                $"{Path.GetFileNameWithoutExtension(cleanedBaseName)}-{filePostfix:000}{Path.GetExtension(cleanedBaseName)}"));
         }
 
         if (!file.Exists) return file;
@@ -110,7 +112,7 @@ public static class UniqueFileTools
             var postFix = SlugTools.RandomLowerCaseString(6);
 
             file = new FileInfo(Path.Combine(directory.FullName,
-                $"{Path.GetFileNameWithoutExtension(baseName)}-{postFix}{Path.GetExtension(baseName)}"));
+                $"{Path.GetFileNameWithoutExtension(cleanedBaseName)}-{postFix}{Path.GetExtension(cleanedBaseName)}"));
         }
 
         if (!file.Exists) return file;
