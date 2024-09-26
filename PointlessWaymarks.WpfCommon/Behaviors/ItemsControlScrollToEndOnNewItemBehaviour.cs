@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -33,7 +33,7 @@ public class ItemsControlScrollToEndOnNewItemBehaviour : Behavior<ItemsControl>
             try
             {
                 Application.Current?.Dispatcher?.BeginInvoke(
-                    (Action) (() => { ItemsControlScrollViewer.ScrollToEnd(); }), DispatcherPriority.DataBind);
+                    (Action) (() => { ItemsControlScrollViewer.ScrollToBottom(); }), DispatcherPriority.DataBind);
             }
             catch (Exception ex)
             {

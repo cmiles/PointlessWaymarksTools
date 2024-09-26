@@ -8,7 +8,7 @@ using PointlessWaymarks.WpfCommon.Utility;
 
 namespace PointlessWaymarks.WpfCommon.Behaviors;
 
-public class ListBoxAutoScrollToEndBehaviour : Behavior<ListBox>
+public class ListBoxForceToEndBehaviour : Behavior<ListBox>
 {
     private INotifyCollectionChanged? _cachedItemsSource;
     private ScrollViewer? _scrollViewer;
@@ -20,18 +20,21 @@ public class ListBoxAutoScrollToEndBehaviour : Behavior<ListBox>
 
     private void ItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action != NotifyCollectionChangedAction.Add) return;
         if (_scrollViewer is null)
         {
             _scrollViewer = XamlHelpers.GetDescendantByType(AssociatedObject, typeof(ScrollViewer)) as ScrollViewer;
-        }
-
-        if (_scrollViewer is not null)
-        {
-            if (Thread.CurrentThread == Application.Current.Dispatcher.Thread)
-                _scrollViewer.ScrollToBottom();
-            else
-                Application.Current.Dispatcher.Invoke(() => _scrollViewer.ScrollToBottom());
+            if (_scrollViewer is not null)
+                _scrollViewer.ScrollChanged += (o, args) =>
+                {
+                    if (!ReferenceEquals(args.Source, _scrollViewer)) return;
+                    if (args.ExtentHeightChange != 0)
+                    {
+                        if (Thread.CurrentThread == Application.Current.Dispatcher.Thread)
+                            _scrollViewer.ScrollToBottom();
+                        else
+                            Application.Current.Dispatcher.Invoke(() => _scrollViewer.ScrollToBottom());
+                    }
+                };
         }
     }
 
@@ -63,7 +66,6 @@ public class ListBoxAutoScrollToEndBehaviour : Behavior<ListBox>
 
             Debug.Assert(itemsSourcePropertyDescriptor != null, nameof(itemsSourcePropertyDescriptor) + " != null");
             itemsSourcePropertyDescriptor.RemoveValueChanged(AssociatedObject, ListBoxItemsSourceChanged);
-            _scrollViewer = null;
         }
 
         if (AssociatedObject.ItemsSource is INotifyCollectionChanged sourceCollection)
