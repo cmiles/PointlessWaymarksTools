@@ -8,7 +8,7 @@ namespace PointlessWaymarks.WpfCommon.StringDataEntry;
 public partial class StringDataEntryMultiLineControl
 {
     public static readonly DependencyProperty TextBoxHeightProperty = DependencyProperty.Register(nameof(TextBoxHeight),
-        typeof(double), typeof(StringDataEntryControl), new PropertyMetadata(default(double)));
+        typeof(double), typeof(StringDataEntryMultiLineControl), new PropertyMetadata(default(double)));
 
     public StringDataEntryMultiLineControl()
     {
