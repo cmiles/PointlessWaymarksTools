@@ -540,17 +540,22 @@ function singleLineChartLoadDataHandler(e) {
     //have the same scale, but having worked with this data for years I think this is a very simple
     //compromise that often works out nicely...
     const maxDistanceInMeters = Math.max(...lineElevationData.map(x => x.AccumulatedDistance));
-    const distanceFiveMileUnits = Math.floor((maxDistanceInMeters * 0.0006213711922) / 5);
-    const distanceMax = (distanceFiveMileUnits + 1) * 5;
+    const distanceChartUnits = Math.floor((maxDistanceInMeters * 0.0006213711922) / 2);
+    const distanceMax = (distanceChartUnits + 1) * 2;
 
     const maxElevationInMeters = Math.max(...lineElevationData.map(x => x.Elevation));
-    const elevationFiveThousandFeetUnits = Math.floor((maxElevationInMeters * 3.280839895) / 5000);
-    const elevationMax = (elevationFiveThousandFeetUnits + 1) * 5000;
+    const elevationMaxChartUnits = Math.floor((maxElevationInMeters * 3.280839895) / 1000);
+    const elevationMax = (elevationMaxChartUnits + 1) * 1000;
+
+    const minElevationInMeters = Math.min(...lineElevationData.map(x => x.Elevation));
+    const elevationMinChartUnits = Math.floor((minElevationInMeters * 3.280839895) / 1000);
+    const elevationMin = (elevationMinChartUnits) * 1000;
 
     //Thank you to https://www.geoapify.com/tutorial/draw-route-elevation-profile-with-chartjs for
     //the starting point on this!
 
     lineElevationChart.options.scales.x.max = distanceMax;
+    lineElevationChart.options.scales.y.max = elevationMin;
     lineElevationChart.options.scales.y.max = elevationMax;
 
     const chartData = {
