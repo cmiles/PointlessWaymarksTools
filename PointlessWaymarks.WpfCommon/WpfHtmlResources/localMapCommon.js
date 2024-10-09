@@ -555,7 +555,7 @@ function singleLineChartLoadDataHandler(e) {
     //the starting point on this!
 
     lineElevationChart.options.scales.x.max = distanceMax;
-    lineElevationChart.options.scales.y.max = elevationMin;
+    lineElevationChart.options.scales.y.min = elevationMin;
     lineElevationChart.options.scales.y.max = elevationMax;
 
     const chartData = {
