@@ -193,8 +193,10 @@ function generateBaseMaps(calTopoApiKey, bingApiKey){
     let tileLayers = [];
     let layerNames = {};
 
-    if(calTopoApiKey && calTopoApiKey.trim.length > 0){
-        let calTopoTopo = L.tileLayer('http://caltopo.com/api/${accessToken}/wmts/tile/t/{z}/{x}/{y}.png', {
+    console.log(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/t/{z}/{x}/{y}.png`);
+
+    if(calTopoApiKey && calTopoApiKey.trim().length > 0){
+        let calTopoTopo = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/t/{z}/{x}/{y}.png`, {
             attribution: 'CalTopo',
             maxNativeZoom: 16,
             maxZoom: 24,
@@ -202,20 +204,50 @@ function generateBaseMaps(calTopoApiKey, bingApiKey){
             accessToken: calTopoApiKey
         });
         tileLayers.push(calTopoTopo);
-        layerNames["CalTopo"] = calTopoTopo;
+        layerNames["CalTopo - Scanned"] = calTopoTopo;
         
-        let calTopoFs = L.tileLayer('http://caltopo.com/api/${accessToken}/wmts/tile/t/{z}/{x}/{y}.png', {
+        let calTopoFs = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/f16/{z}/{x}/{y}.png`, {
             attribution: 'CalTopo',
             maxNativeZoom: 16,
             maxZoom: 24,
-            id: 'caltopoF16a',
+            id: 'caltopoF16',
             accessToken: calTopoApiKey
         });
         tileLayers.push(calTopoFs);
         layerNames["CalTopo - FS"] = calTopoFs;
+
+        let calTopoImagery = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/imagery/{z}/{x}/{y}.png`, {
+            attribution: 'CalTopo',
+            maxNativeZoom: 16,
+            maxZoom: 24,
+            id: 'caltopoImagery',
+            accessToken: calTopoApiKey
+        });
+        tileLayers.push(calTopoImagery);
+        layerNames["CalTopo - Imagery"] = calTopoImagery;
+
+        let calTopoHistoricOne = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/1900/{z}/{x}/{y}.png`, {
+            attribution: 'CalTopo',
+            maxNativeZoom: 16,
+            maxZoom: 24,
+            id: 'calTopoH1',
+            accessToken: calTopoApiKey
+        });
+        tileLayers.push(calTopoHistoricOne);
+        layerNames["CalTopo - H1"] = calTopoHistoricOne;
+
+        let calTopoHistoricTwo = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/1930/{z}/{x}/{y}.png`, {
+            attribution: 'CalTopo',
+            maxNativeZoom: 16,
+            maxZoom: 24,
+            id: 'caltopoH2',
+            accessToken: calTopoApiKey
+        });
+        tileLayers.push(calTopoHistoricTwo);
+        layerNames["CalTopo - H2"] = calTopoHistoricTwo;
     }
     
-    if(bingApiKey && bingApiKey.trim.length > 0){
+    if(bingApiKey && bingApiKey.trim().length > 0){
         let bingAerial = L.tileLayer.bing({
             bingMapsKey: bingApiKey,
             imagerySet: 'AerialWithLabels',
@@ -523,7 +555,7 @@ function centerFeatureHandler(e) {
 
             if (l.feature?.geometry?.type === 'LineString') {
                 map.flyToBounds([[l.feature.bbox[1], l.feature.bbox[0]],
-                [l.feature.bbox[3], l.feature.bbox[2]]]);
+                    [l.feature.bbox[3], l.feature.bbox[2]]]);
             }
             l.openPopup();
         }
