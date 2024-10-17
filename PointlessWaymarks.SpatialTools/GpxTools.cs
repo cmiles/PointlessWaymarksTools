@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Globalization;
 using GeoTimeZone;
 using NetTopologySuite.Features;
@@ -38,8 +38,8 @@ public static class GpxTools
 
         var trackSegment = new GpxTrackSegment(new ImmutableGpxWaypointTable(pointList), new object());
 
-        return new GpxTrack(name, "Test", description, "Pointless Waymarks CMS",
-            ImmutableArray<GpxWebLink>.Empty, null, "Test", null, [trackSegment]);
+        return new GpxTrack(name, string.Empty, description, "Pointless Waymarks CMS",
+            ImmutableArray<GpxWebLink>.Empty, null, string.Empty, null, [trackSegment]);
     }
 
     public static Feature LineFeatureFromGpxRoute(GpxRouteInformation routeInformation)
