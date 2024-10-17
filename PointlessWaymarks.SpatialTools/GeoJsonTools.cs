@@ -3,6 +3,7 @@ using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using Newtonsoft.Json;
+using PointlessWaymarks.CommonTools;
 
 namespace PointlessWaymarks.SpatialTools;
 
@@ -129,7 +130,7 @@ public static class GeoJsonTools
         var serializer = GeoJsonSerializer.Create(new JsonSerializerSettings { Formatting = Formatting.Indented },
             Wgs84GeometryFactory(), 3);
 
-        await using var stringWriter = new StringWriter();
+        await using var stringWriter = new Utf8StringWriter();
         using var jsonWriter = new JsonTextWriter(stringWriter);
         serializer.Serialize(jsonWriter, featureCollection);
 
@@ -180,7 +181,7 @@ public static class GeoJsonTools
         var serializer = GeoJsonSerializer.Create(new JsonSerializerSettings { Formatting = Formatting.Indented },
             Wgs84GeometryFactory(), 3);
 
-        await using var stringWriter = new StringWriter();
+        await using var stringWriter = new Utf8StringWriter();
         using var jsonWriter = new JsonTextWriter(stringWriter);
         serializer.Serialize(jsonWriter, toSerialize);
 
