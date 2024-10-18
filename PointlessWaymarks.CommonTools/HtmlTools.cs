@@ -1,5 +1,6 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.FileProviders;
 
 namespace PointlessWaymarks.CommonTools;
@@ -45,6 +46,16 @@ public static class HtmlTools
         var pureCss = await reader.ReadToEndAsync().ConfigureAwait(false);
 
         return pureCss;
+    }
+
+    public static string RemoveOuterPTags(this string input)
+    {
+        if (string.IsNullOrWhiteSpace(input)) return input;
+
+        var pattern = @"^<p>(.*?)<\/p>$";
+        var match = Regex.Match(input, pattern, RegexOptions.Singleline);
+
+        return match.Success ? match.Groups[1].Value : input;
     }
 
     public static async Task<string> ToHtmlDocumentWithMinimalCss(this string body, string title, string styleBlock)
