@@ -7,6 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Metalama.Framework" Version="2024.2.28" />
+    <PackageReference Include="Metalama.Framework" Version="2024.2.29" />
   </ItemGroup>
 </Project>
