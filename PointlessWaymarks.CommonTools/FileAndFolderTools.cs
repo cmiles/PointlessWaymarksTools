@@ -20,7 +20,8 @@ public static class FileAndFolderTools
     }
 
     /// <summary>
-    /// Calculates and returns the MD5 hash of a stream - the stream position is reset to 0 before and after the hash is calculated.
+    ///     Calculates and returns the MD5 hash of a stream - the stream position is reset to 0 before and after the hash is
+    ///     calculated.
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
@@ -150,7 +151,7 @@ public static class FileAndFolderTools
     }
 
     /// <summary>
-    ///     This checks if a string is 'no url encoding needed' with the exception of spaces which are allowed
+    ///     This checks if a string is 'no url encoding needed' except for spaces which are allowed
     /// </summary>
     /// <param name="testName"></param>
     /// <returns></returns>
