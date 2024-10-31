@@ -195,7 +195,17 @@ function generateBaseMaps(calTopoApiKey, bingApiKey){
 
     console.log(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/t/{z}/{x}/{y}.png`);
 
-    if(calTopoApiKey && calTopoApiKey.trim().length > 0){
+    if (calTopoApiKey && calTopoApiKey.trim().length > 0) {
+        let calTopoMbTopo = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/mbt/{z}/{x}/{y}.png`, {
+            attribution: 'CalTopo',
+            maxNativeZoom: 16,
+            maxZoom: 24,
+            id: 'caltopoMbt',
+            accessToken: calTopoApiKey
+        });
+        tileLayers.push(calTopoMbTopo);
+        layerNames["CalTopo - MB Topo"] = calTopoMbTopo;
+
         let calTopoTopo = L.tileLayer(`https://caltopo.com/api/${calTopoApiKey}/wmts/tile/t/{z}/{x}/{y}.png`, {
             attribution: 'CalTopo',
             maxNativeZoom: 16,
