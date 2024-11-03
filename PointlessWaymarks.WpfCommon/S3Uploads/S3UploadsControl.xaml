@@ -299,7 +299,7 @@
                 </GroupBox>
                 <GroupBox Grid.Row="4" Header="Upload Errors">
                     <GroupBox.Visibility>
-                        <MultiBinding Converter="{StaticResource VisibleWhenAllTrue}">
+                        <MultiBinding Converter="{StaticResource VisibleWhenAllTrueOtherwiseCollapsedMulti}">
                             <Binding Path="UploadBatch.Completed" />
                             <Binding Path="UploadBatch.HasErrors" />
                         </MultiBinding>

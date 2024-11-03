@@ -13,7 +13,10 @@
     <valueConverters:BooleanNotToVisibilityConverter x:Key="BooleanNotToHidden" />
     <valueConverters:NullToCollapsedVisibilityConverter x:Key="NullToCollapsedVisibility" />
     <valueConverters:NotNullToCollapsedVisibilityConverter x:Key="NotNullToCollapsedVisibility" />
-    <valueConverters:VisibleWhenAllTrueOtherwiseCollapsedMultiConverter x:Key="VisibleWhenAllTrue" />
+    <valueConverters:VisibleWhenAllTrueOtherwiseCollapsedMultiConverter x:Key="VisibleWhenAllTrueOtherwiseCollapsedMulti" />
+    <valueConverters:VisibleWhenAllFalseOtherwiseCollapsedMultiConverter x:Key="VisibleWhenAllFalseOtherwiseCollapsedMulti" />
+    <valueConverters:NullOrWhiteSpaceStringToTrueConverter x:Key="NullOrWhiteSpaceStringToTrue" />
+    <valueConverters:NullOrWhiteSpaceStringToFalseConverter x:Key="NullOrWhiteSpaceStringToFalse" />
     <Style x:Key="DataEntryLabelStyle" TargetType="Label">
         <Setter Property="FontWeight" Value="DemiBold" />
     </Style>

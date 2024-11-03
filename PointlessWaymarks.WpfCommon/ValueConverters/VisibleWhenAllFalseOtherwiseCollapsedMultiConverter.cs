@@ -1,10 +1,10 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
 namespace PointlessWaymarks.WpfCommon.ValueConverters;
 
-public class VisibleWhenAllTrueOtherwiseCollapsedMultiConverter : IMultiValueConverter
+public class VisibleWhenAllFalseOtherwiseCollapsedMultiConverter : IMultiValueConverter
 {
     public object? Convert(object[]? values, Type? targetType, object? parameter, CultureInfo culture)
     {
@@ -13,7 +13,7 @@ public class VisibleWhenAllTrueOtherwiseCollapsedMultiConverter : IMultiValueCon
 
         foreach (var valueLoop in values)
         {
-            if (valueLoop is true) continue;
+            if (valueLoop is false) continue;
             return Visibility.Collapsed;
         }
 
