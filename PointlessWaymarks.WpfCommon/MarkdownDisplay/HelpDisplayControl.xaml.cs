@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using PointlessWaymarks.WpfCommon.Utility;
 
 namespace PointlessWaymarks.WpfCommon.MarkdownDisplay;
@@ -15,7 +15,8 @@ public partial class HelpDisplayControl
 
     private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(e.Parameter.ToString())) return;
-        ProcessHelpers.OpenUrlInExternalBrowser(e.Parameter.ToString());
+        var url = e.Parameter.ToString();
+        if (string.IsNullOrWhiteSpace(url)) return;
+        ProcessHelpers.OpenUrlInExternalBrowser(url);
     }
 }

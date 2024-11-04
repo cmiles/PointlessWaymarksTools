@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using PointlessWaymarks.CmsWpfControls.DropdownDataEntry;
 using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.ChangesAndValidation;
@@ -75,6 +74,5 @@ public partial class StringDropdownDataEntryContext : IHasChanges, IHasValidatio
     {
         if (!Choices.Any()) SelectedItem = null;
         if (Choices.Any(x => x.DataString.Equals(userValue))) SelectedItem = Choices.First(x => x.DataString.Equals(userValue));
-        return;
     }
 }

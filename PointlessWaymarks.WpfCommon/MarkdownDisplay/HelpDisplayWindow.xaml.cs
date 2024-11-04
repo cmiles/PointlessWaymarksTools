@@ -1,4 +1,3 @@
-using System.Windows;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 using PointlessWaymarks.WpfCommon.Utility;
@@ -9,7 +8,7 @@ namespace PointlessWaymarks.WpfCommon.MarkdownDisplay;
 ///     Interaction logic for HelpDisplayWindow.xaml
 /// </summary>
 [NotifyPropertyChanged]
-public partial class HelpDisplayWindow : Window
+public partial class HelpDisplayWindow
 {
     public HelpDisplayWindow()
     {

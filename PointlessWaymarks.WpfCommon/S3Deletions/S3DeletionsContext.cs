@@ -152,7 +152,7 @@ public partial class S3DeletionsContext
             return;
         }
 
-        var itemsForExcel = items.Select(x => new { x.BucketName, S3ObjectKey = x.S3ObjectKey, x.HasError, x.ErrorMessage })
+        var itemsForExcel = items.Select(x => new { x.BucketName, x.S3ObjectKey, x.HasError, x.ErrorMessage })
             .ToList();
 
         ExcelTools.ToExcelFileAsTable(itemsForExcel.Cast<object>().ToList(),

@@ -68,13 +68,13 @@ public partial class FileListContext : IDropTarget
 
         if (dropData is not DataObject data)
         {
-            StatusContext.ToastWarning("The program didn't find file information in the dropped info?");
+            await StatusContext.ToastWarning("The program didn't find file information in the dropped info?");
             return;
         }
 
         if (data.GetData(DataFormats.FileDrop) is not string[] fileData || !fileData.Any())
         {
-            StatusContext.ToastWarning("The program didn't find files in the dropped info?");
+            await StatusContext.ToastWarning("The program didn't find files in the dropped info?");
             return;
         }
 
@@ -169,7 +169,7 @@ public partial class FileListContext : IDropTarget
 
         if (!folderPicker.SelectedPaths.Any())
         {
-            StatusContext.ToastWarning("No directories selected?");
+            await StatusContext.ToastWarning("No directories selected?");
             return;
         }
 
@@ -186,7 +186,7 @@ public partial class FileListContext : IDropTarget
 
             if (!loopDirectory.Exists)
             {
-                StatusContext.ToastError($"{loopDirectory.FullName} doesn't exist?");
+                await StatusContext.ToastError($"{loopDirectory.FullName} doesn't exist?");
                 continue;
             }
 
@@ -219,7 +219,7 @@ public partial class FileListContext : IDropTarget
 
         if (!folderPicker.SelectedPaths.Any())
         {
-            StatusContext.ToastWarning("No directories selected?");
+            await StatusContext.ToastWarning("No directories selected?");
             return;
         }
 
@@ -236,7 +236,7 @@ public partial class FileListContext : IDropTarget
 
             if (!loopDirectory.Exists)
             {
-                StatusContext.ToastError($"{loopDirectory.FullName} doesn't exist?");
+                await StatusContext.ToastError($"{loopDirectory.FullName} doesn't exist?");
                 continue;
             }
 
@@ -273,7 +273,7 @@ public partial class FileListContext : IDropTarget
 
         if (toRemove.Count <= 0)
         {
-            StatusContext.ToastWarning("No Files Selected to Delete");
+            await StatusContext.ToastWarning("No Files Selected to Delete");
             return;
         }
 
@@ -287,7 +287,7 @@ public partial class FileListContext : IDropTarget
 
         if (SelectedFile is not { Exists: true, Directory.Exists: true })
         {
-            StatusContext.ToastWarning("No Selected File or Selected File no longer exists?");
+            await StatusContext.ToastWarning("No Selected File or Selected File no longer exists?");
             return;
         }
 
@@ -304,7 +304,7 @@ public partial class FileListContext : IDropTarget
 
         if (SelectedFile is not { Exists: true, Directory.Exists: true })
         {
-            StatusContext.ToastWarning("No Selected File or Selected File no longer exists?");
+            await StatusContext.ToastWarning("No Selected File or Selected File no longer exists?");
             return;
         }
 

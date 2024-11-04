@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Windows;
 
 namespace PointlessWaymarks.WpfCommon.Utility;
@@ -16,12 +16,12 @@ public static class HtmlClipboardHelpers
     /// <summary>
     ///     html comment to point the end of html  fragment
     /// </summary>
-    public const string EndFragment = @"<!--EndFragment-->";
+    public const string EndFragment = "<!--EndFragment-->";
 
     /// <summary>
     ///     The string contains index references to  other spots in the string, so we need placeholders so we can compute the
     ///     offsets. <br />
-    ///     The  <![CDATA[<<<<<<<]]>_ strings are just placeholders.  We'll back-patch them actual values afterwards. <br />
+    ///     The  <![CDATA[<<<<<<<]]>_ strings are just placeholders.  We'll back-patch them actual values afterward. <br />
     ///     The string layout  (<![CDATA[<<<]]>) also ensures that it can't appear in the body  of the html because the <![CDATA[<]]>
     ///     <br />
     ///     character must be escaped. <br />
@@ -70,7 +70,7 @@ EndSelection:<<<<<<<<4";
     ///     <para>
     ///         Windows Clipboard works with UTF-8  Unicode encoding while .NET strings use with UTF-16 so for clipboard to
     ///         correctly
-    ///         decode Unicode string added to it from  .NET we needs to be re-encoded it using UTF-8 encoding.
+    ///         decode Unicode string added to it from  .NET we need to re-encoded it using UTF-8 encoding.
     ///     </para>
     ///     <para>
     ///         Builds the CF_HTML header correctly for  all possible HTMLs<br />

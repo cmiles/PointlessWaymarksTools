@@ -1,15 +1,12 @@
-﻿using System.Windows.Controls;
+namespace PointlessWaymarks.WpfCommon.ExistingDirectoryDataEntry;
 
-namespace PointlessWaymarks.WpfCommon.ExistingDirectoryDataEntry
+/// <summary>
+///     Interaction logic for DirectoryDataEntryControl.xaml
+/// </summary>
+public partial class ExistingDirectoryDataEntryControl
 {
-    /// <summary>
-    /// Interaction logic for DirectoryDataEntryControl.xaml
-    /// </summary>
-    public partial class ExistingDirectoryDataEntryControl : UserControl
+    public ExistingDirectoryDataEntryControl()
     {
-        public ExistingDirectoryDataEntryControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

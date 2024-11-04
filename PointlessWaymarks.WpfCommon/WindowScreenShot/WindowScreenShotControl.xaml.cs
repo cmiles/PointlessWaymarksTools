@@ -33,7 +33,7 @@ public partial class WindowScreenShotControl
             if (statusContext != null)
             {
                 if (!result)
-                    statusContext.ToastError("Problem Copying Window to Clipboard");
+                    await statusContext.ToastError("Problem Copying Window to Clipboard");
             }
         });
 

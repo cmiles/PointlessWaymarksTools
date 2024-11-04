@@ -1,9 +1,9 @@
 using PointlessWaymarks.LlamaAspects;
 
-namespace PointlessWaymarks.CmsWpfControls.DropdownDataEntry;
+namespace PointlessWaymarks.WpfCommon.StringDropdownDataEntry;
 
 [NotifyPropertyChanged]
-public class DropDownDataChoice
+public partial class DropDownDataChoice
 {
     public string DataString { get; set; } = string.Empty;
     public string DisplayString { get; set; } = string.Empty;

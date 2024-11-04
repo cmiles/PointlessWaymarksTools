@@ -62,25 +62,25 @@ public partial class StatusControlContext
     public RelayCommand UserStringEntryCancelledResponseCommand { get; set; }
 
 
-    private void BlockTaskCompleted(Task obj)
+    private async Task BlockTaskCompleted(Task obj)
     {
         DecrementBlockingTasks();
 
         if (obj.IsCanceled)
         {
-            ToastWarning("Canceled Task");
+            await ToastWarning("Canceled Task");
             return;
         }
 
         if (obj.IsFaulted)
         {
-            ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception ?? new Exception("Unknown Error"))}");
-            Task.Run(() => Log.Error(obj.Exception, "BlockTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            await ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception ?? new Exception("Unknown Error"))}");
+            Log.Error(obj.Exception, "BlockTaskCompleted Exception - Status Context Id: {ContextId}",
+                StatusControlContextId);
         }
     }
 
-    private void BlockTaskCompleted(Task obj, CancellationTokenSource cancellationSource)
+    private async Task BlockTaskCompleted(Task obj, CancellationTokenSource cancellationSource)
     {
         DecrementBlockingTasks();
 
@@ -97,15 +97,15 @@ public partial class StatusControlContext
 
         if (obj.IsCanceled)
         {
-            ToastWarning("Canceled Task");
+            await ToastWarning("Canceled Task");
             return;
         }
 
         if (obj.IsFaulted)
         {
-            ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
-            Task.Run(() => Log.Error(obj.Exception, "BlockTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            await ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
+            Log.Error(obj.Exception, "BlockTaskCompleted Exception - Status Context Id: {ContextId}",
+                StatusControlContextId);
         }
     }
 
@@ -131,17 +131,12 @@ public partial class StatusControlContext
         {
             await ShowMessageWithOkButton("Error", FirstNonSeeInnerMessage(obj.Exception));
 
-#pragma warning disable 4014
-            // Intended as Fire and Forget
-            Task.Run(() => Log.Error(obj.Exception,
-#pragma warning restore 4014
-                "FireAndForgetBlockingTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            Log.Error(obj.Exception, "FireAndForgetBlockingTaskCompleted Exception - Status Context Id: {ContextId}", StatusControlContextId);
         }
     }
 
 
-    private void FireAndForgetNonBlockingTaskCompleted(Task obj)
+    private async Task FireAndForgetNonBlockingTaskCompleted(Task obj)
     {
         DecrementNonBlockingTasks();
 
@@ -149,25 +144,25 @@ public partial class StatusControlContext
 
         if (obj.IsFaulted)
         {
-            ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
+            await ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
 
-            Task.Run(() => Log.Error(obj.Exception,
+            Log.Error(obj.Exception,
                 "FireAndForgetNonBlockingTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+                StatusControlContextId);
         }
     }
 
-    private void FireAndForgetWithToastOnErrorCompleted(Task obj)
+    private async Task FireAndForgetWithToastOnErrorCompleted(Task obj)
     {
         if (obj.IsCanceled) return;
 
         if (obj.IsFaulted)
         {
-            ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
+            await ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
 
-            Task.Run(() => Log.Error(obj.Exception,
+            Log.Error(obj.Exception,
                 "FireAndForgetNonBlockingTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+                StatusControlContextId);
         }
     }
 
@@ -208,22 +203,22 @@ public partial class StatusControlContext
         NonBlockingTaskAreRunning = _countOfRunningNonBlockingTasks > 0;
     }
 
-    private void NonBlockTaskCompleted(Task obj)
+    private async Task NonBlockTaskCompleted(Task obj)
     {
         DecrementNonBlockingTasks();
 
         if (obj.IsCanceled)
         {
-            ToastWarning("Canceled Task");
+            await ToastWarning("Canceled Task");
             return;
         }
 
         if (obj.IsFaulted)
         {
-            ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
+            await ToastError($"Error: {FirstNonSeeInnerMessage(obj.Exception)}");
 
-            Task.Run(() => Log.Error(obj.Exception, "NonBlockTaskCompleted Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            Log.Error(obj.Exception, "NonBlockTaskCompleted Exception - Status Context Id: {ContextId}",
+                StatusControlContextId);
         }
     }
 
@@ -365,8 +360,8 @@ public partial class StatusControlContext
             DecrementNonBlockingTasks();
             ToastError($"Error: {FirstNonSeeInnerMessage(e)}");
 
-            Task.Run(() => Log.Error(e, "RunFireAndForgetNonBlockingTask Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            Log.Error(e, "RunFireAndForgetNonBlockingTask Exception - Status Context Id: {ContextId}",
+                StatusControlContextId);
         }
     }
 
@@ -381,8 +376,8 @@ public partial class StatusControlContext
             DecrementNonBlockingTasks();
             ToastError($"Error: {FirstNonSeeInnerMessage(e)}");
 
-            Task.Run(() => Log.Error(e, "RunFireAndForgetNonBlockingTask Exception - Status Context Id: {ContextId}",
-                StatusControlContextId));
+            Log.Error(e, "RunFireAndForgetNonBlockingTask Exception - Status Context Id: {ContextId}",
+                StatusControlContextId);
         }
     }
 

@@ -40,7 +40,7 @@ public class WebViewGeneratedVirtualDomainBehavior : Behavior<WebView2>
     
     
     private string _lastToWebNavigationUrl = "";
-    private SemaphoreSlim _loadGuard = new(1, 1);
+    private readonly SemaphoreSlim _loadGuard = new(1, 1);
     
     // Example Usage in Xaml
     // <b:Interaction.Behaviors>
