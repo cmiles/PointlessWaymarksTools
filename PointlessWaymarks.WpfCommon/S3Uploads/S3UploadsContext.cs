@@ -36,11 +36,6 @@ public partial class S3UploadsContext
     public S3UploadsUploadBatch? UploadBatch { get; set; }
     public IS3AccountInformation UploadS3Information { get; set; }
 
-    public List<S3UploadsItem> SelectedListItems()
-    {
-        return ListSelection?.SelectedItems ?? [];
-    }
-
     [NonBlockingCommand]
     public async Task ClearCompletedUploadBatch()
     {
@@ -86,7 +81,7 @@ public partial class S3UploadsContext
         var fileName = UploadS3Information.FullFileNameForJsonUploadInformation();
 
         var jsonInfo = JsonSerializer.Serialize(items.Select(x =>
-            new S3UploadFileEntry(x.FileToUpload.FullName, x.AmazonObjectKey, x.UploadS3Information.BucketName(),
+            new S3UploadFileEntry(x.FileToUpload.FullName, x.S3ObjectKey, x.UploadS3Information.BucketName(),
                 x.UploadS3Information.ServiceUrl(), x.Note)));
 
         var file = new FileInfo(fileName);
@@ -102,13 +97,13 @@ public partial class S3UploadsContext
 
         if (items == null || !items.Any())
         {
-            StatusContext.ToastError("No items?");
+            await StatusContext.ToastError("No items?");
             return;
         }
 
         var itemsForClipboard = string.Join(Environment.NewLine,
             items.Select(x =>
-                    $"{x.FileToUpload.FullName}\t{x.UploadS3Information.BucketName()}\t{x.AmazonObjectKey}\tCompleted: {x.Completed}\tHas Error: {x.HasError}\t Error: {x.ErrorMessage}")
+                    $"{x.FileToUpload.FullName}\t{x.UploadS3Information.BucketName()}\t{x.S3ObjectKey}\tCompleted: {x.Completed}\tHas Error: {x.HasError}\t Error: {x.ErrorMessage}")
                 .ToList());
 
         await ThreadSwitcher.ResumeForegroundAsync();
@@ -117,13 +112,18 @@ public partial class S3UploadsContext
 
         await ThreadSwitcher.ResumeBackgroundAsync();
 
-        StatusContext.ToastSuccess("Items added to the Clipboard");
+        await StatusContext.ToastSuccess("Items added to the Clipboard");
+    }
+
+    public List<S3UploadsItem> SelectedListItems()
+    {
+        return ListSelection?.SelectedItems ?? [];
     }
 
     [NonBlockingCommand]
     public async Task ToClipboardAllItems()
     {
-        await ItemsToClipboard(Items?.ToList());
+        await ItemsToClipboard(Items.ToList());
     }
 
     [NonBlockingCommand]
@@ -135,7 +135,7 @@ public partial class S3UploadsContext
     [NonBlockingCommand]
     public async Task ToExcelAllItems()
     {
-        await ItemsToExcel(Items?.ToList());
+        await ItemsToExcel(Items.ToList());
     }
 
     [NonBlockingCommand]
@@ -147,7 +147,7 @@ public partial class S3UploadsContext
     // ReSharper disable NotAccessedPositionalProperty.Global Properties accessed by reflection
     public record S3ExcelUploadInformation(
         string FullName,
-        string AmazonObjectKey,
+        string S3ObjectKey,
         string BucketName,
         bool Completed,
         bool HasError,
@@ -160,11 +160,11 @@ public partial class S3UploadsContext
 
         if (items == null || !items.Any())
         {
-            StatusContext.ToastError("No items?");
+            await StatusContext.ToastError("No items?");
             return;
         }
 
-        var itemsForExcel = items.Select(x => new S3ExcelUploadInformation(x.FileToUpload.FullName, x.AmazonObjectKey,
+        var itemsForExcel = items.Select(x => new S3ExcelUploadInformation(x.FileToUpload.FullName, x.S3ObjectKey,
             x.UploadS3Information.BucketName(), x.Completed, x.HasError, x.ErrorMessage)).ToList();
 
         ExcelTools.ToExcelFileAsTable(itemsForExcel.Cast<object>().ToList(),
@@ -193,7 +193,7 @@ public partial class S3UploadsContext
 
         if (toOpen == null)
         {
-            StatusContext.ToastWarning("Nothing selection or Item doesn't exist???");
+            await StatusContext.ToastWarning("Nothing selection or Item doesn't exist???");
             return;
         }
 
@@ -208,7 +208,7 @@ public partial class S3UploadsContext
 
         if (canDelete.Count == 0)
         {
-            StatusContext.ToastError("Everything selected is queued or uploading - can't delete anything...");
+            await StatusContext.ToastError("Everything selected is queued or uploading - can't delete anything...");
             return;
         }
 
@@ -218,7 +218,7 @@ public partial class S3UploadsContext
 
         await ThreadSwitcher.ResumeBackgroundAsync();
 
-        StatusContext.ToastSuccess($"{canDelete.Count} Items Removed");
+        await StatusContext.ToastSuccess($"{canDelete.Count} Items Removed");
     }
 
     [NonBlockingCommand]
@@ -233,7 +233,7 @@ public partial class S3UploadsContext
     {
         if (!Items.Any(x => x is { Completed: true, HasError: false }))
         {
-            StatusContext.ToastError("No Items to Save?");
+            await StatusContext.ToastError("No Items to Save?");
             return;
         }
 
@@ -252,13 +252,13 @@ public partial class S3UploadsContext
     {
         if (UploadBatch is { Completed: false })
         {
-            StatusContext.ToastWarning("Wait for the current Upload Batch to Complete...");
+            await StatusContext.ToastWarning("Wait for the current Upload Batch to Complete...");
             return;
         }
 
         if (!Items.Any())
         {
-            StatusContext.ToastError("Nothing Selected...");
+            await StatusContext.ToastError("Nothing Selected...");
             return;
         }
 
@@ -287,13 +287,13 @@ public partial class S3UploadsContext
     {
         if (UploadBatch is { Completed: false })
         {
-            StatusContext.ToastWarning("Wait for the current Upload Batch to Complete...");
+            await StatusContext.ToastWarning("Wait for the current Upload Batch to Complete...");
             return;
         }
 
         if (!SelectedListItems().Any())
         {
-            StatusContext.ToastError("Nothing Selected...");
+            await StatusContext.ToastError("Nothing Selected...");
             return;
         }
 

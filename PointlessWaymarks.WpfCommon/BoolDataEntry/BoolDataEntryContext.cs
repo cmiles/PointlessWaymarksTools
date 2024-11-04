@@ -22,9 +22,7 @@ public partial class BoolDataEntryContext : IHasChanges, IHasValidationIssues
     // ReSharper disable once UnusedMember.Global
     public bool UserValueIsNullable => false;
     public List<Func<bool, IsValid>> ValidationFunctions { get; set; } = [];
-
     public string ValidationMessage { get; set; } = string.Empty;
-
     public bool HasChanges { get; set; }
     public bool HasValidationIssues { get; set; }
 

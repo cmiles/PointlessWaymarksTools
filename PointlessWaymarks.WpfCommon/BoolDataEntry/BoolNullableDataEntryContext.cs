@@ -21,10 +21,7 @@ public partial class BoolNullableDataEntryContext : IHasChanges, IHasValidationI
 
     // ReSharper disable once UnusedMember.Global
     public bool UserValueIsNullable => true;
-
-    public List<Func<bool?, IsValid>> ValidationFunctions { get; set; } =
-        [];
-
+    public List<Func<bool?, IsValid>> ValidationFunctions { get; set; } = [];
     public string ValidationMessage { get; set; } = string.Empty;
     public bool HasChanges { get; set; }
     public bool HasValidationIssues { get; set; }
@@ -57,10 +54,10 @@ public partial class BoolNullableDataEntryContext : IHasChanges, IHasValidationI
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(e.PropertyName)) return;
-        
+
         if (e.PropertyName.Equals(nameof(HasChanges)) || e.PropertyName.Equals(nameof(HasValidationIssues)) ||
             e.PropertyName.Equals(nameof(ValidationMessage))) return;
-        
+
         CheckForChangesAndValidate();
     }
 }

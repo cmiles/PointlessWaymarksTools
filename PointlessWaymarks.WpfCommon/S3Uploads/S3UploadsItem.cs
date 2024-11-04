@@ -11,16 +11,16 @@ namespace PointlessWaymarks.WpfCommon.S3Uploads;
 [NotifyPropertyChanged]
 public partial class S3UploadsItem : ISelectedTextTracker
 {
-    public S3UploadsItem(IS3AccountInformation s3Info, FileInfo fileToUpload, string amazonObjectKey, string note)
+    public S3UploadsItem(IS3AccountInformation s3Info, FileInfo fileToUpload, string s3ObjectKey, string note)
     {
         UploadS3Information = s3Info;
         BucketName = UploadS3Information.BucketName();
         FileToUpload = fileToUpload;
-        AmazonObjectKey = amazonObjectKey;
+        S3ObjectKey = s3ObjectKey;
         Note = note;
     }
 
-    public string AmazonObjectKey { get; set; }
+    public string S3ObjectKey { get; set; }
     public string BucketName { get; }
     public bool Completed { get; set; }
     public string ErrorMessage { get; set; } = string.Empty;
@@ -71,7 +71,7 @@ public partial class S3UploadsItem : ISelectedTextTracker
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(AmazonObjectKey))
+        if (string.IsNullOrWhiteSpace(S3ObjectKey))
         {
             HasError = true;
             ErrorMessage = "Amazon Key is blank?";
@@ -84,7 +84,7 @@ public partial class S3UploadsItem : ISelectedTextTracker
 
             var uploadRequest = new TransferUtilityUploadRequest
             {
-                BucketName = UploadS3Information.BucketName(), FilePath = FileToUpload.FullName, Key = AmazonObjectKey
+                BucketName = UploadS3Information.BucketName(), FilePath = FileToUpload.FullName, Key = S3ObjectKey
             };
 
             if (UploadS3Information.S3Provider() == S3Providers.Cloudflare) uploadRequest.DisablePayloadSigning = true;
@@ -107,7 +107,7 @@ public partial class S3UploadsItem : ISelectedTextTracker
                                 new TransferUtilityUploadRequest
                                 {
                                     BucketName = UploadS3Information.BucketName(), FilePath = FileToUpload.FullName,
-                                    Key = AmazonObjectKey
+                                    Key = S3ObjectKey
                                 };
 
                             if (UploadS3Information.S3Provider() == S3Providers.Cloudflare)

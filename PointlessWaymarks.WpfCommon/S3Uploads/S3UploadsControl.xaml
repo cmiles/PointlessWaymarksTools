@@ -75,7 +75,7 @@
                             <TextBox.Text>
                                 <MultiBinding Mode="OneWay" StringFormat="To: {0}/{1}">
                                     <Binding Path="BucketName" />
-                                    <Binding Path="AmazonObjectKey" />
+                                    <Binding Path="S3ObjectKey" />
                                 </MultiBinding>
                             </TextBox.Text>
                             <b:Interaction.Behaviors>
@@ -157,7 +157,7 @@
                             <TextBox.Text>
                                 <MultiBinding Mode="OneWay" StringFormat="To: {0}/{1}">
                                     <Binding Path="BucketName" />
-                                    <Binding Path="AmazonObjectKey" />
+                                    <Binding Path="S3ObjectKey" />
                                 </MultiBinding>
                             </TextBox.Text>
                             <b:Interaction.Behaviors>

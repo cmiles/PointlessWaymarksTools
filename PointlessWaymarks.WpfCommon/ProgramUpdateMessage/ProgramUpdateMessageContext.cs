@@ -88,7 +88,7 @@ public partial class ProgramUpdateMessageContext
     [BlockingCommand]
     public async Task Update()
     {
-        var localFile = string.Empty;
+        string localFile;
 
         if (SetupFile.StartsWith("http", StringComparison.OrdinalIgnoreCase))
         {

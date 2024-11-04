@@ -71,28 +71,28 @@ public partial class S3DeletionsContext
         var totalCount = itemsToDelete.Count;
 
         //Sorted items as a quick way to delete the deepest items first
-        var sortedItems = itemsToDelete.OrderByDescending(x => x.AmazonObjectKey.Count(y => y == '/'))
-            .ThenByDescending(x => x.AmazonObjectKey.Length)
-            .ThenByDescending<S3DeletionsItem, string>(x => x.AmazonObjectKey).ToList();
+        var sortedItems = itemsToDelete.OrderByDescending(x => x.S3ObjectKey.Count(y => y == '/'))
+            .ThenByDescending(x => x.S3ObjectKey.Length)
+            .ThenByDescending<S3DeletionsItem, string>(x => x.S3ObjectKey).ToList();
 
         foreach (var loopDeletionItems in sortedItems)
         {
             if (cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
 
             if (++loopCount % 10 == 0)
-                progress.Report($"S3 Deletion {loopCount} of {totalCount} - {loopDeletionItems.AmazonObjectKey}");
+                progress.Report($"S3 Deletion {loopCount} of {totalCount} - {loopDeletionItems.S3ObjectKey}");
 
             try
             {
                 await s3Client.DeleteObjectAsync(
                     new DeleteObjectRequest
                     {
-                        BucketName = loopDeletionItems.BucketName, Key = loopDeletionItems.AmazonObjectKey
+                        BucketName = loopDeletionItems.BucketName, Key = loopDeletionItems.S3ObjectKey
                     }, cancellationToken);
             }
             catch (Exception e)
             {
-                progress.Report($"S3 Deletion Error - {loopDeletionItems.AmazonObjectKey} - {e.Message}");
+                progress.Report($"S3 Deletion Error - {loopDeletionItems.S3ObjectKey} - {e.Message}");
                 loopDeletionItems.HasError = true;
                 loopDeletionItems.ErrorMessage = e.Message;
             }
@@ -134,7 +134,7 @@ public partial class S3DeletionsContext
         }
 
         var itemsForClipboard = string.Join(Environment.NewLine,
-            items.Select(x => $"{x.BucketName}\t{x.AmazonObjectKey}\tHas Error: {x.HasError}\t Error: {x.ErrorMessage}")
+            items.Select(x => $"{x.BucketName}\t{x.S3ObjectKey}\tHas Error: {x.HasError}\t Error: {x.ErrorMessage}")
                 .ToList());
 
         await ThreadSwitcher.ResumeForegroundAsync();
@@ -152,7 +152,7 @@ public partial class S3DeletionsContext
             return;
         }
 
-        var itemsForExcel = items.Select(x => new { x.BucketName, x.AmazonObjectKey, x.HasError, x.ErrorMessage })
+        var itemsForExcel = items.Select(x => new { x.BucketName, S3ObjectKey = x.S3ObjectKey, x.HasError, x.ErrorMessage })
             .ToList();
 
         ExcelTools.ToExcelFileAsTable(itemsForExcel.Cast<object>().ToList(),
