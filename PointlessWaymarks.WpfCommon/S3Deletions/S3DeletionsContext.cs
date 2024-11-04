@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
-using Amazon.S3;
 using Amazon.S3.Model;
-using CommunityToolkit.Mvvm.ComponentModel;
 using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.CommonTools.S3;
 using PointlessWaymarks.LlamaAspects;
@@ -31,7 +29,8 @@ public partial class S3DeletionsContext
     public static async Task<S3DeletionsContext> CreateInstance(StatusControlContext? statusContext,
         IS3AccountInformation s3Info, List<S3DeletionsItem> itemsToDelete)
     {
-        var newControl = new S3DeletionsContext(statusContext, s3Info);
+        var factoryContext = await StatusControlContext.CreateInstance(statusContext);
+        var newControl = new S3DeletionsContext(factoryContext, s3Info);
         await newControl.LoadData(itemsToDelete);
         return newControl;
     }
@@ -41,30 +40,30 @@ public partial class S3DeletionsContext
     {
         if (!itemsToDelete.Any())
         {
-            StatusContext.ToastError("Nothing to Delete?");
+            await StatusContext.ToastError("Nothing to Delete?");
             return;
         }
 
-        progress.Report("Getting Amazon Credentials");
-        
+        progress.Report("Getting S3 Credentials");
+
         var bucket = UploadS3Information.BucketName();
         var serviceUrl = UploadS3Information.ServiceUrl();
-        
+
         if (string.IsNullOrWhiteSpace(bucket))
         {
-            StatusContext.ToastError("S3 Bucket is Blank?");
+            await StatusContext.ToastError("S3 Bucket is Blank?");
             return;
         }
-        
+
         if (string.IsNullOrWhiteSpace(serviceUrl))
         {
-            StatusContext.ToastError("S3 Service URL is empty?");
+            await StatusContext.ToastError("S3 Service URL is empty?");
             return;
         }
 
         if (cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
 
-        progress.Report("Getting Amazon Client");
+        progress.Report("Getting S3 Client");
 
         var s3Client = UploadS3Information.S3Client();
 
@@ -113,14 +112,14 @@ public partial class S3DeletionsContext
     [BlockingCommand]
     public async Task DeleteAll(CancellationToken cancellationToken)
     {
-        await Delete( Items?.ToList() ?? [], cancellationToken,
+        await Delete(Items?.ToList() ?? [], cancellationToken,
             StatusContext.ProgressTracker());
     }
 
     [BlockingCommand]
     public async Task DeleteSelected(CancellationToken cancellationToken)
     {
-        await Delete( SelectedItems.ToList(), cancellationToken,
+        await Delete(SelectedItems.ToList(), cancellationToken,
             StatusContext.ProgressTracker());
     }
 
@@ -130,7 +129,7 @@ public partial class S3DeletionsContext
 
         if (items == null || !items.Any())
         {
-            StatusContext.ToastError("No items?");
+            await StatusContext.ToastError("No items?");
             return;
         }
 
@@ -149,7 +148,7 @@ public partial class S3DeletionsContext
 
         if (items == null || !items.Any())
         {
-            StatusContext.ToastError("No items?");
+            await StatusContext.ToastError("No items?");
             return;
         }
 
