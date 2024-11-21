@@ -1,5 +1,6 @@
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using PointlessWaymarks.CommonTools;
 
 namespace PointlessWaymarks.SpatialTools;
 
@@ -37,7 +38,7 @@ public static class LineTools
 
         for (var i = 1; i < lineCoordinates.Count; i++)
         {
-            var elevationChange = lineCoordinates[i - 1].Z - lineCoordinates[i].Z;
+            var elevationChange = (lineCoordinates[i].Z - lineCoordinates[i - 1].Z).MetersToFeet();
             switch (elevationChange)
             {
                 case > 0:
