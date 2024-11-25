@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <UseWPF>true</UseWPF>
@@ -22,6 +22,7 @@
         <None Remove="Icons\camera-outline.svg" />
         <None Remove="Icons\close.svg" />
         <None Remove="Icons\file-code-outline.svg" />
+        <None Remove="Icons\file-jpg-box.svg" />
         <None Remove="Icons\folder-file-outline.svg" />
         <None Remove="Icons\home-circle.svg" />
         <None Remove="Icons\image-outline.svg" />
@@ -66,6 +67,7 @@
         <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
         <PackageReference Include="PhotoSauce.MagicScaler" Version="0.14.2" />
         <PackageReference Include="SharpVectors.Wpf" Version="1.8.4.2" />
+        <PackageReference Include="SkiaSharp" Version="2.88.9" />
         <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
         <PackageReference Include="TypeSupport" Version="1.2.0" />
         <PackageReference Include="WpfScreenHelper" Version="2.1.1" />
@@ -107,6 +109,7 @@
         <Resource Include="Icons\camera-outline.svg" />
         <Resource Include="Icons\close.svg" />
         <Resource Include="Icons\file-code-outline.svg" />
+        <Resource Include="Icons\file-jpg-box.svg" />
         <Resource Include="Icons\folder-file-outline.svg" />
         <Resource Include="Icons\home-circle.svg" />
         <Resource Include="Icons\image-outline.svg" />
