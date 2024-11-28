@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using OneOf;
 using OneOf.Types;
@@ -84,74 +85,9 @@ public static class WebViewToJpg
             await webContentWebView.CoreWebView2.ExecuteScriptAsync(scrollToTopFunction);
             await Task.Delay(1000);
 
-            string screenshotParamsJson;
-
-            if (i == 0)
-            {
-                var settings = new
-                {
-                    format = "jpeg",
-                    fromSurface = true,
-                    captureBeyondViewport = true
-                };
-                screenshotParamsJson = JsonSerializer.Serialize(settings);
-            }
-            else
-            {
-                var clip = new
-                {
-                    x = 0,
-                    y = i * (imageViewportHeight - overlap),
-                    width = viewportWidth + 40,
-                    height = Math.Min(imageViewportHeight, documentScrollHeight - i * (imageViewportHeight - overlap)),
-                    scale = 1
-                };
-
-                var settings = new
-                {
-                    format = "jpeg",
-                    clip,
-                    fromSurface = true,
-                    captureBeyondViewport = true
-                };
-                screenshotParamsJson = JsonSerializer.Serialize(settings);
-            }
-
-            await ThreadSwitcher.ResumeForegroundAsync();
-
-            string imageResultsJson;
-
-            try
-            {
-                var jpegScreenShotTimeoutPolicy = Policy.TimeoutAsync(6, TimeoutStrategy.Pessimistic);
-
-                imageResultsJson = await jpegScreenShotTimeoutPolicy.ExecuteAsync(async () =>
-                    await webContentWebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot",
-                        screenshotParamsJson));
-            }
-            catch (TimeoutRejectedException)
-            {
-                return new Error<string>("Failed to capture screenshot - operation timed out.");
-            }
-
-            string imageResults;
-
-            using (var doc = JsonDocument.Parse(imageResultsJson))
-            {
-                if (doc.RootElement.TryGetProperty("data", out var dataElement))
-                {
-                    imageResults = dataElement.GetString() ?? string.Empty;
-
-                    if (string.IsNullOrEmpty(imageResults))
-                        return new Error<string>("Failed to capture screenshot - empty data.");
-                }
-                else
-                {
-                    return new Error<string>("Failed to capture screenshot - data json not found.");
-                }
-            }
-
-            var imageBytes = Convert.FromBase64String(imageResults);
+            using var stream = new MemoryStream();
+            await webContentWebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, stream);
+            var imageBytes = stream.ToArray();
             imageBytesList.Add(imageBytes);
         }
 
