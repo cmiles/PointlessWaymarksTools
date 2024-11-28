@@ -47,8 +47,6 @@ public static class WebViewToJpg
     {
         await ThreadSwitcher.ResumeForegroundAsync();
 
-        await ThreadSwitcher.ResumeForegroundAsync();
-
         var viewPortUserPositionString =
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.pageTop");
         var viewPortUserPosition = int.Parse(viewPortUserPositionString);
@@ -72,15 +70,14 @@ public static class WebViewToJpg
         var documentScrollHeight =
             int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.body.scrollHeight"));
 
-        var overlap = 24;
-        var chunks = (int)Math.Ceiling((double)(documentScrollHeight - overlap) / (imageViewportHeight - overlap));
+        var chunks = (int)Math.Ceiling((double)documentScrollHeight / imageViewportHeight);
         var imageBytesList = new List<byte[]>();
 
         for (var i = 0; i < chunks; i++)
         {
             var scrollToTopFunction = $$"""
                                         window.scrollTo({
-                                           top: {{i * (imageViewportHeight - overlap)}},
+                                           top: {{i * imageViewportHeight}},
                                            left: 0,
                                            behavior: "instant"
                                         });
@@ -99,20 +96,26 @@ public static class WebViewToJpg
         using var canvas = new SKCanvas(finalImage);
         var currentHeight = 0;
 
-        foreach (var imageBytes in imageBytesList)
+        for (var i = 0; i < imageBytesList.Count; i++)
         {
-            using var image = SKBitmap.Decode(imageBytes);
+            using var image = SKBitmap.Decode(imageBytesList[i]);
             var sourceRect = new SKRect(0, 0, image.Width, image.Height);
             var destRect = new SKRect(0, currentHeight, image.Width, currentHeight + image.Height);
 
-            if (currentHeight > 0)
+            if (i == imageBytesList.Count - 1)
             {
-                sourceRect.Top += overlap;
-                destRect.Top += overlap;
+                var neededLastImageHeight = documentScrollHeight % imageViewportHeight;
+                destRect = new SKRect(0, currentHeight - (image.Height - neededLastImageHeight), image.Width,
+                    currentHeight + neededLastImageHeight);
+
+                currentHeight += neededLastImageHeight;
+            }
+            else
+            {
+                currentHeight += image.Height;
             }
 
             canvas.DrawBitmap(image, sourceRect, destRect);
-            currentHeight += image.Height - overlap;
         }
 
         using var imageStream = new MemoryStream();
