@@ -49,36 +49,33 @@ public static class WebViewToJpg
     {
         await ThreadSwitcher.ResumeForegroundAsync();
 
+        await ThreadSwitcher.ResumeForegroundAsync();
+
         var viewPortUserPositionString =
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.pageTop");
         var viewPortUserPosition = int.Parse(viewPortUserPositionString);
 
         var overflowUserSetting =
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.querySelector('body').style.overflow");
+        if (string.IsNullOrWhiteSpace(overflowUserSetting) || overflowUserSetting.Equals("\"\"")) overflowUserSetting = string.Empty;
+
         await webContentWebView.CoreWebView2.ExecuteScriptAsync(
             "document.querySelector('body').style.overflow='hidden'");
 
-        var maxImageHeightString = await webContentWebView.CoreWebView2.ExecuteScriptAsync(
-            """
-            visualViewport.height
-            """);
-        var maxImageHeight = int.Parse(maxImageHeightString);
-
-        var documentWidthString = await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.width");
-        var documentWidth = int.Parse(documentWidthString);
-        var documentHeightString =
-            await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.body.scrollHeight");
-        var documentHeight = int.Parse(documentHeightString);
+        var imageViewportHeight = int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.height"));
+        var viewportWidth = int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.width"));
+        var documentScrollHeight =
+            int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.body.scrollHeight"));
 
         var overlap = 24;
-        var chunks = (int)Math.Ceiling((double)(documentHeight - overlap) / (maxImageHeight - overlap));
+        var chunks = (int)Math.Ceiling((double)(documentScrollHeight - overlap) / (imageViewportHeight - overlap));
         var imageBytesList = new List<byte[]>();
 
         for (var i = 0; i < chunks; i++)
         {
             var scrollToTopFunction = $$"""
                                         window.scrollTo({
-                                           top: {{i * (maxImageHeight - overlap)}},
+                                           top: {{i * (imageViewportHeight - overlap)}},
                                            left: 0,
                                            behavior: "instant"
                                         });
@@ -104,9 +101,9 @@ public static class WebViewToJpg
                 var clip = new
                 {
                     x = 0,
-                    y = i * (maxImageHeight - overlap),
-                    width = documentWidth + 40,
-                    height = Math.Min(maxImageHeight, documentHeight - i * (maxImageHeight - overlap)),
+                    y = i * (imageViewportHeight - overlap),
+                    width = viewportWidth + 40,
+                    height = Math.Min(imageViewportHeight, documentScrollHeight - i * (imageViewportHeight - overlap)),
                     scale = 1
                 };
 
@@ -171,7 +168,7 @@ public static class WebViewToJpg
 
         await webContentWebView.CoreWebView2.ExecuteScriptAsync(scrollBackToUserPositionFunction);
 
-        using var finalImage = new SKBitmap(documentWidth, documentHeight);
+        using var finalImage = new SKBitmap(viewportWidth, documentScrollHeight);
         using var canvas = new SKCanvas(finalImage);
         var currentHeight = 0;
 
