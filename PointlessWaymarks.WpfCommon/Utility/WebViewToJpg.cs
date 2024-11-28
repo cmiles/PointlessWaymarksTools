@@ -1,13 +1,10 @@
 using System.IO;
-using System.Text.Json;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using OneOf;
 using OneOf.Types;
 using Ookii.Dialogs.Wpf;
 using PointlessWaymarks.WpfCommon.Status;
-using Polly;
-using Polly.Timeout;
 using SkiaSharp;
 
 namespace PointlessWaymarks.WpfCommon.Utility;
@@ -56,14 +53,21 @@ public static class WebViewToJpg
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.pageTop");
         var viewPortUserPosition = int.Parse(viewPortUserPositionString);
 
-        var overflowUserSetting =
-            await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.querySelector('body').style.overflow");
-        if (string.IsNullOrWhiteSpace(overflowUserSetting) || overflowUserSetting.Equals("\"\"")) overflowUserSetting = string.Empty;
-
         await webContentWebView.CoreWebView2.ExecuteScriptAsync(
             "document.querySelector('body').style.overflow='hidden'");
 
-        var imageViewportHeight = int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.height"));
+        await webContentWebView.CoreWebView2.ExecuteScriptAsync("""
+                                                                var x = document.querySelectorAll('*');
+                                                                for(var i=0; i<x.length; i++) {
+                                                                    elementStyle = getComputedStyle(x[i]);
+                                                                    if(elementStyle.position=="fixed" || elementStyle.position=="sticky") {
+                                                                        x[i].style.position="absolute";
+                                                                    }
+                                                                }
+                                                                """);
+
+        var imageViewportHeight =
+            int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.height"));
         var viewportWidth = int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.width"));
         var documentScrollHeight =
             int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("document.body.scrollHeight"));
@@ -91,19 +95,6 @@ public static class WebViewToJpg
             imageBytesList.Add(imageBytes);
         }
 
-        await webContentWebView.CoreWebView2.ExecuteScriptAsync(
-            $"document.querySelector('body').style.overflow='{overflowUserSetting}'");
-
-        var scrollBackToUserPositionFunction = $$"""
-                                                 window.scrollTo({
-                                                    top: {{viewPortUserPosition}},
-                                                    left: 0,
-                                                    behavior: "instant"
-                                                 });
-                                                 """;
-
-        await webContentWebView.CoreWebView2.ExecuteScriptAsync(scrollBackToUserPositionFunction);
-
         using var finalImage = new SKBitmap(viewportWidth, documentScrollHeight);
         using var canvas = new SKCanvas(finalImage);
         var currentHeight = 0;
@@ -128,6 +119,19 @@ public static class WebViewToJpg
         using var finalImageEncoded = SKImage.FromBitmap(finalImage);
         finalImageEncoded.Encode(SKEncodedImageFormat.Jpeg, 100).SaveTo(imageStream);
         var finalImageBytes = imageStream.ToArray();
+
+        await ThreadSwitcher.ResumeForegroundAsync();
+        webContentWebView.Reload();
+
+        var scrollBackToUserPositionFunction = $$"""
+                                                 window.scrollTo({
+                                                    top: {{viewPortUserPosition}},
+                                                    left: 0,
+                                                    behavior: "instant"
+                                                 });
+                                                 """;
+
+        await webContentWebView.CoreWebView2.ExecuteScriptAsync(scrollBackToUserPositionFunction);
 
         return new Success<byte[]>(finalImageBytes);
     }
