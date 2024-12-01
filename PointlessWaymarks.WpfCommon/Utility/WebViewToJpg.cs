@@ -168,7 +168,7 @@ public static class WebViewToJpg
             var sourceRect = new SKRect(0, 0, image.Width, image.Height);
             var destRect = new SKRect(0, currentHeight, image.Width, currentHeight + image.Height);
 
-            if (i == verticalImageBytesList.Count - 1)
+            if (i == verticalImageBytesList.Count - 1 && verticalImageBytesList.Count > 1)
             {
                 var neededLastImageHeight = documentHeight % viewportHeight;
                 destRect = new SKRect(0, currentHeight - (image.Height - neededLastImageHeight), image.Width,
