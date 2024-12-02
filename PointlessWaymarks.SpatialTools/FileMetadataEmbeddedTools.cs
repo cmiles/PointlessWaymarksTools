@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using GeoTimeZone;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
@@ -381,7 +381,7 @@ public static class FileMetadataEmbeddedTools
 
         if (gpsDirectory is null || gpsDirectory.IsEmpty) return toReturn;
         var geoLocation = gpsDirectory.GetGeoLocation();
-
+        
         if (geoLocation?.IsZero ?? true)
         {
             toReturn.Longitude = null;
@@ -391,6 +391,12 @@ public static class FileMetadataEmbeddedTools
         {
             toReturn.Latitude = geoLocation.Latitude;
             toReturn.Longitude = geoLocation.Longitude;
+        }
+        var hasPhotoDirection = gpsDirectory.TryGetRational(GpsDirectory.TagImgDirection, out var photoDirectionRational);
+
+        if(hasPhotoDirection)
+        {
+            toReturn.PhotoDirection = photoDirectionRational.ToDouble();
         }
 
         var hasSeaLevelIndicator =
