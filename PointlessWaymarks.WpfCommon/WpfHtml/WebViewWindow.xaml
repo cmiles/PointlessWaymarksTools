@@ -14,10 +14,10 @@
     d:DataContext="{d:DesignInstance local:WebViewWindow}"
     mc:Ignorable="d">
     <Grid>
-        <wpf:WebView2 Margin="2,2,2,4">
+        <wpf:WebView2CompositionControl Margin="2,2,2,4">
             <b:Interaction.Behaviors>
                 <webViewVirtualDomain:WebViewGeneratedVirtualDomainBehavior WebViewMessenger="{Binding .}" />
             </b:Interaction.Behaviors>
-        </wpf:WebView2>
+        </wpf:WebView2CompositionControl>
     </Grid>
 </Window>

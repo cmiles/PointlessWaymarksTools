@@ -4,17 +4,18 @@ using Microsoft.Web.WebView2.Wpf;
 using Microsoft.Xaml.Behaviors;
 using OneOf;
 using OneOf.Types;
+using PointlessWaymarks.WpfCommon.Status;
 using PointlessWaymarks.WpfCommon.Utility;
 
 namespace PointlessWaymarks.WpfCommon.Behaviors;
 
-public class WebViewToJpgFunctionInjection : Behavior<WebView2>
+public class WebViewToJpgFunctionInjection : Behavior<WebView2CompositionControl>
 {
     public static readonly DependencyProperty JpgScreenshotFunctionNameProperty = DependencyProperty.Register(
         nameof(JpgScreenshotFunctionName), typeof(string), typeof(WebViewToJpgFunctionInjection),
         new PropertyMetadata("JpgScreenshotFunctionName", PropertyChangedCallback));
 
-    private WebView2? _webView;
+    private WebView2CompositionControl? _webView;
 
     public string JpgScreenshotFunctionName
     {
@@ -28,7 +29,7 @@ public class WebViewToJpgFunctionInjection : Behavior<WebView2>
 
         AssociatedObject.DataContextChanged += (sender, _) =>
         {
-            _webView = sender as WebView2;
+            _webView = sender as WebView2CompositionControl;
 
             TryInjectFunction();
         };
@@ -47,12 +48,17 @@ public class WebViewToJpgFunctionInjection : Behavior<WebView2>
 
         if (dataContext is null) return;
 
-        var property = dataContext.GetType().GetProperty(JpgScreenshotFunctionName,
+        var dataContextProperty = dataContext.GetType().GetProperty(JpgScreenshotFunctionName,
             BindingFlags.Public | BindingFlags.Instance);
-        if (property != null && property.PropertyType ==
+
+        var statusContextProperty = dataContext.GetType()
+            .GetProperty("StatusContext", BindingFlags.Public | BindingFlags.Instance);
+        var dataContextStatusContext = statusContextProperty?.GetValue(dataContext) as StatusControlContext;
+
+        if (dataContextProperty != null && dataContextProperty.PropertyType ==
             typeof(Func<Task<OneOf<Success<byte[]>, Error<string>>>>))
-            property.SetValue(dataContext,
+            dataContextProperty.SetValue(dataContext,
                 new Func<Task<OneOf<Success<byte[]>, Error<string>>>>(() =>
-                    WebViewToJpg.SaveCurrentPageAsJpeg(_webView!)));
+                    WebViewToJpg.SaveCurrentPageAsJpeg(_webView!, dataContextStatusContext?.ProgressTracker())));
     }
 }

@@ -18,7 +18,7 @@ namespace PointlessWaymarks.WpfCommon.WebViewVirtualDomain;
 ///     the Html during which the Javascript may not yet be active to process Json data. This is a particular pain point in
 ///     a View Model setup where the model doesn't have direct access to the WebView2.
 /// </summary>
-public class WebViewGeneratedVirtualDomainBehavior : Behavior<WebView2>
+public class WebViewGeneratedVirtualDomainBehavior : Behavior<WebView2CompositionControl>
 {
     /// <summary>
     ///     String HTML - when changed the WebView2 will be reloaded with the new string

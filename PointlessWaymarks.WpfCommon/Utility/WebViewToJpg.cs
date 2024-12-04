@@ -44,13 +44,21 @@ public static class WebViewToJpg
         return newFilename;
     }
 
-    public static async Task<OneOf<Success<byte[]>, Error<string>>> SaveCurrentPageAsJpeg(WebView2 webContentWebView)
+    public static async Task<OneOf<Success<byte[]>, Error<string>>> SaveCurrentPageAsJpeg(WebView2CompositionControl webContentWebView, IProgress<string>? progress)
     {
         await ThreadSwitcher.ResumeForegroundAsync();
 
-        var viewPortUserPositionString =
+        progress?.Report("Starting Capture");
+
+        var viewPortTopUserPositionString =
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.pageTop");
-        var viewPortUserPosition = int.Parse(viewPortUserPositionString);
+        var viewPortTopUserPosition = int.Parse(viewPortTopUserPositionString);
+
+        var viewPortLeftUserPositionString =
+            await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.pageLeft");
+        var viewPortLeftUserPosition = int.Parse(viewPortLeftUserPositionString);
+
+        progress?.Report($"Current Top {viewPortTopUserPosition}, Left {viewPortLeftUserPosition} - Turning of Overflow");
 
         await webContentWebView.CoreWebView2.ExecuteScriptAsync(
             "document.querySelector('body').style.overflowY='visible'");
@@ -83,12 +91,17 @@ public static class WebViewToJpg
         var documentWidth =
             JsonSerializer.Deserialize<List<int>>(documentWidthArray)!.Max();
 
+        progress?.Report($"Document Height {documentHeight}, Width {documentWidth}");
+
         var viewportHeight =
             int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.height"));
         var viewportWidth = int.Parse(await webContentWebView.CoreWebView2.ExecuteScriptAsync("visualViewport.width"));
 
+        progress?.Report($"Viewport Height {viewportHeight}, Width {viewportWidth}");
+
         if (documentHeight > viewportHeight)
         {
+            progress?.Report("Document Height Greater than Viewport Height - Fixed and Sticky Positioning to Absolute");
             await webContentWebView.CoreWebView2.ExecuteScriptAsync("""
                                                                     var x = document.querySelectorAll('*');
                                                                     for(var i=0; i<x.length; i++) {
@@ -108,6 +121,8 @@ public static class WebViewToJpg
 
         var horizontalChunks = (int)Math.Ceiling((double)documentWidth / viewportWidth);
 
+        progress?.Report($"Vertical Chunks {verticalChunks}, Horizontal Chunks {horizontalChunks}");
+
         for (var i = 0; i < verticalChunks; i++)
         {
             using var rowImage = new SKBitmap(documentWidth, viewportHeight);
@@ -117,6 +132,8 @@ public static class WebViewToJpg
 
             for (var j = 0; j < horizontalChunks; j++)
             {
+                progress?.Report($"Row Assembly - Row {i}, Column {j}");
+
                 var scrollToViewFunction = $$"""
                                             window.scrollTo({
                                                top: {{i * viewportHeight}},
@@ -152,6 +169,8 @@ public static class WebViewToJpg
 
             }
 
+            progress?.Report($"Row {i} - Encoding Image");
+
             using var rowImageEncoded = SKImage.FromBitmap(rowImage);
             using var rowImageStream = new MemoryStream();
             rowImageEncoded.Encode(SKEncodedImageFormat.Png, 100).SaveTo(rowImageStream);
@@ -164,6 +183,8 @@ public static class WebViewToJpg
 
         for (var i = 0; i < verticalImageBytesList.Count; i++)
         {
+            progress?.Report($"Final Image Assembly - Row {i}");
+
             using var image = SKBitmap.Decode(verticalImageBytesList[i]);
             var sourceRect = new SKRect(0, 0, image.Width, image.Height);
             var destRect = new SKRect(0, currentHeight, image.Width, currentHeight + image.Height);
@@ -190,12 +211,15 @@ public static class WebViewToJpg
         var finalImageBytes = imageStream.ToArray();
 
         await ThreadSwitcher.ResumeForegroundAsync();
+
+        progress?.Report("Capture Complete - Reloading and Scrolling to Original Position");
+
         webContentWebView.Reload();
 
         var scrollBackToUserPositionFunction = $$"""
                                                  window.scrollTo({
-                                                    top: {{viewPortUserPosition}},
-                                                    left: 0,
+                                                    top: {{viewPortTopUserPosition}},
+                                                    left: {{viewPortLeftUserPosition}},
                                                     behavior: "instant"
                                                  });
                                                  """;

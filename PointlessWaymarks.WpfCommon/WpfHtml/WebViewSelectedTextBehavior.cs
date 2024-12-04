@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
@@ -6,7 +6,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace PointlessWaymarks.WpfCommon.WpfHtml;
 
-public class WebViewSelectedTextBehavior : Behavior<WebView2>
+public class WebViewSelectedTextBehavior : Behavior<WebView2CompositionControl>
 {
     public static readonly DependencyProperty WebViewSelectedTextProperty =
         DependencyProperty.Register(nameof(WebViewSelectedText), typeof(string), typeof(WebViewSelectedTextBehavior),
@@ -40,7 +40,7 @@ public class WebViewSelectedTextBehavior : Behavior<WebView2>
 
     private void OnReady(object? sender, EventArgs e)
     {
-        if (sender is WebView2 { CoreWebView2: { } } webView)
+        if (sender is WebView2CompositionControl { CoreWebView2: { } } webView)
             // ReSharper disable StringLiteralTypo
             webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
 document.onselectionchange = () => {
