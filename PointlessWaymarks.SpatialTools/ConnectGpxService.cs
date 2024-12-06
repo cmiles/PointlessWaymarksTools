@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Wordprocessing;
 using Garmin.Connect;
 using Garmin.Connect.Auth;
 using Garmin.Connect.Models;
@@ -14,9 +15,10 @@ public class ConnectGpxService : IRemoteGpxService
     public async Task<FileInfo?> DownloadGpxFile(long activityId, string fullNameForFile,
         CancellationToken cancellationToken, IProgress<string>? progress)
     {
+        var garminConnectAuthParameters = new BasicAuthParameters(ConnectUsername, ConnectPassword, new December2024UpdatedStaticUserAgent());
         var client = _client ?? new GarminConnectClient(new GarminConnectContext(
             new HttpClient { Timeout = TimeSpan.FromSeconds(10) },
-            new BasicAuthParameters(ConnectUsername, ConnectPassword)));
+            garminConnectAuthParameters));
 
         var file = await Policy.Handle<Exception>(e => e is not TaskCanceledException).WaitAndRetryAsync(3,
                 i => TimeSpan.FromSeconds(2 * i),
@@ -46,9 +48,9 @@ public class ConnectGpxService : IRemoteGpxService
     public async Task<List<GarminActivity>> GetActivityList(DateTime startUtc, DateTime endUtc,
         IProgress<string>? progress)
     {
+        var garminConnectAuthParameters = new BasicAuthParameters(ConnectUsername, ConnectPassword, new December2024UpdatedStaticUserAgent());
         var client = _client ?? new GarminConnectClient(new GarminConnectContext(
-            new HttpClient { Timeout = TimeSpan.FromSeconds(10) }, new
-                BasicAuthParameters(ConnectUsername, ConnectPassword)));
+            new HttpClient { Timeout = TimeSpan.FromSeconds(10) }, garminConnectAuthParameters));
         var activities = await Policy.Handle<Exception>(e => e is not TaskCanceledException).WaitAndRetryAsync(3,
                 i => TimeSpan.FromSeconds(2 * i),
                 (exception, sleepDuration, retryCount, _) =>
