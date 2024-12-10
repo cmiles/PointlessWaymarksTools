@@ -106,7 +106,7 @@ public static class WpfHtmlDocument
     }
 
     public static void SetupCmsLeafletMapHtmlAndJs(this IWebViewMessenger messenger, string title,
-        double initialLatitude, double initialLongitude, bool autoCloseMarkers, string serializedMapIcons = "", string calTopoApiKey = "",
+        double initialLatitude, double initialLongitude, bool autoCloseMarkers, string serializedMapIcons = "{}", string calTopoApiKey = "",
         string bingApiKey = "", string cssStyleBlock = "", string javascript = "")
     {
         var initialWebFilesMessage = CmsLeafletMapHtmlAndJs(title, cssStyleBlock, javascript, serializedMapIcons);
