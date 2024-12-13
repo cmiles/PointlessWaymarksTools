@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
 using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.SpatialTools;
@@ -93,6 +94,30 @@ public partial class MapWindow : IWebViewMessenger
         };
 
         var bounds = SpatialBounds.FromCoordinates(markerLatitude, markerLongitude, 0).ExpandToMinimumMeters(1000);
+        var mapJson = await MapJson.NewMapFeatureCollectionDtoSerialized([featureCollection], bounds);
+
+        ToWebView.Enqueue(new JsonData
+        {
+            Json = mapJson
+        });
+    }
+
+    public async Task ShowMarkerAndBearing(double markerLatitude, double markerLongitude, double bearing,
+        double distanceInMeters)
+    {
+        var startingPoint = PointTools.Wgs84Point(markerLongitude, markerLatitude, 0);
+        var endingPoint = PointTools.ProjectCoordinate(startingPoint, bearing, distanceInMeters);
+        var line = new LineString([startingPoint.Coordinate, endingPoint.Coordinate]);
+
+        var featureCollection = new FeatureCollection
+        {
+            new Feature(startingPoint,
+                new AttributesTable(new Dictionary<string, object>())),
+            new Feature(line, new AttributesTable(new Dictionary<string, object>()))
+        };
+
+        var bounds = SpatialBounds.FromCoordinates(markerLatitude, markerLongitude, 0)
+            .ExpandToMinimumMeters(Math.Min(3000, distanceInMeters));
         var mapJson = await MapJson.NewMapFeatureCollectionDtoSerialized([featureCollection], bounds);
 
         ToWebView.Enqueue(new JsonData
