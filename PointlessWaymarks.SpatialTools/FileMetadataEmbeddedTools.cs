@@ -1,5 +1,7 @@
 using System.Globalization;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using GeoTimeZone;
+using MathNet.Numerics;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using MetadataExtractor.Formats.Iptc;
@@ -19,7 +21,7 @@ public static class FileMetadataEmbeddedTools
 
         if (gpsLocal != null && gpsUtc != null) return (gpsLocal, gpsUtc);
 
-        var location = await LocationFromExif(directories, false, null);
+        var location = await LocationFromExif(directories, false, null, null);
 
         var exifLocal = CreatedOnLocalFromExif(directories);
         var exifUtc = CreatedOnUtcFromExif(directories);
@@ -92,7 +94,7 @@ public static class FileMetadataEmbeddedTools
 
         gpsDateTime = DateTime.SpecifyKind(gpsDateTime, DateTimeKind.Utc);
 
-        var gpsLocation = await LocationFromExifGpsMetadata(gpsDirectory, false, null);
+        var gpsLocation = await LocationFromExifGpsMetadata(gpsDirectory, false, null, null);
 
         if (!gpsLocation.HasValidLocation()) return null;
 
@@ -196,7 +198,7 @@ public static class FileMetadataEmbeddedTools
 
         gpsDateTime = DateTime.SpecifyKind(gpsDateTime, DateTimeKind.Utc);
 
-        var gpsLocation = await LocationFromExifGpsMetadata(gpsDirectory, false, null);
+        var gpsLocation = await LocationFromExifGpsMetadata(gpsDirectory, false, null, null);
 
         if (!gpsLocation.HasValidLocation()) return null;
 
@@ -358,7 +360,7 @@ public static class FileMetadataEmbeddedTools
     }
 
     public static async Task<MetadataLocation> LocationFromExif(
-        IReadOnlyList<Directory> directories, bool tryGetElevationIfNotInMetadata,
+        IReadOnlyList<Directory> directories, bool tryGetElevationIfNotInMetadata, DateTime? createdOn,
         IProgress<string>? progress)
     {
         var allGpsDirectories = directories.OfType<GpsDirectory>().ToList();
@@ -366,7 +368,7 @@ public static class FileMetadataEmbeddedTools
         foreach (var loopGpsDirectory in allGpsDirectories)
         {
             var location =
-                await LocationFromExifGpsMetadata(loopGpsDirectory, tryGetElevationIfNotInMetadata, progress);
+                await LocationFromExifGpsMetadata(loopGpsDirectory, tryGetElevationIfNotInMetadata, createdOn, progress);
 
             if (location.HasValidLocation()) return location;
         }
@@ -374,8 +376,15 @@ public static class FileMetadataEmbeddedTools
         return new MetadataLocation();
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="gpsDirectory"></param>
+    /// <param name="tryGetElevationIfNotInMetadata"></param>
+    /// <param name="createdOn">Only used for Magnetic to True PhotoDirection Calculation</param>
+    /// <param name="progress"></param>
+    /// <returns></returns>
     private static async Task<MetadataLocation> LocationFromExifGpsMetadata(GpsDirectory? gpsDirectory,
-        bool tryGetElevationIfNotInMetadata, IProgress<string>? progress)
+        bool tryGetElevationIfNotInMetadata, DateTime? createdOn, IProgress<string>? progress)
     {
         var toReturn = new MetadataLocation();
 
@@ -391,12 +400,6 @@ public static class FileMetadataEmbeddedTools
         {
             toReturn.Latitude = geoLocation.Latitude;
             toReturn.Longitude = geoLocation.Longitude;
-        }
-        var hasPhotoDirection = gpsDirectory.TryGetRational(GpsDirectory.TagImgDirection, out var photoDirectionRational);
-
-        if(hasPhotoDirection)
-        {
-            toReturn.PhotoDirection = photoDirectionRational.ToDouble();
         }
 
         var hasSeaLevelIndicator =
@@ -427,6 +430,30 @@ public static class FileMetadataEmbeddedTools
             {
                 Console.WriteLine(e);
             }
+
+        var hasPhotoDirection = gpsDirectory.TryGetRational(GpsDirectory.TagImgDirection, out var photoDirectionRational);
+
+        if (hasPhotoDirection)
+        {
+            toReturn.PhotoDirection = photoDirectionRational.ToDouble();
+
+            var directionString = gpsDirectory.GetString(GpsDirectory.TagImgDirectionRef);
+
+            if (!string.IsNullOrWhiteSpace(directionString))
+            {
+                if (directionString.Equals("M", StringComparison.OrdinalIgnoreCase) && toReturn.PhotoDirection is not null && createdOn is not null && toReturn.Latitude is not null && toReturn.Longitude is not null)
+                {
+                    var magneticData = IgrfMagneticModelTools.GetGeomagneticData(toReturn.Latitude.Value, toReturn.Longitude.Value,
+                        toReturn.Elevation ?? 0, DateOnly.FromDateTime(createdOn.Value));
+
+                    toReturn.PhotoDirection = double.Round(BearingTools.ApplyDeclination(toReturn.PhotoDirection.Value, magneticData), 0);
+                }
+            }
+            else
+            {
+                toReturn.PhotoDirection = Math.Round(toReturn.PhotoDirection.Value, 0);
+            }
+        }
 
         return toReturn;
     }

@@ -134,7 +134,7 @@ public static class FileMetadataTools
             var metadataDirectories = ImageMetadataReader.ReadMetadata(loopFile.FullName);
             var metaLocation =
                 await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
-                    false, progress);
+                    false, null, progress);
             return metaLocation.HasValidLocation();
         }
         catch (Exception e)
@@ -226,9 +226,11 @@ public static class FileMetadataTools
         {
             var metadataDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
 
+            var createdOn = await FileMetadataEmbeddedTools.CreatedOnLocalAndUtc(metadataDirectories);
+
             var metaLocation =
                 await FileMetadataEmbeddedTools.LocationFromExif(metadataDirectories,
-                    tryGetElevationIfNotInMetadata, progress);
+                    tryGetElevationIfNotInMetadata, createdOn.createdOnUtc ?? createdOn.createdOnLocal, progress);
 
             return metaLocation;
         }
