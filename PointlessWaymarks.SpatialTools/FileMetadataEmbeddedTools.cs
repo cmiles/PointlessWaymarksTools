@@ -1,7 +1,5 @@
 using System.Globalization;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using GeoTimeZone;
-using MathNet.Numerics;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using MetadataExtractor.Formats.Iptc;
@@ -368,7 +366,8 @@ public static class FileMetadataEmbeddedTools
         foreach (var loopGpsDirectory in allGpsDirectories)
         {
             var location =
-                await LocationFromExifGpsMetadata(loopGpsDirectory, tryGetElevationIfNotInMetadata, createdOn, progress);
+                await LocationFromExifGpsMetadata(loopGpsDirectory, tryGetElevationIfNotInMetadata, createdOn,
+                    progress);
 
             if (location.HasValidLocation()) return location;
         }
@@ -390,7 +389,7 @@ public static class FileMetadataEmbeddedTools
 
         if (gpsDirectory is null || gpsDirectory.IsEmpty) return toReturn;
         var geoLocation = gpsDirectory.GetGeoLocation();
-        
+
         if (geoLocation?.IsZero ?? true)
         {
             toReturn.Longitude = null;
@@ -420,7 +419,8 @@ public static class FileMetadataEmbeddedTools
                     : altitudeRational.ToDouble();
         }
 
-        if (toReturn.Elevation == null && tryGetElevationIfNotInMetadata && toReturn is { Latitude: { }, Longitude: { } })
+        if (toReturn.Elevation == null && tryGetElevationIfNotInMetadata &&
+            toReturn is { Latitude: not null, Longitude: not null })
             try
             {
                 toReturn.Elevation = await ElevationService.OpenTopoNedElevation(toReturn.Latitude.Value,
@@ -431,7 +431,8 @@ public static class FileMetadataEmbeddedTools
                 Console.WriteLine(e);
             }
 
-        var hasPhotoDirection = gpsDirectory.TryGetRational(GpsDirectory.TagImgDirection, out var photoDirectionRational);
+        var hasPhotoDirection =
+            gpsDirectory.TryGetRational(GpsDirectory.TagImgDirection, out var photoDirectionRational);
 
         if (hasPhotoDirection)
         {
@@ -441,12 +442,16 @@ public static class FileMetadataEmbeddedTools
 
             if (!string.IsNullOrWhiteSpace(directionString))
             {
-                if (directionString.Equals("M", StringComparison.OrdinalIgnoreCase) && toReturn.PhotoDirection is not null && createdOn is not null && toReturn.Latitude is not null && toReturn.Longitude is not null)
+                if (directionString.Equals("M", StringComparison.OrdinalIgnoreCase) &&
+                    toReturn.PhotoDirection is not null && createdOn is not null && toReturn.Latitude is not null &&
+                    toReturn.Longitude is not null)
                 {
-                    var magneticData = IgrfMagneticModelTools.GetGeomagneticData(toReturn.Latitude.Value, toReturn.Longitude.Value,
+                    var magneticData = IgrfMagneticModelTools.GetGeomagneticData(toReturn.Latitude.Value,
+                        toReturn.Longitude.Value,
                         toReturn.Elevation ?? 0, DateOnly.FromDateTime(createdOn.Value));
 
-                    toReturn.PhotoDirection = double.Round(BearingTools.ApplyDeclination(toReturn.PhotoDirection.Value, magneticData), 0);
+                    toReturn.PhotoDirection =
+                        double.Round(BearingTools.ApplyDeclination(toReturn.PhotoDirection.Value, magneticData), 0);
                 }
             }
             else
