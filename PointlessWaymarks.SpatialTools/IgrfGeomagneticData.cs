@@ -26,7 +26,7 @@ public class IgrfGeomagneticData
     public override string ToString()
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"Year: {Date}");
+        sb.AppendLine($"Date: {Date}");
         sb.AppendLine($"Latitude: {Latitude}°");
         sb.AppendLine($"Longitude: {Longitude}°");
         sb.AppendLine($"AltitudeInMeters: {AltitudeInMeters}m");
