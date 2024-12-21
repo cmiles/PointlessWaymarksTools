@@ -225,9 +225,9 @@ public class Igrf13MagneticModelTests
     [Repeat(20)]
     public async Task TestIgrf2013AutomatedApi()
     {
-        var (latitude, longitude, date, elevation) = Igrf2013AutomatedApi.GetRandomLatLongDate();
+        var (latitude, longitude, date, elevation) = Igrf2013ApiRandomData.GetRandomLatLongDate();
         var automatedResult =
-            await Igrf2013AutomatedApi.GetIgrfMagneticDataAsync(latitude, longitude, elevation, date);
+            await IgrfGeomagneticApi.GetIgrfMagneticDataAsync(latitude, longitude, elevation, date);
         var calculatedResult = GetGeomagneticDataFromReferenceModel(automatedResult.result);
         AssertGeomagneticDataEqual(automatedResult.result, calculatedResult,
             $"{latitude} {longitude} - {date} - {elevation}m. {automatedResult.url}");
