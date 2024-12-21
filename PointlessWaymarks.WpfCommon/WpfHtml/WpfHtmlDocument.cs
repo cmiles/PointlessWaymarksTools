@@ -60,7 +60,8 @@ public static class WpfHtmlDocument
         return initialWebFilesMessage;
     }
 
-    public static FileBuilder CmsLeafletMapHtmlAndJs(string title, string styleBlock = "", string javascript = "", string serializedMapIcons = "")
+    public static FileBuilder CmsLeafletMapHtmlAndJs(string title, string styleBlock = "", string javascript = "",
+        string serializedMapIcons = "")
     {
         var htmlString = $$"""
                            <!doctype html>
@@ -106,7 +107,8 @@ public static class WpfHtmlDocument
     }
 
     public static void SetupCmsLeafletMapHtmlAndJs(this IWebViewMessenger messenger, string title,
-        double initialLatitude, double initialLongitude, bool autoCloseMarkers, string serializedMapIcons = "{}", string calTopoApiKey = "",
+        double initialLatitude, double initialLongitude, bool autoCloseMarkers, string serializedMapIcons = "{}",
+        string calTopoApiKey = "",
         string bingApiKey = "", string cssStyleBlock = "", string javascript = "")
     {
         var initialWebFilesMessage = CmsLeafletMapHtmlAndJs(title, cssStyleBlock, javascript, serializedMapIcons);
@@ -121,10 +123,12 @@ public static class WpfHtmlDocument
     }
 
     public static void SetupCmsLeafletMapWithLineElevationChartHtmlAndJs(this IWebViewMessenger messenger, string title,
-        double initialLatitude, double initialLongitude, string serializedMapIcons = "", string calTopoApiKey = "", string bingApiKey = "",
+        double initialLatitude, double initialLongitude, string serializedMapIcons = "", string calTopoApiKey = "",
+        string bingApiKey = "",
         string cssStyleBlock = "", string javascript = "")
     {
-        var initialWebFilesMessage = CmsLeafletMapAndChartHtmlAndJs(title, cssStyleBlock, javascript, serializedMapIcons);
+        var initialWebFilesMessage =
+            CmsLeafletMapAndChartHtmlAndJs(title, cssStyleBlock, javascript, serializedMapIcons);
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
 
@@ -136,7 +140,8 @@ public static class WpfHtmlDocument
     }
 
     public static void SetupCmsLeafletPointChooserMapHtmlAndJs(this IWebViewMessenger messenger, string title,
-        double initialLatitude, double initialLongitude, string serializedMapIcons = "", string calTopoApiKey = "", string bingApiKey = "",
+        double initialLatitude, double initialLongitude, string serializedMapIcons = "", string calTopoApiKey = "",
+        string bingApiKey = "",
         string cssStyleBlock = "", string javascript = "")
     {
         var initialWebFilesMessage = CmsLeafletMapHtmlAndJs(title, cssStyleBlock, javascript, serializedMapIcons);
@@ -156,7 +161,6 @@ public static class WpfHtmlDocument
         var minimalCss = await HtmlTools.MinimalCssAsString();
 
         var htmlDoc = $$"""
-
                         <!doctype html>
                         <html lang=en>
                         <head>

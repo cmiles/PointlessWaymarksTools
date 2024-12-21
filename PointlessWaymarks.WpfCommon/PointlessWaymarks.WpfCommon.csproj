@@ -53,6 +53,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
+        <PackageReference Include="HtmlTableHelper" Version="1.2.4" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
         <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
         <PackageReference Include="MathConverter" Version="2.2.1" />
