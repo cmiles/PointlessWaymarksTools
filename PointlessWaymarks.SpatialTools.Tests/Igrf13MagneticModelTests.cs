@@ -119,119 +119,46 @@ public class Igrf13MagneticModelTests
         SecularVariationVertical = -81.5
     };
 
-    public static void AssertGeomagneticDataEqual(IgrfGeomagneticData expected, IgrfGeomagneticData actual,
-        string sourceNote = "None")
-    {
-        var toleranceDeclination = 0.01;
-        var toleranceInclination = 0.01;
-        var toleranceHorizontalIntensity = 1.0;
-        var toleranceTotalIntensity = 1.0;
-        var toleranceNorthComponent = 1.0;
-        var toleranceEastComponent = 1.0;
-        var toleranceVerticalComponent = 1.0;
-        var toleranceSecularVariation = 0.1;
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(actual.Date, Is.EqualTo(expected.Date), $"Date mismatch. Note:  {sourceNote}");
-            Assert.That(actual.Latitude, Is.EqualTo(expected.Latitude).Within(0.000001),
-                $"Latitude mismatch. Note:  {sourceNote}");
-            Assert.That(actual.Longitude, Is.EqualTo(expected.Longitude).Within(0.000001),
-                $"Longitude mismatch. Note:  {sourceNote}");
-            Assert.That(actual.AltitudeInMeters, Is.EqualTo(expected.AltitudeInMeters).Within(0.01),
-                $"Altitude mismatch. Note:  {sourceNote}");
-            Assert.That(actual.Declination, Is.EqualTo(expected.Declination).Within(toleranceDeclination),
-                $"Declination mismatch. Note:  {sourceNote}");
-            Assert.That(actual.Inclination, Is.EqualTo(expected.Inclination).Within(toleranceInclination),
-                $"Inclination mismatch. Note:  {sourceNote}");
-            Assert.That(actual.HorizontalIntensity,
-                Is.EqualTo(expected.HorizontalIntensity).Within(toleranceHorizontalIntensity),
-                $"Horizontal Intensity mismatch. Note:  {sourceNote}");
-            Assert.That(actual.TotalIntensity, Is.EqualTo(expected.TotalIntensity).Within(toleranceTotalIntensity),
-                $"Total Intensity mismatch. Note:  {sourceNote}");
-            Assert.That(actual.NorthComponent, Is.EqualTo(expected.NorthComponent).Within(toleranceNorthComponent),
-                $"North Component mismatch. Note:  {sourceNote}");
-            Assert.That(actual.EastComponent, Is.EqualTo(expected.EastComponent).Within(toleranceEastComponent),
-                $"East Component mismatch. Note:  {sourceNote}");
-            Assert.That(actual.VerticalComponent,
-                Is.EqualTo(expected.VerticalComponent).Within(toleranceVerticalComponent),
-                $"Vertical Component mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationDeclination,
-                Is.EqualTo(expected.SecularVariationDeclination).Within(toleranceSecularVariation),
-                $"Secular Variation Declination mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationInclination,
-                Is.EqualTo(expected.SecularVariationInclination).Within(toleranceSecularVariation),
-                $"Secular Variation Inclination mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationHorizontalIntensity,
-                Is.EqualTo(expected.SecularVariationHorizontalIntensity).Within(toleranceSecularVariation),
-                $"Secular Variation Horizontal Intensity mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationTotalIntensity,
-                Is.EqualTo(expected.SecularVariationTotalIntensity).Within(toleranceSecularVariation),
-                $"Secular Variation Total Intensity mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationNorth,
-                Is.EqualTo(expected.SecularVariationNorth).Within(toleranceSecularVariation),
-                $"Secular Variation North mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationEast,
-                Is.EqualTo(expected.SecularVariationEast).Within(toleranceSecularVariation),
-                $"Secular Variation East mismatch. Note:  {sourceNote}");
-            Assert.That(actual.SecularVariationVertical,
-                Is.EqualTo(expected.SecularVariationVertical).Within(toleranceSecularVariation),
-                $"Secular Variation Vertical mismatch. Note:  {sourceNote}");
-        });
-    }
-
     [Test]
     public void BadwaterBasinTest()
     {
-        var testResult = GetGeomagneticDataFromReferenceModel(BadwaterBasin);
-        AssertGeomagneticDataEqual(BadwaterBasin, testResult);
+        var testResult = IgrfTestHelpers.GetGeomagneticDataFromReferenceModel(BadwaterBasin,
+            IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
+        IgrfTestHelpers.AssertGeomagneticDataEqual(BadwaterBasin, testResult);
     }
 
-    public static IgrfGeomagneticData GetGeomagneticDataFromReferenceModel(IgrfGeomagneticData data)
-    {
-        return IgrfMagneticModelTools.GetGeomagneticData(data.Latitude, data.Longitude, data.AltitudeInMeters,
-            data.Date, IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
-    }
 
     [Test]
     public void LohtseTest()
     {
-        var testResult = GetGeomagneticDataFromReferenceModel(Lohtse);
-        AssertGeomagneticDataEqual(Lohtse, testResult);
+        var testResult =
+            IgrfTestHelpers.GetGeomagneticDataFromReferenceModel(Lohtse,
+                IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
+        IgrfTestHelpers.AssertGeomagneticDataEqual(Lohtse, testResult);
     }
 
     [Test]
     public void MountKosciuszkoTest()
     {
-        var testResult = GetGeomagneticDataFromReferenceModel(MountKosciuszko);
-        AssertGeomagneticDataEqual(MountKosciuszko, testResult);
+        var testResult = IgrfTestHelpers.GetGeomagneticDataFromReferenceModel(MountKosciuszko,
+            IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
+        IgrfTestHelpers.AssertGeomagneticDataEqual(MountKosciuszko, testResult);
     }
 
     [Test]
     public void MountStHelensTest()
     {
-        var testResult = GetGeomagneticDataFromReferenceModel(MountStHelens);
-        AssertGeomagneticDataEqual(MountStHelens, testResult);
+        var testResult = IgrfTestHelpers.GetGeomagneticDataFromReferenceModel(MountStHelens,
+            IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
+        IgrfTestHelpers.AssertGeomagneticDataEqual(MountStHelens, testResult);
     }
 
     [Test]
     public void RinconPeakTest()
     {
-        var testResult = GetGeomagneticDataFromReferenceModel(RinconPeak);
-        AssertGeomagneticDataEqual(RinconPeak, testResult);
-    }
-
-    [Test]
-    [Repeat(20)]
-    public async Task TestIgrf2013AutomatedApi()
-    {
-        var (latitude, longitude, date, elevation) = Igrf2013ApiRandomData.GetRandomLatLongDate();
-        var automatedResult =
-            await IgrfGeomagneticApi.GetIgrfMagneticDataAsync(latitude, longitude, elevation, date);
-        var calculatedResult = GetGeomagneticDataFromReferenceModel(automatedResult.result);
-        AssertGeomagneticDataEqual(automatedResult.result, calculatedResult,
-            $"{latitude} {longitude} - {date} - {elevation}m. {automatedResult.url}");
-
-        await Task.Delay(5000);
+        var testResult =
+            IgrfTestHelpers.GetGeomagneticDataFromReferenceModel(RinconPeak,
+                IgrfMagneticModelTools.InternalShcModel.Igrf13Model);
+        IgrfTestHelpers.AssertGeomagneticDataEqual(RinconPeak, testResult);
     }
 }

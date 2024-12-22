@@ -18,7 +18,7 @@ public class IgrfGeomagneticApi
     {
         var dateString = date.ToString("yyyy-MM-dd");
         var url =
-            $"http://geomag.bgs.ac.uk/web_service/GMModels/igrf/13/?latitude={latitude:F5}&longitude={longitude:F5}&altitude={(altitude / 1000):F1}&date={dateString}&format=json";
+            $"http://geomag.bgs.ac.uk/web_service/GMModels/igrf/14/?latitude={latitude:F5}&longitude={longitude:F5}&altitude={(altitude / 1000):F1}&date={dateString}&format=json";
 
         var response = await url.GetJsonAsync<IgrfGeomagneticApiReturn>();
         response.Validate();
