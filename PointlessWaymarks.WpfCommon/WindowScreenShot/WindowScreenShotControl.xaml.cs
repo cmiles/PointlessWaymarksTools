@@ -1,5 +1,6 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
+using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 
 namespace PointlessWaymarks.WpfCommon.WindowScreenShot;
@@ -7,6 +8,7 @@ namespace PointlessWaymarks.WpfCommon.WindowScreenShot;
 /// <summary>
 ///     Interaction logic for WindowScreenShotControl.xaml
 /// </summary>
+[NotifyPropertyChanged]
 public partial class WindowScreenShotControl
 {
     public WindowScreenShotControl()
@@ -34,11 +36,12 @@ public partial class WindowScreenShotControl
             {
                 if (!result)
                     await statusContext.ToastError("Problem Copying Window to Clipboard");
+                else
+                    await statusContext.ToastSuccess("Copied to Clipboard");
             }
         });
 
         DataContext = this;
     }
-
     public AsyncRelayCommand<Window> WindowScreenShotCommand { get; }
 }
