@@ -115,7 +115,7 @@ public static class WpfHtmlDocument
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
 
-        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest("Index.html", true));
+        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest($"Index.html?id={Guid.NewGuid()}", true));
 
         messenger.ToWebView.Enqueue(ExecuteJavaScript.CreateRequest(
             $"initialMapLoad({initialLatitude}, {initialLongitude}, '{calTopoApiKey}', '{bingApiKey}', true, {autoCloseMarkers.ToString().ToLower()})",
@@ -132,7 +132,7 @@ public static class WpfHtmlDocument
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
 
-        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest("Index.html", true));
+        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest($"Index.html?id={Guid.NewGuid()}", true));
 
         messenger.ToWebView.Enqueue(ExecuteJavaScript.CreateRequest(
             $"initialMapLoad({initialLatitude}, {initialLongitude}, '{calTopoApiKey}', '{bingApiKey}', true, true)",
@@ -148,7 +148,7 @@ public static class WpfHtmlDocument
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
 
-        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest("Index.html", true));
+        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest($"Index.html?id={Guid.NewGuid()}", true));
 
         messenger.ToWebView.Enqueue(ExecuteJavaScript.CreateRequest(
             $"initialMapLoadWithUserPointChooser({initialLatitude}, {initialLongitude}, '{calTopoApiKey}', '{bingApiKey}')",
@@ -192,7 +192,7 @@ public static class WpfHtmlDocument
         initialWebFilesMessage.Create.Add(new FileBuilderCreate("Index.html", htmlDoc, true));
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
-        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest("Index.html", true));
+        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest($"Index.html?id={Guid.NewGuid()}", true));
     }
 
     public static async Task SetupDocumentWithPureCss(this IWebViewMessenger messenger, string body,
@@ -233,6 +233,6 @@ public static class WpfHtmlDocument
         initialWebFilesMessage.Create.Add(new FileBuilderCreate("Index.html", htmlDoc, true));
 
         messenger.ToWebView.Enqueue(initialWebFilesMessage);
-        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest("Index.html", true));
+        messenger.ToWebView.Enqueue(NavigateTo.CreateRequest($"Index.html?id={Guid.NewGuid()}", true));
     }
 }

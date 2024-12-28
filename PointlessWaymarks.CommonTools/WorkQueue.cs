@@ -11,20 +11,20 @@ public class WorkQueue<T>
 
     private readonly List<(DateTime created, T job)> _pausedQueue = [];
 
-    private bool _suspended;
-
     public WorkQueue(bool suspended = false)
     {
-        _suspended = suspended;
-        var thread = new Thread(OnStart) {IsBackground = true};
+        Suspended = suspended;
+        var thread = new Thread(OnStart) { IsBackground = true };
         thread.Start();
     }
 
     public Func<T, Task>? Processor { get; set; }
 
+    public bool Suspended { get; private set; }
+
     public void Enqueue(T job)
     {
-        if (_suspended) _pausedQueue.Add((DateTime.Now,  job));
+        if (Suspended) _pausedQueue.Add((DateTime.Now, job));
         else _jobs.Add((DateTime.Now, job));
     }
 
@@ -33,14 +33,10 @@ public class WorkQueue<T>
         foreach (var job in _jobs.GetConsumingEnumerable(CancellationToken.None))
             try
             {
-                if (_suspended)
-                {
+                if (Suspended)
                     _pausedQueue.Add(job);
-                }
                 else
-                {
                     Processor?.Invoke(job.job).Wait();
-                }
             }
             catch (Exception e)
             {
@@ -51,8 +47,11 @@ public class WorkQueue<T>
 
     public void Suspend(bool suspend)
     {
-        _suspended = suspend;
-        if (!_suspended && _pausedQueue.Count != 0)
+        Suspended = suspend;
+
+        Debug.WriteLine("WorkQueue Suspend To: " + suspend);
+
+        if (!Suspended && _pausedQueue.Count != 0)
         {
             _pausedQueue.OrderBy(x => x.created).ToList().ForEach(x => _jobs.Add(x));
             _pausedQueue.Clear();
