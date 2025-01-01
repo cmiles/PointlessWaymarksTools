@@ -18,25 +18,26 @@ public class ScrollToItemBehavior : Behavior<ListBox>
         DependencyProperty.Register(nameof(ScrollRequestItem), typeof(object),
             typeof(ScrollToItemBehavior), new PropertyMetadata(null, OnScrollRequestItemChanged));
 
-    public object? ScrollRequestItem
+    public ScrollToItemRequest? ScrollRequestItem
     {
-        get => (object?)GetValue(ScrollRequestItemProperty);
+        get => (ScrollToItemRequest?)GetValue(ScrollRequestItemProperty);
         set => SetValue(ScrollRequestItemProperty, value);
     }
 
-    private static void OnScrollRequestItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void OnScrollRequestItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var source = d as ScrollToItemBehavior;
         var attached = source?.AssociatedObject;
         if (attached is null) return;
-        if (source!.ScrollRequestItem is null) return;
+        if (source!.ScrollRequestItem?.ScrollTo is null) return;
 
         if (attached.Items.Count == 0) return;
 
         foreach (var loopItems in attached.Items)
-            if (loopItems != null && loopItems.Equals(source.ScrollRequestItem))
+            if (loopItems != null && loopItems.Equals(source.ScrollRequestItem.ScrollTo))
                 try
                 {
+                    await ThreadSwitcher.ResumeForegroundAsync();
                     attached.ScrollIntoView(loopItems);
                 }
                 catch
