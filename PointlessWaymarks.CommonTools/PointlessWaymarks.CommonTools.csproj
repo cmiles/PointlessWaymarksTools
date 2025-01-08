@@ -5,7 +5,7 @@
     <Platforms>x64</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>12.0</LangVersion>
+    <LangVersion>13.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <DebugType>embedded</DebugType>
@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="AnyClone" Version="1.1.6" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.410.13" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.411.1" />
     <PackageReference Include="CliWrap" Version="3.7.0" />
     <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="Devlooped.CredentialManager" Version="2.6.0" />
@@ -35,7 +35,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Markdig" Version="0.39.1" />
-    <PackageReference Include="Metalama.Framework" Version="2024.2.31" />
+    <PackageReference Include="Metalama.Framework" Version="2025.0.8" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="9.0.0" />
     <PackageReference Include="ObjectDumper.NET" Version="4.3.2" />
     <PackageReference Include="OneOf" Version="3.0.271" />
