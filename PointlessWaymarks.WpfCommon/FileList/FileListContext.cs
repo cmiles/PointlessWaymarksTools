@@ -44,6 +44,7 @@ public partial class FileListContext : IDropTarget
 
     public void DragOver(IDropInfo dropInfo)
     {
+        //TODO: Use new DragAndDrop Tools that support Virtual Files - BUT watch out for folder support in the Drop
         if (dropInfo.Data is not DataObject data) return;
 
         var dataIsFileDrop = data.GetDataPresent("FileDrop");
