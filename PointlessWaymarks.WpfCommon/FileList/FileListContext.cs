@@ -2,8 +2,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using DocumentFormat.OpenXml.EMMA;
 using GongSolutions.Wpf.DragDrop;
 using Ookii.Dialogs.Wpf;
+using PointlessWaymarks.CommonTools;
 using PointlessWaymarks.LlamaAspects;
 using PointlessWaymarks.WpfCommon.Status;
 using PointlessWaymarks.WpfCommon.Utility;
@@ -44,59 +46,35 @@ public partial class FileListContext : IDropTarget
 
     public void DragOver(IDropInfo dropInfo)
     {
-        //TODO: Use new DragAndDrop Tools that support Virtual Files - BUT watch out for folder support in the Drop
-        if (dropInfo.Data is not DataObject data) return;
+        var files = DragAndDropFilesHelper.DroppedFileNames(dropInfo, true, DroppedFileExtensionAllowList);
 
-        var dataIsFileDrop = data.GetDataPresent("FileDrop");
-
-        if (!dataIsFileDrop) return;
-
-        if (data.GetData("FileDrop") is not string[] fileData || !fileData.Any()) return;
-
-        if (!DroppedFileExtensionAllowList.Any() || DroppedFileExtensionAllowList.Any(x =>
-                fileData.Any(y => y.EndsWith(x, StringComparison.OrdinalIgnoreCase))))
+        if (files.Any())
+        {
             dropInfo.Effects = DragDropEffects.Copy;
+            return;
+        }
+
+        dropInfo.Effects = DragDropEffects.None;
     }
 
     public void Drop(IDropInfo dropInfo)
     {
-        StatusContext.RunBlockingTask(async () => await AddFilesFromGuiDrop(dropInfo.Data));
+        StatusContext.RunBlockingTask(async () => await AddFilesFromGuiDrop(dropInfo));
     }
 
-    public async Task AddFilesFromGuiDrop(object dropData)
+    public async Task AddFilesFromGuiDrop(IDropInfo dropData)
     {
         await ResumeBackgroundAsync();
 
-        if (dropData is not DataObject data)
-        {
-            await StatusContext.ToastWarning("The program didn't find file information in the dropped info?");
-            return;
-        }
-
-        if (data.GetData(DataFormats.FileDrop) is not string[] fileData || !fileData.Any())
-        {
-            await StatusContext.ToastWarning("The program didn't find files in the dropped info?");
-            return;
-        }
-
-        //2023-10-24: Folders come in thru the FileDrop data format - for folders take the top level files and add them to the list
-        var selectedDirectoryFiles = fileData.Where(Directory.Exists).Select(x => new DirectoryInfo(x))
-            .SelectMany(x => x.GetFiles("*.*", SearchOption.TopDirectoryOnly)).OrderBy(x => x.FullName).ToList();
-
-        var selectedFiles = fileData.Where(File.Exists).Select(x => new FileInfo(x)).Union(selectedDirectoryFiles).GroupBy(x => x.FullName).Select(x => x.First()).OrderBy(x => x.FullName).ToList();
-
-        if (DroppedFileExtensionAllowList.Any())
-            selectedFiles = selectedFiles
-                .Where(x => DroppedFileExtensionAllowList.Any(y =>
-                    x.FullName.EndsWith(y, StringComparison.OrdinalIgnoreCase))).OrderBy(x => x.FullName).ToList();
+        var files = DragAndDropFilesHelper.DroppedFiles(dropData, FileLocationTools.TempStorageDirectory(), true, DroppedFileExtensionAllowList);
 
         await ResumeForegroundAsync();
 
         if (ReplaceMode) Files?.Clear();
 
-        selectedFiles.ForEach(x =>
+        files.ForEach(x =>
         {
-            if (!Files!.Any(y => y.FullName.Equals(x.FullName, StringComparison.OrdinalIgnoreCase))) Files!.Add(x);
+            if (!Files!.Any(y => y.FullName.Equals(x, StringComparison.OrdinalIgnoreCase))) Files!.Add(new FileInfo(x));
         });
     }
 
