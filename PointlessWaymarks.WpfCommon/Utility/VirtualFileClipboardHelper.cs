@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows;
@@ -27,9 +27,6 @@ public static class VirtualFileClipboardHelper
             lindex = index,
             tymed = TYMED.TYMED_ISTREAM | TYMED.TYMED_HGLOBAL
         };
-
-
-        //create STGMEDIUM to output request results into
 
         //using the com IDataObject interface get the data using the defined FORMATETC
         comDataObject.GetData(ref formatetc, out var medium);
