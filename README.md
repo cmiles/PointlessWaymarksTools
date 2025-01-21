@@ -1,3 +1,11 @@
+## This project has moved to the [Pointless Waymarks Tools Fossil Repository](https://chiselapp.com/user/cmiles/repository/pointless-waymarks-tools/home) with a GitHub Mirror [here](https://github.com/cmiles/PointlessWaymarksTools02).
+
+## Thank You to everyone who starred or looked at this project and code - I hope you will continue to watch the project via the [mirror](https://github.com/cmiles/PointlessWaymarksTools02), the [Fossil Repo](https://chiselapp.com/user/cmiles/repository/pointless-waymarks-tools/home) or the [Pointless Waymarks Software Website](https://software.pointlesswaymarks.com/).
+
+## Thank You to everyone who has spent time contributing to Free/Libre/Open software!
+
+-----
+
 # Pointless Waymarks Tools
 
 This repository pulls together reusable tools with a focus on WPF Desktop Applications. These tools were first built for the [Pointless Waymarks Project](https://github.com/cmiles/PointlessWaymarksProject).
